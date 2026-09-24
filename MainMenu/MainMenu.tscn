@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://d1exggoon56x5"]
+
+[ext_resource type="Script" uid="uid://beygwmb1v12p1" path="res://MainMenu/MainMenu.gd" id="1_otibh"]
+[ext_resource type="Shader" uid="uid://8xbr3tmf6ya2" path="res://MainMenu/main.gdshader" id="2_cruaa"]
+
+[sub_resource type="Theme" id="Theme_b76km"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_3clmd"]
+default_font_size = 30
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dfu4m"]
+shader = ExtResource("2_cruaa")
+shader_parameter/polar_coordinates = false
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.4
+shader_parameter/polar_repeat = 20.0
+shader_parameter/spin_rotation = 7.0
+shader_parameter/spin_speed = 4.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.8848981, 0.69274354, 0.4831203, 1)
+shader_parameter/colour_2 = Color(14.185875, 3.2169645, 14.192988, 0)
+shader_parameter/colour_3 = Color(0.015686275, 0, 0.078431375, 0.047058824)
+shader_parameter/contrast = 3.3
+shader_parameter/spin_amount = 0.12
+shader_parameter/pixel_filter = 200.0
+
+[node name="MainMenu" type="Node2D" unique_id=1743697251]
+process_mode = 3
+script = ExtResource("1_otibh")
+
+[node name="Label" type="Label" parent="." unique_id=4425683]
+offset_left = 1.0
+offset_top = 9.0
+offset_right = 319.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 14
+text = "CC Clone test"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2001701567]
+offset_left = -1.0
+offset_top = 38.0
+offset_right = 318.0
+offset_bottom = 237.0
+
+[node name="MenuButtons" type="VBoxContainer" parent="CenterContainer" unique_id=1012700879]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Play" type="Button" parent="CenterContainer/MenuButtons" unique_id=190024920]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Levels"
+
+[node name="Options" type="Button" parent="CenterContainer/MenuButtons" unique_id=504399676]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Options"
+
+[node name="Credits" type="Button" parent="CenterContainer/MenuButtons" unique_id=437880587]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Credits"
+
+[node name="Exit" type="Button" parent="CenterContainer/MenuButtons" unique_id=1154746904]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Exit"
+
+[node name="SettingsMenu" type="VBoxContainer" parent="CenterContainer" unique_id=1286223992]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Fullscreen" type="CheckBox" parent="CenterContainer/SettingsMenu" unique_id=549410826]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Fullscreen"
+
+[node name="MusicVolumeSlider" type="HSlider" parent="CenterContainer/SettingsMenu" unique_id=1835344305]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+
+[node name="Label" type="Label" parent="CenterContainer/SettingsMenu/MusicVolumeSlider" unique_id=646423217]
+custom_minimum_size = Vector2(484, 55)
+layout_mode = 0
+offset_top = -16.0
+offset_right = 484.0
+offset_bottom = 39.0
+theme_override_font_sizes/font_size = 30
+text = "Music Volume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/SettingsMenu" unique_id=3674057]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Back"
+
+[node name="CreditsMenu" type="VBoxContainer" parent="CenterContainer" unique_id=2003360930]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/CreditsMenu" unique_id=1899173943]
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Ryan Warrener"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Button" type="Button" parent="CenterContainer/CreditsMenu" unique_id=401601778]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Back"
+
+[node name="LevelsMenu" type="VBoxContainer" parent="CenterContainer" unique_id=1377716307]
+visible = false
+layout_mode = 2
+
+[node name="TestLevelButton" type="Button" parent="CenterContainer/LevelsMenu" unique_id=1745361254]
+layout_mode = 2
+theme = SubResource("Theme_b76km")
+theme_override_font_sizes/font_size = 10
+text = "Test Level Two"
+
+[node name="BackButton" type="Button" parent="CenterContainer/LevelsMenu" unique_id=1097326960]
+layout_mode = 2
+theme = SubResource("Theme_3clmd")
+theme_override_font_sizes/font_size = 10
+text = "Back"
+
+[node name="Background" type="CanvasLayer" parent="." unique_id=1019917609]
+layer = -1
+
+[node name="MBG1" type="ColorRect" parent="Background" unique_id=2118255790]
+z_index = -10
+material = SubResource("ShaderMaterial_dfu4m")
+offset_right = 320.0
+offset_bottom = 240.0
+mouse_filter = 2
+color = Color(0.964773, 0.848416, 0.869401, 1)
+
+[node name="MBG2" type="ColorRect" parent="Background" unique_id=367872642]
+visible = false
+z_index = -10
+material = SubResource("ShaderMaterial_dfu4m")
+offset_right = 640.0
+offset_bottom = 352.0
+mouse_filter = 2
+color = Color(0.330078, 0.99999994, 0.9244244, 1)
+
+[connection signal="pressed" from="CenterContainer/MenuButtons/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="CenterContainer/MenuButtons/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="CenterContainer/MenuButtons/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="CenterContainer/MenuButtons/Exit" to="." method="_on_exit_pressed"]
+[connection signal="toggled" from="CenterContainer/SettingsMenu/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="value_changed" from="CenterContainer/SettingsMenu/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
+[connection signal="pressed" from="CenterContainer/SettingsMenu/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CenterContainer/CreditsMenu/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CenterContainer/LevelsMenu/TestLevelButton" to="." method="_on_test_level_button_pressed"]
+[connection signal="pressed" from="CenterContainer/LevelsMenu/BackButton" to="." method="_on_back_button_pressed"]
