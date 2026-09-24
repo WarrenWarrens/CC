@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cwit67qe75egw"]
+
+[ext_resource type="Texture2D" uid="uid://dvp2htip1dbar" path="res://Assets/stage2.png" id="1_ty8a5"]
+[ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Scenes/Player.tscn" id="2_4hy8i"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
+
+[node name="Node2D" type="Node2D" unique_id=686236493]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1540340751]
+z_index = -1
+position = Vector2(-622, -280)
+scale = Vector2(2, 2)
+texture = ExtResource("1_ty8a5")
+offset = Vector2(500, 250)
+
+[node name="Boundaries" type="StaticBody2D" parent="." unique_id=117728836]
+physics_material_override = SubResource("PhysicsMaterial_ttpud")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=1738464530]
+shape = SubResource("RectangleShape2D_vyp0t")
+
+[node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_4hy8i")]

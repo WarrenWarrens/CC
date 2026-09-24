@@ -233,15 +233,29 @@ y_sort_enabled = true
 script = ExtResource("1_dewec")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=316637450]
-position = Vector2(0, 65.13)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ttpud")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=1373284604]
 
-[node name="Shadow" type="Sprite2D" parent="Visuals" unique_id=33056229]
-
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1829035284]
 texture_filter = 1
+scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_vyp0t")
 animation = &"Attack"
+centered = false
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1772076250]
+anchor_mode = 0
+limit_left = 0
+limit_top = 0
+limit_right = 128
+limit_bottom = 128
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_horizontal_offset = -0.57
+drag_left_margin = 0.1
+drag_top_margin = 0.1
+drag_right_margin = 0.1
+drag_bottom_margin = 0.1
+editor_draw_drag_margin = true

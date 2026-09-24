@@ -27,6 +27,7 @@ shader_parameter/pixel_filter = 200.0
 
 [node name="MainMenu" type="Node2D" unique_id=1743697251]
 process_mode = 3
+scale = Vector2(2, 2)
 script = ExtResource("1_otibh")
 
 [node name="Label" type="Label" parent="." unique_id=4425683]
@@ -141,6 +142,7 @@ z_index = -10
 material = SubResource("ShaderMaterial_dfu4m")
 offset_right = 320.0
 offset_bottom = 240.0
+scale = Vector2(2, 2)
 mouse_filter = 2
 color = Color(0.964773, 0.848416, 0.869401, 1)
 

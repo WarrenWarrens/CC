@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b66kts40at16p"]
 
-[ext_resource type="Texture2D" uid="uid://ck5wng8ql7ff" path="res://Assets/stage.png" id="1_8s7ad"]
+[ext_resource type="Texture2D" uid="uid://dvp2htip1dbar" path="res://Assets/stage2.png" id="1_1b5jc"]
 [ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Scenes/Player.tscn" id="2_1b5jc"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
@@ -8,31 +8,19 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
 size = Vector2(310.5, 72.5)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8s7ad"]
-size = Vector2(1011.75, 150)
-
 [node name="Node2D" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
-position = Vector2(150, 100)
-scale = Vector2(0.4, 0.4)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1540340751]
 z_index = -1
-texture = ExtResource("1_8s7ad")
+texture = ExtResource("1_1b5jc")
+centered = false
 
 [node name="Boundaries" type="StaticBody2D" parent="." unique_id=117728836]
 physics_material_override = SubResource("PhysicsMaterial_ttpud")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundaries" unique_id=1800197522]
-polygon = PackedVector2Array(-505, 379, -512, -511, 499, -513, 509, 338, 465, -141, 119, -144, -10, -208, -277, -213, -342, 3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=631458625]
 position = Vector2(-166.25, -53.75)
 shape = SubResource("RectangleShape2D_ttpud")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Boundaries" unique_id=521384908]
-position = Vector2(-0.875, 441)
-shape = SubResource("RectangleShape2D_8s7ad")
-
 [node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_1b5jc")]
-scale = Vector2(3, 3)
