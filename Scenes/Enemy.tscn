@@ -6,6 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://dmf5u1361k0qy" path="res://Assets/Enemy/EStun.png" id="4_uoxpr"]
 [ext_resource type="Texture2D" uid="uid://qbhd3a88rk0y" path="res://Assets/Enemy/EWalk.png" id="5_idouy"]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vyp0t"]
+radius = 3.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ttpud"]
+radius = 200.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1exfc"]
+size = Vector2(43, 58.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mo1ky"]
+size = Vector2(51, 62)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_0o0ue"]
 atlas = ExtResource("2_mo1ky")
 region = Rect2(0, 0, 72, 63)
@@ -162,57 +174,46 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vyp0t"]
-radius = 3.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ttpud"]
-radius = 200.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1exfc"]
-size = Vector2(43, 58.5)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mo1ky"]
-size = Vector2(51, 62)
-
 [node name="Enemy" type="CharacterBody2D" unique_id=864659468]
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_wovta")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1139163891]
-texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_ttpud")
-animation = &"Attack"
-offset = Vector2(0, -32)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=65255577]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_vyp0t")
 
 [node name="DetectionZone" type="Area2D" parent="." unique_id=1095681346]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=987240178]
 shape = SubResource("CircleShape2D_ttpud")
 debug_color = Color(0.953487, 1.732707e-06, 0.5558049, 0.41960785)
 
-[node name="Hitbox" type="Area2D" parent="." unique_id=1068030660]
+[node name="Visuals" type="Node2D" parent="." unique_id=686329548]
+
+[node name="Hitbox" type="Area2D" parent="Visuals" unique_id=1068030660]
 collision_layer = 0
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=674062975]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hitbox" unique_id=674062975]
 position = Vector2(22, -30.75)
 shape = SubResource("RectangleShape2D_1exfc")
 debug_color = Color(0.42157483, 0.46149063, 1, 0.41960785)
 
-[node name="Hurtbox" type="Area2D" parent="." unique_id=1865476927]
+[node name="Hurtbox" type="Area2D" parent="Visuals" unique_id=1865476927]
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=305679832]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hurtbox" unique_id=305679832]
 position = Vector2(-5.5, -31)
 shape = SubResource("RectangleShape2D_mo1ky")
 
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1139163891]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_ttpud")
+animation = &"Attack"
+offset = Vector2(0, -32)
+
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
-[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_entered" from="Visuals/Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="animation_finished" from="Visuals/Body" to="." method="_on_animated_sprite_2d_animation_finished"]

@@ -16,7 +16,7 @@ func _ready():
 	var random_angle = randf() * PI * 2
 	target_offset = Vector2(cos(random_angle), sin(random_angle)) * 60.0
 	
-	$DetectionZone.body_entered.connect(_on_detection_zone_body_entered)
+	#$DetectionZone.body_entered.connect(_on_detection_zone_body_entered)
 
 func _physics_process(delta):
 	match current_state:
@@ -74,11 +74,11 @@ func take_damage(amount, knockback_dir):
 	
 	if health <= 0:
 		current_state = State.DEAD
-		body_sprite.play("Stunned") 
+		body_sprite.play("Stun") 
 		queue_free() 
 	else:
 		current_state = State.STUNNED
-		body_sprite.play("Stunned")
+		body_sprite.play("Stun")
 		velocity = knockback_dir * 150 
 		
 		get_tree().create_timer(0.4).timeout.connect(_recover_from_stun)

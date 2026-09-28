@@ -76,8 +76,8 @@ func _physics_process(delta):
 	match current_state:
 		State.NORMAL:
 			handle_movement()
-			handle_actions()
 			update_animations("Idle", "Walk")
+			handle_actions()
 		State.JUMPING:
 			handle_movement() 
 			handle_jump(delta)
@@ -120,6 +120,7 @@ func handle_actions():
 	if Input.is_action_just_pressed("ui_accept"):
 		current_state = State.JUMPING
 		z_velocity = JUMP_FORCE
+		body_sprite.play("Jump") 
 	elif Input.is_action_just_pressed("punch"):
 		current_state = State.PUNCHING
 		body_sprite.play("Attack")
@@ -161,7 +162,8 @@ func _on_body_animation_finished():
 		current_state = State.NORMAL
 
 
-func _on_hitbox_area_entered(body):
-	if body.has_method("take_damage"):
-		var knockback = global_position.direction_to(body.global_position)
-		body.take_damage(10, knockback)
+func _on_hitbox_area_entered(area):
+	var enemy = area.get_parent() 
+	if enemy.has_method("take_damage"):
+		var knockback = global_position.direction_to(enemy.global_position)
+		enemy.take_damage(10, knockback)

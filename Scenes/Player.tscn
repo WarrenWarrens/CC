@@ -193,7 +193,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"Attack",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -222,7 +222,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"Dodge",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -239,7 +239,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"Guard",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -256,7 +256,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"Idle",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -300,7 +300,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"Jump",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -314,7 +314,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"Stun",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -337,7 +337,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"Walk",
-"speed": 5.0
+"speed": 6.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
@@ -360,9 +360,7 @@ shape = SubResource("CapsuleShape2D_ttpud")
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1829035284]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_vyp0t")
-animation = &"Jump"
-frame = 12
-frame_progress = 1.0
+animation = &"Walk"
 offset = Vector2(0, -32)
 
 [node name="Hitbox" type="Area2D" parent="Visuals" unique_id=801768740]
