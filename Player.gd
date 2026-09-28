@@ -8,6 +8,7 @@ var altitude = 0.0
 var z_velocity = 0.0
 const GRAVITY = 900.0
 const JUMP_FORCE = 400.0
+var current_slope = 0.0
 
 @onready var body_sprite = $Visuals/Body
 
@@ -18,6 +19,9 @@ func _physics_process(delta):
 	velocity.y = input_dir.y * SPEED * DEPTH_SQUASH 
 	
 	move_and_slide()
+	
+	if current_slope != 0.0 and input_dir.x != 0:
+		velocity.y += input_dir.x * SPEED * current_slope
 	
 	if input_dir.x != 0:
 		body_sprite.flip_h = input_dir.x < 0

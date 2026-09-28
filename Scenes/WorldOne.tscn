@@ -1,26 +1,106 @@
 [gd_scene format=3 uid="uid://b66kts40at16p"]
 
-[ext_resource type="Texture2D" uid="uid://dvp2htip1dbar" path="res://Assets/stage2.png" id="1_1b5jc"]
+[ext_resource type="Texture2D" uid="uid://cqk0p78nwjjd2" path="res://Assets/sky.png" id="1_ap4ow"]
+[ext_resource type="Script" uid="uid://saxx8vy4npnh" path="res://Scenes/World.gd" id="1_iu4tf"]
 [ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Scenes/Player.tscn" id="2_1b5jc"]
+[ext_resource type="Texture2D" uid="uid://cxftcn7kqwxur" path="res://Assets/ground2.png" id="2_c03eq"]
+[ext_resource type="Texture2D" uid="uid://32yi8om1h7ai" path="res://Assets/ground1.png" id="3_iu4tf"]
+[ext_resource type="Texture2D" uid="uid://dd5sw0dgvsikh" path="res://Assets/ramp1.png" id="4_6ngtb"]
+[ext_resource type="Texture2D" uid="uid://12se27q3ys3q" path="res://Assets/sprite64.png" id="6_c03eq"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
-size = Vector2(310.5, 72.5)
+size = Vector2(168.99852, 340.92603)
 
-[node name="Node2D" type="Node2D" unique_id=686236493]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
+size = Vector2(342.34018, 162.33118)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tgb25"]
+size = Vector2(341.2293, 335.5725)
+
+[node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
+script = ExtResource("1_iu4tf")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1540340751]
+[node name="Ground" type="Node2D" parent="." unique_id=1849063933]
+
+[node name="Sprite2D3" type="Sprite2D" parent="Ground" unique_id=1540340751]
 z_index = -1
-texture = ExtResource("1_1b5jc")
+texture = ExtResource("1_ap4ow")
 centered = false
+
+[node name="Sprite2D5" type="Sprite2D" parent="Ground" unique_id=150368509]
+z_index = -1
+texture = ExtResource("1_ap4ow")
+centered = false
+offset = Vector2(0, -360)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Ground" unique_id=1400151372]
+texture = ExtResource("2_c03eq")
+offset = Vector2(640, 240)
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground" unique_id=1003454753]
+position = Vector2(1920, -1.4999962)
+scale = Vector2(1, 0.66944444)
+texture = ExtResource("3_iu4tf")
+
+[node name="Ramp" type="Sprite2D" parent="Ground" unique_id=729390569]
+position = Vector2(1156, 6)
+texture = ExtResource("4_6ngtb")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Ground" unique_id=1409491963]
+position = Vector2(1408.25, 240)
+texture = ExtResource("4_6ngtb")
 
 [node name="Boundaries" type="StaticBody2D" parent="." unique_id=117728836]
 physics_material_override = SubResource("PhysicsMaterial_ttpud")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=631458625]
-position = Vector2(-166.25, -53.75)
-shape = SubResource("RectangleShape2D_ttpud")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundaries" unique_id=293835513]
+position = Vector2(0, -3.4867249)
+scale = Vector2(1, 0.99311334)
+build_mode = 1
+polygon = PackedVector2Array(1, 118, 1040, 119, 1265, -105, 2549, -106, 2555, -362, 1441.3674, -361.1289, -2, -360)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Boundaries" unique_id=481859287]
+build_mode = 1
+polygon = PackedVector2Array(7, 355, 1284, 364, 1526, 116, 2553, 111, 2567, 612, 3, 617)
 
 [node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_1b5jc")]
+position = Vector2(181, 157)
+
+[node name="32" type="Sprite2D" parent="." unique_id=2138997419]
+visible = false
+position = Vector2(69, 214)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_c03eq")
+
+[node name="ElevationTriggerUpper" type="Area2D" parent="." unique_id=1807744929]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ElevationTriggerUpper" unique_id=2031884873]
+position = Vector2(1335.7145, 68.2145)
+rotation = -0.7853982
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_ttpud")
+
+[node name="ElevationTriggerLower" type="Area2D" parent="." unique_id=1045687913]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ElevationTriggerLower" unique_id=1032656746]
+position = Vector2(1216.5718, 186.35721)
+rotation = 0.7853982
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_vyp0t")
+debug_color = Color(0.6974239, 0.49418074, 0, 0.41960785)
+
+[node name="RampAssist" type="Area2D" parent="." unique_id=102323400]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RampAssist" unique_id=946370671]
+position = Vector2(1278.7146, 125.000015)
+rotation = 0.7853982
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_tgb25")
+debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
+
+[connection signal="body_entered" from="ElevationTriggerUpper" to="." method="_on_elevation_trigger_upper_body_entered"]
+[connection signal="body_entered" from="ElevationTriggerLower" to="." method="_on_elevation_trigger_lower_body_entered"]

@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://br3w7rdj8epg3"]
+
+[ext_resource type="Texture2D" uid="uid://12se27q3ys3q" path="res://Assets/sprite64.png" id="1_m1htj"]
+[ext_resource type="Script" uid="uid://dm2diqfwvefnc" path="res://Scenes/Enemy.gd" id="1_wovta"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vyp0t"]
+height = 64.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ttpud"]
+radius = 256.0
+
+[node name="Enemy" type="CharacterBody2D" unique_id=864659468]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_wovta")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=65255577]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_vyp0t")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1653720389]
+texture = ExtResource("1_m1htj")
+offset = Vector2(0, -32)
+
+[node name="DetectionZone" type="Area2D" parent="." unique_id=1095681346]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=987240178]
+shape = SubResource("CircleShape2D_ttpud")
+debug_color = Color(0.953487, 1.732707e-06, 0.5558049, 0.41960785)
