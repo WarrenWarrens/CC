@@ -25,30 +25,34 @@ position = Vector2(181, 157)
 [node name="Ground" type="Node2D" parent="." unique_id=1849063933]
 
 [node name="Sprite2D3" type="Sprite2D" parent="Ground" unique_id=1540340751]
-z_index = -1
+z_index = -10
 texture = ExtResource("1_ap4ow")
 centered = false
 
 [node name="Sprite2D5" type="Sprite2D" parent="Ground" unique_id=150368509]
-z_index = -1
+z_index = -10
 texture = ExtResource("1_ap4ow")
 centered = false
 offset = Vector2(0, -360)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Ground" unique_id=1400151372]
+z_index = -2
 texture = ExtResource("2_c03eq")
 offset = Vector2(640, 240)
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground" unique_id=1003454753]
+z_index = -5
 position = Vector2(1920, -1.4999962)
 scale = Vector2(1, 0.66944444)
 texture = ExtResource("3_iu4tf")
 
 [node name="Ramp" type="Sprite2D" parent="Ground" unique_id=729390569]
+z_index = -1
 position = Vector2(1156, 6)
 texture = ExtResource("4_6ngtb")
 
 [node name="Sprite2D6" type="Sprite2D" parent="Ground" unique_id=1409491963]
+z_index = -1
 position = Vector2(1408.25, 240)
 texture = ExtResource("4_6ngtb")
 
