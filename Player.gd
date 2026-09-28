@@ -14,14 +14,15 @@ var current_slope = 0.0
 
 func _physics_process(delta):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
-	
+
 	velocity.x = input_dir.x * SPEED
 	velocity.y = input_dir.y * SPEED * DEPTH_SQUASH 
 	
-	move_and_slide()
-	
 	if current_slope != 0.0 and input_dir.x != 0:
 		velocity.y += input_dir.x * SPEED * current_slope
+		
+	move_and_slide()
+	
 	
 	if input_dir.x != 0:
 		body_sprite.flip_h = input_dir.x < 0

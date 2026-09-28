@@ -10,12 +10,6 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
-size = Vector2(168.99852, 340.92603)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
-size = Vector2(342.34018, 162.33118)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tgb25"]
 size = Vector2(341.2293, 335.5725)
 
@@ -75,25 +69,8 @@ position = Vector2(69, 214)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_c03eq")
 
-[node name="ElevationTriggerUpper" type="Area2D" parent="." unique_id=1807744929]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ElevationTriggerUpper" unique_id=2031884873]
-position = Vector2(1335.7145, 68.2145)
-rotation = -0.7853982
-scale = Vector2(0.9999999, 0.9999999)
-shape = SubResource("RectangleShape2D_ttpud")
-
-[node name="ElevationTriggerLower" type="Area2D" parent="." unique_id=1045687913]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ElevationTriggerLower" unique_id=1032656746]
-position = Vector2(1216.5718, 186.35721)
-rotation = 0.7853982
-scale = Vector2(0.9999999, 0.9999999)
-shape = SubResource("RectangleShape2D_vyp0t")
-debug_color = Color(0.6974239, 0.49418074, 0, 0.41960785)
-
 [node name="RampAssist" type="Area2D" parent="." unique_id=102323400]
-collision_layer = 4
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RampAssist" unique_id=946370671]
 position = Vector2(1278.7146, 125.000015)
@@ -102,5 +79,5 @@ scale = Vector2(0.9999999, 0.9999999)
 shape = SubResource("RectangleShape2D_tgb25")
 debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
 
-[connection signal="body_entered" from="ElevationTriggerUpper" to="." method="_on_elevation_trigger_upper_body_entered"]
-[connection signal="body_entered" from="ElevationTriggerLower" to="." method="_on_elevation_trigger_lower_body_entered"]
+[connection signal="body_entered" from="RampAssist" to="." method="_on_ramp_assist_body_entered"]
+[connection signal="body_exited" from="RampAssist" to="." method="_on_ramp_assist_body_exited"]
