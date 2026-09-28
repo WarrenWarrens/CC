@@ -17,6 +17,11 @@ size = Vector2(341.2293, 335.5725)
 y_sort_enabled = true
 script = ExtResource("1_iu4tf")
 
+[node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_1b5jc")]
+light_mask = 3
+visibility_layer = 3
+position = Vector2(181, 157)
+
 [node name="Ground" type="Node2D" parent="." unique_id=1849063933]
 
 [node name="Sprite2D3" type="Sprite2D" parent="Ground" unique_id=1540340751]
@@ -59,9 +64,6 @@ polygon = PackedVector2Array(1, 118, 1040, 119, 1265, -105, 2549, -106, 2555, -3
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Boundaries" unique_id=481859287]
 build_mode = 1
 polygon = PackedVector2Array(7, 355, 1284, 364, 1526, 116, 2553, 111, 2567, 612, 3, 617)
-
-[node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_1b5jc")]
-position = Vector2(181, 157)
 
 [node name="32" type="Sprite2D" parent="." unique_id=2138997419]
 visible = false

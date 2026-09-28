@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://12se27q3ys3q" path="res://Assets/sprite64.png" id="5_5ixxa"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ttpud"]
+radius = 3.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bhhdu"]
 atlas = ExtResource("2_5ixxa")
@@ -234,6 +235,7 @@ y_sort_enabled = true
 script = ExtResource("1_dewec")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=316637450]
+position = Vector2(0, -3)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ttpud")
 
