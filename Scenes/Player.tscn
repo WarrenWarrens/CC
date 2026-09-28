@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dr524waxsslbi" path="res://Assets/free-schoolgirls-anime-character-pixel-sprite-pack/Girl_1/Attack.png" id="2_5ixxa"]
 [ext_resource type="Texture2D" uid="uid://cw7ofggbs32w0" path="res://Assets/free-schoolgirls-anime-character-pixel-sprite-pack/Girl_1/Idle.png" id="3_nn08x"]
 [ext_resource type="Texture2D" uid="uid://dk28rxg7el72u" path="res://Assets/free-schoolgirls-anime-character-pixel-sprite-pack/Girl_1/Walk.png" id="4_52ee3"]
+[ext_resource type="Texture2D" uid="uid://12se27q3ys3q" path="res://Assets/sprite64.png" id="5_5ixxa"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ttpud"]
 
@@ -240,22 +241,24 @@ shape = SubResource("CapsuleShape2D_ttpud")
 
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1829035284]
 texture_filter = 1
-scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_vyp0t")
 animation = &"Attack"
-centered = false
+offset = Vector2(0, -64)
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=1346518761]
+visible = false
+texture = ExtResource("5_5ixxa")
+offset = Vector2(0, -32)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1772076250]
-anchor_mode = 0
 limit_left = 0
 limit_top = 0
-limit_right = 128
-limit_bottom = 128
+limit_right = 512
+limit_bottom = 512
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
-drag_horizontal_offset = -0.57
-drag_left_margin = 0.1
-drag_top_margin = 0.1
-drag_right_margin = 0.1
-drag_bottom_margin = 0.1
+drag_left_margin = 0.61
+drag_top_margin = 0.52
+drag_right_margin = 0.47
+drag_bottom_margin = 0.5
 editor_draw_drag_margin = true
