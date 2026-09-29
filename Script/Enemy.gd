@@ -28,9 +28,7 @@ func _physics_process(delta):
 			
 		State.CHASING:
 			if player:
-				if current_slope != 0.0 and velocity.x != 0:
-					velocity.y += sign(velocity.x) * SPEED * current_slope
-					chase_player()
+				chase_player()
 			else:
 				current_state = State.IDLE
 				

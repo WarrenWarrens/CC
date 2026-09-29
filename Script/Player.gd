@@ -24,9 +24,12 @@ var ramp_rise := 0.0
 var _last_x := 0.0
 
 func _ready():
-	camera.top_level = true      
+	camera.top_level = true
+	camera.process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
 	camera.position_smoothing_enabled = true
-	camera.position_smoothing_speed = 6.0
+	camera.position_smoothing_speed = 10.0   
+	camera.global_position = Vector2(global_position.x, camera_base_y)
+	camera.reset_smoothing()
 	_last_x = global_position.x
 
 func _physics_process(delta):
@@ -55,9 +58,8 @@ func _physics_process(delta):
 	var dx = global_position.x - _last_x
 	ramp_rise += dx * get_slope()
 	_last_x = global_position.x
-	
-func _process(_delta):
 	camera.global_position = Vector2(global_position.x, camera_base_y + ramp_rise)
+	
 
 func handle_movement():
 	var input_dir = Input.get_vector("left", "right", "up", "down")
