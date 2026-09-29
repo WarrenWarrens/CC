@@ -22,6 +22,8 @@ script = ExtResource("1_iu4tf")
 light_mask = 3
 visibility_layer = 3
 position = Vector2(181, 157)
+collision_layer = 3
+collision_mask = 3
 
 [node name="Ground" type="Node2D" parent="." unique_id=1849063933]
 

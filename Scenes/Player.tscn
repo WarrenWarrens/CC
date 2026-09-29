@@ -222,7 +222,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"Dodge",
-"speed": 10.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -254,7 +254,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xixlo")
 }],
-"loop": 0,
+"loop": 2,
 "name": &"Idle",
 "speed": 6.0
 }, {
@@ -341,7 +341,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
-size = Vector2(84, 63)
+size = Vector2(99, 63)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
 size = Vector2(51, 64)
@@ -360,7 +360,7 @@ shape = SubResource("CapsuleShape2D_ttpud")
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1829035284]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_vyp0t")
-animation = &"Walk"
+animation = &"Guard"
 offset = Vector2(0, -32)
 
 [node name="Hitbox" type="Area2D" parent="Visuals" unique_id=801768740]
@@ -369,11 +369,12 @@ collision_mask = 2
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hitbox" unique_id=490009195]
-position = Vector2(42, -31.5)
+position = Vector2(49.5, -31.5)
 shape = SubResource("RectangleShape2D_ttpud")
 debug_color = Color(0.6630408, 0.5134749, 0, 0.41960785)
 
 [node name="Hurtbox" type="Area2D" parent="Visuals" unique_id=1493946583]
+collision_layer = 4
 collision_mask = 0
 monitoring = false
 

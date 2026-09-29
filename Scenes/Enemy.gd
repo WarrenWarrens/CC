@@ -71,6 +71,7 @@ func take_damage(amount, knockback_dir):
 		return
 		
 	health -= amount
+	hitbox.set_deferred("monitoring", false)
 	
 	if health <= 0:
 		current_state = State.DEAD
@@ -103,7 +104,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 
 func _on_hitbox_area_entered(area):
 	if current_state == State.ATTACKING:
-		var enemy = area.get_parent() 
-		if enemy.has_method("take_damage"):
-			var knockback = global_position.direction_to(enemy.global_position)
-			enemy.take_damage(10, knockback)
+		var target = area.owner
+		if target and target != self and target.has_method("take_damage"):
+			var knockback = global_position.direction_to(target.global_position)
+			target.take_damage(10, knockback)

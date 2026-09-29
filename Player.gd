@@ -92,7 +92,7 @@ func _physics_process(delta):
 		State.DODGING:
 			move_and_slide()
 		State.STUNNED:
-			velocity = Vector2.ZERO
+			velocity = velocity.move_toward(Vector2.ZERO, 800 * delta)
 			move_and_slide()
 
 func handle_movement():
@@ -148,14 +148,13 @@ func handle_jump(delta):
 
 func take_damage(amount, knockback_dir):
 	if current_state == State.GUARDING or current_state == State.DODGING:
-		return 
-		
-	hitbox.monitoring = false 	
+		return
+	hitbox.set_deferred("monitoring", false)
 	current_state = State.STUNNED
-	body_sprite.play("Stunned")
+	body_sprite.play("Stun")
 	velocity = knockback_dir * 200
-	
 	get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
+	
 
 func _on_body_animation_finished():
 	if body_sprite.animation == "Attack":
@@ -165,7 +164,7 @@ func _on_body_animation_finished():
 
 func _on_hitbox_area_entered(area):
 	if current_state == State.PUNCHING:
-		var enemy = area.get_parent() 
-		if enemy.has_method("take_damage"):
-			var knockback = global_position.direction_to(enemy.global_position)
-			enemy.take_damage(10, knockback)
+		var target = area.owner
+		if target and target != self and target.has_method("take_damage"):
+			var knockback = global_position.direction_to(target.global_position)
+			target.take_damage(10, knockback)
