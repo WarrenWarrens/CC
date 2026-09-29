@@ -150,6 +150,7 @@ func take_damage(amount, knockback_dir):
 	if current_state == State.GUARDING or current_state == State.DODGING:
 		return 
 		
+	hitbox.monitoring = false 	
 	current_state = State.STUNNED
 	body_sprite.play("Stunned")
 	velocity = knockback_dir * 200
@@ -163,7 +164,8 @@ func _on_body_animation_finished():
 
 
 func _on_hitbox_area_entered(area):
-	var enemy = area.get_parent() 
-	if enemy.has_method("take_damage"):
-		var knockback = global_position.direction_to(enemy.global_position)
-		enemy.take_damage(10, knockback)
+	if current_state == State.PUNCHING:
+		var enemy = area.get_parent() 
+		if enemy.has_method("take_damage"):
+			var knockback = global_position.direction_to(enemy.global_position)
+			enemy.take_damage(10, knockback)

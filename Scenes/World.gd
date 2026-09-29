@@ -25,9 +25,18 @@ func _on_ramp_assist_body_exited(body: Node2D) -> void:
 		var player_camera = body.get_node("Camera2D")
 		var tween = create_tween()
 
+		# Calculate the new camera bounds based on the player's CURRENT Y position.
+		# Assuming your screen height is 360:
+		var screen_height = 360
+		# If the player exits the top of the ramp
 		if body.global_position.y < ramp_assist.global_position.y:
-			tween.tween_property(player_camera, "limit_top", -240, 0.3)
-			tween.tween_property(player_camera, "limit_bottom", 0, 0.3)
+			# Snap the bottom limit to just below the player's current floor level
+			# You might need to adjust the '+ 100' offset depending on where your floor art is
+			var new_bottom = body.global_position.y + 100 
+			tween.tween_property(player_camera, "limit_top", new_bottom - screen_height, 1.0)
+			tween.tween_property(player_camera, "limit_bottom", new_bottom, 1.0)
+			
 		else:
-			tween.tween_property(player_camera, "limit_top", 0, 0.3)
-			tween.tween_property(player_camera, "limit_bottom", 240, 0.3)
+			var new_bottom = body.global_position.y + 100
+			tween.tween_property(player_camera, "limit_top", new_bottom - screen_height, 1.0)
+			tween.tween_property(player_camera, "limit_bottom", new_bottom, 1.0)

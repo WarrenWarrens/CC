@@ -341,10 +341,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
-size = Vector2(45, 50)
+size = Vector2(84, 63)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
-size = Vector2(51, 59)
+size = Vector2(51, 64)
 
 [node name="Player" type="CharacterBody2D" unique_id=1446667991]
 y_sort_enabled = true
@@ -369,15 +369,16 @@ collision_mask = 2
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hitbox" unique_id=490009195]
-position = Vector2(22.5, -25)
+position = Vector2(42, -31.5)
 shape = SubResource("RectangleShape2D_ttpud")
 debug_color = Color(0.6630408, 0.5134749, 0, 0.41960785)
 
 [node name="Hurtbox" type="Area2D" parent="Visuals" unique_id=1493946583]
 collision_mask = 0
+monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hurtbox" unique_id=255603040]
-position = Vector2(-0.5, -19.5)
+position = Vector2(-0.5, -32)
 shape = SubResource("RectangleShape2D_vyp0t")
 debug_color = Color(0, 0.63528955, 0.42274988, 0.41960785)
 

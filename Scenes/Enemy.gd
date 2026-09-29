@@ -102,7 +102,8 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 
 
 func _on_hitbox_area_entered(area):
-	var enemy = area.get_parent() 
-	if enemy.has_method("take_damage"):
-		var knockback = global_position.direction_to(enemy.global_position)
-		enemy.take_damage(10, knockback)
+	if current_state == State.ATTACKING:
+		var enemy = area.get_parent() 
+		if enemy.has_method("take_damage"):
+			var knockback = global_position.direction_to(enemy.global_position)
+			enemy.take_damage(10, knockback)

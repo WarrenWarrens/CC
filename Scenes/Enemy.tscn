@@ -13,7 +13,7 @@ radius = 3.0
 radius = 200.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1exfc"]
-size = Vector2(43, 58.5)
+size = Vector2(64.5, 61.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo1ky"]
 size = Vector2(51, 62)
@@ -183,26 +183,27 @@ script = ExtResource("1_wovta")
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_vyp0t")
 
-[node name="DetectionZone" type="Area2D" parent="." unique_id=1095681346]
+[node name="Visuals" type="Node2D" parent="." unique_id=686329548]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=987240178]
+[node name="DetectionZone" type="Area2D" parent="Visuals" unique_id=1095681346]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/DetectionZone" unique_id=987240178]
 shape = SubResource("CircleShape2D_ttpud")
 debug_color = Color(0.953487, 1.732707e-06, 0.5558049, 0.41960785)
-
-[node name="Visuals" type="Node2D" parent="." unique_id=686329548]
 
 [node name="Hitbox" type="Area2D" parent="Visuals" unique_id=1068030660]
 collision_layer = 0
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hitbox" unique_id=674062975]
-position = Vector2(22, -30.75)
+position = Vector2(32.75, -32.25)
 shape = SubResource("RectangleShape2D_1exfc")
 debug_color = Color(0.42157483, 0.46149063, 1, 0.41960785)
 
 [node name="Hurtbox" type="Area2D" parent="Visuals" unique_id=1865476927]
 collision_layer = 2
 collision_mask = 0
+monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hurtbox" unique_id=305679832]
 position = Vector2(-5.5, -31)
@@ -214,6 +215,6 @@ sprite_frames = SubResource("SpriteFrames_ttpud")
 animation = &"Attack"
 offset = Vector2(0, -32)
 
-[connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
+[connection signal="body_entered" from="Visuals/DetectionZone" to="." method="_on_detection_zone_body_entered"]
 [connection signal="area_entered" from="Visuals/Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="animation_finished" from="Visuals/Body" to="." method="_on_animated_sprite_2d_animation_finished"]
