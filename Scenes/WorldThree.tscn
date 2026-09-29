@@ -83,36 +83,33 @@ polygon = PackedVector2Array(0, 16, 0, 120, 1305, 118, 1552, -89, 2162, -88, 240
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Boundaries" unique_id=1321826544]
 polygon = PackedVector2Array(2, 360, 1513, 363, 1757, 158, 2368, 160, 2614, -49, 3174, -47, 3658, 364, 4873, 364, 4909, 1130, 10, 1106)
 
-[node name="RampAssist" type="Area2D" parent="." unique_id=102323400]
+[node name="RampAssistUp" type="Area2D" parent="." unique_id=102323400]
 collision_layer = 16
 
-[node name="RampOne" type="CollisionShape2D" parent="RampAssist" unique_id=946370671]
+[node name="RampOne" type="CollisionShape2D" parent="RampAssistUp" unique_id=946370671]
 position = Vector2(1530.248, 136.48743)
 rotation = 0.8726645
 scale = Vector2(0.9999998, 0.9999998)
 shape = SubResource("RectangleShape2D_tgb25")
 debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
 
-[node name="RampOne2" type="CollisionShape2D" parent="RampAssist" unique_id=122566671]
+[node name="RampOne2" type="CollisionShape2D" parent="RampAssistUp" unique_id=122566671]
 position = Vector2(2389, -66.999985)
 rotation = 0.8726645
 scale = Vector2(0.9999998, 0.9999998)
 shape = SubResource("RectangleShape2D_tgb25")
 debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
 
-[node name="RampOne3" type="CollisionShape2D" parent="RampAssist" unique_id=46332512]
-position = Vector2(3397, -65.00001)
-rotation = 0.6981317
-scale = Vector2(0.9999998, 0.9999998)
-shape = SubResource("RectangleShape2D_tgb25")
-debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
+[node name="RampAssistDown" type="Area2D" parent="." unique_id=898525670]
 
-[node name="RampOne4" type="CollisionShape2D" parent="RampAssist" unique_id=944581402]
+[node name="RampOne4" type="CollisionShape2D" parent="RampAssistDown" unique_id=944581402]
 position = Vector2(3519.5579, 37.838318)
 rotation = 0.6981317
 scale = Vector2(0.9999997, 0.9999997)
 shape = SubResource("RectangleShape2D_28xjk")
 debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
 
-[connection signal="body_entered" from="RampAssist" to="." method="_on_ramp_assist_body_entered"]
-[connection signal="body_exited" from="RampAssist" to="." method="_on_ramp_assist_body_exited"]
+[connection signal="body_entered" from="RampAssistUp" to="." method="_on_ramp_assist_up_body_entered"]
+[connection signal="body_exited" from="RampAssistUp" to="." method="_on_ramp_assist_up_body_exited"]
+[connection signal="body_entered" from="RampAssistDown" to="." method="_on_ramp_assist_down_body_entered"]
+[connection signal="body_exited" from="RampAssistDown" to="." method="_on_ramp_assist_down_body_exited"]

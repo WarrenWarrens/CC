@@ -7,6 +7,7 @@ const SPEED = 120.0
 var health = 30
 var player = null
 var target_offset = Vector2.ZERO
+var current_slope = 0.0
 
 @onready var body_sprite = $Visuals/Body
 @onready var visuals = $Visuals
@@ -27,7 +28,9 @@ func _physics_process(delta):
 			
 		State.CHASING:
 			if player:
-				chase_player()
+				if current_slope != 0.0 and velocity.x != 0:
+					velocity.y += sign(velocity.x) * SPEED * current_slope
+					chase_player()
 			else:
 				current_state = State.IDLE
 				

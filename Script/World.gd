@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var ramp_assist = $RampAssist
+#d@onready var ramp_assist = $RampAssist
 
 func _ready() -> void:
 	pass
@@ -10,33 +10,40 @@ func _process(_delta) -> void:
 	pass
 
 
-func _on_ramp_assist_body_entered(body: Node2D) -> void:
-	if body.name == "Player":
-		body.current_slope = -0.3
+func _on_ramp_assist_up_body_entered(body: Node2D) -> void:
+	if "current_slope" in body:
+		body.current_slope = -0.3 
+		_unlock_camera(body)
 
-		var player_camera = body.get_node("Camera2D")
-		player_camera.limit_top = -240
-		player_camera.limit_bottom = 240
-
-func _on_ramp_assist_body_exited(body: Node2D) -> void:
-	if body.name == "Player":
+	
+func _on_ramp_assist_down_body_exited(body: Node2D) -> void:
+	if "current_slope" in body:
 		body.current_slope = 0.0
+		_lock_camera(body)
 
+func _on_ramp_assist_down_body_entered(body: Node2D) -> void:
+	if "current_slope" in body:
+		body.current_slope = 0.3 
+		_unlock_camera(body)
+
+func _on_ramp_assist_up_body_exited(body: Node2D) -> void:
+	if "current_slope" in body:
+		body.current_slope = 0.0
+		_lock_camera(body)
+		
+func _unlock_camera(body: Node2D) -> void:
+	if body.name == "Player":
+		var player_camera = body.get_node("Camera2D")
+		player_camera.limit_top = -10000 
+		player_camera.limit_bottom = 10000
+
+func _lock_camera(body: Node2D) -> void:
+	if body.name == "Player":
 		var player_camera = body.get_node("Camera2D")
 		var tween = create_tween()
 
-		# Calculate the new camera bounds based on the player's CURRENT Y position.
-		# Assuming your screen height is 360:
 		var screen_height = 360
-		# If the player exits the top of the ramp
-		if body.global_position.y < ramp_assist.global_position.y:
-			# Snap the bottom limit to just below the player's current floor level
-			# You might need to adjust the '+ 100' offset depending on where your floor art is
-			var new_bottom = body.global_position.y + 100 
-			tween.tween_property(player_camera, "limit_top", new_bottom - screen_height, 1.0)
-			tween.tween_property(player_camera, "limit_bottom", new_bottom, 1.0)
-			
-		else:
-			var new_bottom = body.global_position.y + 100
-			tween.tween_property(player_camera, "limit_top", new_bottom - screen_height, 1.0)
-			tween.tween_property(player_camera, "limit_bottom", new_bottom, 1.0)
+		var new_bottom = body.global_position.y + 120 
+
+		tween.tween_property(player_camera, "limit_top", new_bottom - screen_height, 1.0)
+		tween.tween_property(player_camera, "limit_bottom", new_bottom, 1.0)
