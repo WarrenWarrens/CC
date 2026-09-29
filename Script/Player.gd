@@ -18,7 +18,7 @@ var facing_direction = Vector2.RIGHT
 @onready var visuals = $Visuals
 @onready var hitbox = $Visuals/Hitbox
 
-@export var camera_base_y := 0.0   
+@export var camera_base_y := 120
 @onready var camera: Camera2D = $Camera2D
 var ramp_rise := 0.0              
 var _last_x := 0.0
