@@ -37,7 +37,7 @@ func _on_fullscreen_toggled(toggled_on: bool) -> void:
 
 
 func _on_test_level_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/WorldOne.tscn")
+	get_tree().change_scene_to_file("res://Scenes/WorldThree.tscn")
 
 
 

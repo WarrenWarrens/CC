@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Walker  
 
 enum State { IDLE, CHASING, ATTACKING, STUNNED, DEAD }
 var current_state = State.IDLE

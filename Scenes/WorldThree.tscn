@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cxftcn7kqwxur" path="res://Assets/ground2.png" id="4_buomm"]
 [ext_resource type="Texture2D" uid="uid://32yi8om1h7ai" path="res://Assets/ground1.png" id="5_4h4gs"]
 [ext_resource type="Texture2D" uid="uid://qvufr7wtwjcy" path="res://Assets/ramp2.png" id="5_sn61f"]
+[ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Scenes/Ramp.gd" id="7_sn61f"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
@@ -22,6 +23,7 @@ script = ExtResource("1_28xjk")
 [node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_pllyr")]
 light_mask = 3
 visibility_layer = 3
+z_index = 2
 position = Vector2(181, 157)
 collision_layer = 3
 collision_mask = 3
@@ -47,6 +49,7 @@ texture = ExtResource("4_buomm")
 offset = Vector2(640, 240)
 
 [node name="Ramp" type="Sprite2D" parent="Ground" unique_id=188276679]
+texture_filter = 1
 position = Vector2(1518, 123)
 texture = ExtResource("5_sn61f")
 
@@ -60,11 +63,13 @@ texture = ExtResource("5_sn61f")
 flip_h = true
 
 [node name="Ramp4" type="Sprite2D" parent="Ground" unique_id=1792603389]
+z_index = -1
 position = Vector2(3661, 125)
 texture = ExtResource("5_sn61f")
 flip_h = true
 
 [node name="UpGround" type="Sprite2D" parent="Ground" unique_id=1254117896]
+z_index = -1
 position = Vector2(1945.5, 35.5)
 scale = Vector2(0.29296872, 0.6805556)
 texture = ExtResource("5_4h4gs")
@@ -85,6 +90,7 @@ polygon = PackedVector2Array(2, 360, 1513, 363, 1757, 158, 2368, 160, 2614, -49,
 
 [node name="RampAssistUp" type="Area2D" parent="." unique_id=102323400]
 collision_layer = 16
+script = ExtResource("7_sn61f")
 
 [node name="RampOne" type="CollisionShape2D" parent="RampAssistUp" unique_id=946370671]
 position = Vector2(1530.248, 136.48743)
@@ -101,6 +107,8 @@ shape = SubResource("RectangleShape2D_tgb25")
 debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
 
 [node name="RampAssistDown" type="Area2D" parent="." unique_id=898525670]
+script = ExtResource("7_sn61f")
+rises_to_right = false
 
 [node name="RampOne4" type="CollisionShape2D" parent="RampAssistDown" unique_id=944581402]
 position = Vector2(3519.5579, 37.838318)
@@ -108,8 +116,3 @@ rotation = 0.6981317
 scale = Vector2(0.9999997, 0.9999997)
 shape = SubResource("RectangleShape2D_28xjk")
 debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
-
-[connection signal="body_entered" from="RampAssistUp" to="." method="_on_ramp_assist_up_body_entered"]
-[connection signal="body_exited" from="RampAssistUp" to="." method="_on_ramp_assist_up_body_exited"]
-[connection signal="body_entered" from="RampAssistDown" to="." method="_on_ramp_assist_down_body_entered"]
-[connection signal="body_exited" from="RampAssistDown" to="." method="_on_ramp_assist_down_body_exited"]
