@@ -110,12 +110,13 @@ func handle_jump(delta):
 
 func take_damage(amount, knockback_dir):
 	if current_state == State.GUARDING or current_state == State.DODGING:
-		return
+		PlayerStats.take_damage(amount/2)
 	hitbox.set_deferred("monitoring", false)
 	current_state = State.STUNNED
 	body_sprite.play("Stun")
 	velocity = knockback_dir * 200
 	get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
+	PlayerStats.take_damage(amount)
 	
 
 func _on_body_animation_finished():

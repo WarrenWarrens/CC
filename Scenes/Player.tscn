@@ -367,7 +367,7 @@ shape = SubResource("CapsuleShape2D_ttpud")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_vyp0t")
 animation = &"Idle"
-frame_progress = 0.73301446
+frame_progress = 0.06308552
 offset = Vector2(0, -32)
 
 [node name="Hitbox" type="Area2D" parent="Visuals" unique_id=801768740]
