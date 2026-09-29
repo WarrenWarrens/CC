@@ -10,12 +10,6 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tgb25"]
-size = Vector2(320.34167, 319.0827)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_28xjk"]
-size = Vector2(640.3178, 319.0827)
-
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
 script = ExtResource("1_28xjk")
@@ -92,27 +86,16 @@ polygon = PackedVector2Array(2, 360, 1513, 363, 1757, 158, 2368, 160, 2614, -49,
 collision_layer = 16
 script = ExtResource("7_sn61f")
 
-[node name="RampOne" type="CollisionShape2D" parent="RampAssistUp" unique_id=946370671]
-position = Vector2(1530.248, 136.48743)
-rotation = 0.8726645
-scale = Vector2(0.9999998, 0.9999998)
-shape = SubResource("RectangleShape2D_tgb25")
-debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistUp" unique_id=1142761759]
+polygon = PackedVector2Array(1307, 118, 1512, 362, 1756, 157, 1553, -87)
 
-[node name="RampOne2" type="CollisionShape2D" parent="RampAssistUp" unique_id=122566671]
-position = Vector2(2389, -66.999985)
-rotation = 0.8726645
-scale = Vector2(0.9999998, 0.9999998)
-shape = SubResource("RectangleShape2D_tgb25")
-debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RampAssistUp" unique_id=360303295]
+position = Vector2(853, -214)
+polygon = PackedVector2Array(1307, 118, 1512, 362, 1756, 157, 1553, -87)
 
 [node name="RampAssistDown" type="Area2D" parent="." unique_id=898525670]
 script = ExtResource("7_sn61f")
 rises_to_right = false
 
-[node name="RampOne4" type="CollisionShape2D" parent="RampAssistDown" unique_id=944581402]
-position = Vector2(3519.5579, 37.838318)
-rotation = 0.6981317
-scale = Vector2(0.9999997, 0.9999997)
-shape = SubResource("RectangleShape2D_28xjk")
-debug_color = Color(0.57265323, 0.388458, 1, 0.41960785)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistDown" unique_id=374897452]
+polygon = PackedVector2Array(3377, -292, 3172, -48, 3666, 364, 3872, 120)

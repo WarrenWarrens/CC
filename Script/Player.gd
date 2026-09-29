@@ -20,8 +20,7 @@ var facing_direction = Vector2.RIGHT
 
 @export var camera_base_y := 120
 @onready var camera: Camera2D = $Camera2D
-var ramp_rise := 0.0              
-var _last_x := 0.0
+
 
 func _ready():
 	camera.top_level = true
@@ -30,7 +29,6 @@ func _ready():
 	camera.position_smoothing_speed = 10.0   
 	camera.global_position = Vector2(global_position.x, camera_base_y)
 	camera.reset_smoothing()
-	_last_x = global_position.x
 
 func _physics_process(delta):
 	match current_state:
@@ -55,10 +53,14 @@ func _physics_process(delta):
 			velocity = velocity.move_toward(Vector2.ZERO, 800 * delta)
 			move_and_slide()
 			
-	var dx = global_position.x - _last_x
-	ramp_rise += dx * get_slope()
-	_last_x = global_position.x
-	camera.global_position = Vector2(global_position.x, camera_base_y + ramp_rise)
+	camera.global_position = Vector2(global_position.x, camera_base_y + get_elevation_shift())
+	
+	
+func get_elevation_shift() -> float:
+	var total := 0.0
+	for r in get_tree().get_nodes_in_group("ramps"):
+		total += r.get_elevation_shift(global_position)
+	return total
 	
 
 func handle_movement():
