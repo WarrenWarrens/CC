@@ -83,14 +83,14 @@ func handle_actions():
 		current_state = State.JUMPING
 		z_velocity = JUMP_FORCE
 		body_sprite.play("Jump") 
-	elif Input.is_action_just_pressed("punch"):
+	elif Input.is_action_just_pressed("punch") and PlayerStats.use_stamina(2):
 		current_state = State.PUNCHING
 		body_sprite.play("Attack")
 		hitbox.monitoring = true
 	elif Input.is_action_pressed("guard"):
 		current_state = State.GUARDING
 		body_sprite.play("Guard")
-	elif Input.is_action_just_pressed("dodge"):
+	elif Input.is_action_just_pressed("dodge") and PlayerStats.use_stamina(5):
 		current_state = State.DODGING
 		velocity = ramp_adjust(facing_direction * DODGE_SPEED)
 		body_sprite.play("Dodge")
@@ -106,17 +106,27 @@ func handle_jump(delta):
 		current_state = State.NORMAL
 		
 	body_sprite.position.y = -altitude
+	PlayerStats.add_psy(10)
+
 
 
 func take_damage(amount, knockback_dir):
-	if current_state == State.GUARDING or current_state == State.DODGING:
-		PlayerStats.take_damage(amount/2)
-	hitbox.set_deferred("monitoring", false)
-	current_state = State.STUNNED
-	body_sprite.play("Stun")
-	velocity = knockback_dir * 200
-	get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
-	PlayerStats.take_damage(amount)
+	if current_state == State.DODGING:
+		return
+	elif current_state == State.GUARDING:
+		PlayerStats.take_damage(ceili(amount / 2.0))
+		hitbox.set_deferred("monitoring", false)
+		velocity = knockback_dir * 75
+		PlayerStats.use_stamina(2)
+
+		return
+	else:
+		hitbox.set_deferred("monitoring", false)
+		current_state = State.STUNNED
+		body_sprite.play("Stun")
+		velocity = knockback_dir * 200
+		get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
+		PlayerStats.take_damage(amount)
 	
 
 func _on_body_animation_finished():
@@ -131,3 +141,4 @@ func _on_hitbox_area_entered(area):
 		if target and target != self and target.has_method("take_damage"):
 			var knockback = global_position.direction_to(target.global_position)
 			target.take_damage(10, knockback)
+			PlayerStats.add_psy(10)

@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://32yi8om1h7ai" path="res://Assets/ground1.png" id="5_4h4gs"]
 [ext_resource type="Texture2D" uid="uid://qvufr7wtwjcy" path="res://Assets/ramp2.png" id="5_sn61f"]
 [ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Scenes/Ramp.gd" id="7_sn61f"]
+[ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="8_28xjk"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
@@ -106,3 +107,12 @@ rises_to_right = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistDown" unique_id=374897452]
 polygon = PackedVector2Array(3377, -292, 3172, -48, 3666, 364, 3872, 120)
+
+[node name="Enemy" parent="." unique_id=864659468 instance=ExtResource("8_28xjk")]
+position = Vector2(506, 316)
+
+[node name="Enemy2" parent="." unique_id=1286390211 instance=ExtResource("8_28xjk")]
+position = Vector2(678, 154)
+
+[node name="Enemy3" parent="." unique_id=176896922 instance=ExtResource("8_28xjk")]
+position = Vector2(403, 143)
