@@ -108,6 +108,8 @@ func handle_jump(delta):
 	body_sprite.position.y = -altitude
 	PlayerStats.add_psy(10)
 
+func is_grounded() -> bool:
+	return current_state != State.JUMPING
 
 
 func take_damage(amount, knockback_dir):

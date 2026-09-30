@@ -13,7 +13,10 @@ func exit_ramp(r: Ramp) -> void:
 func get_slope() -> float:
 	return ramps.back().get_slope() if not ramps.is_empty() else 0.0
 
-# Call on any velocity you assign fresh each frame.
 func ramp_adjust(v: Vector2) -> Vector2:
-	v.y += v.x * get_slope()
+	if is_grounded():
+		v.y += v.x * get_slope()
 	return v
+	
+func is_grounded() -> bool:
+	return true

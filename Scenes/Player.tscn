@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://0pldnfg7dgrc" path="res://Script/Player.gd" id="1_dewec"]
 [ext_resource type="Texture2D" uid="uid://col12h5utam6h" path="res://Assets/Player/PPunch.png" id="2_megsn"]
+[ext_resource type="Script" uid="uid://cknha0o0xqc7u" path="res://Scenes/Shadow.gd" id="2_yoq75"]
 [ext_resource type="Texture2D" uid="uid://y185h78as771" path="res://Assets/Player/PDodge.png" id="3_yoq75"]
 [ext_resource type="Texture2D" uid="uid://dv56pyp3c00ea" path="res://Assets/Player/PGuard.png" id="4_ksbbd"]
 [ext_resource type="Texture2D" uid="uid://bx0hbmq7qibff" path="res://Assets/Player/pIdle.png" id="5_glx4g"]
@@ -361,6 +362,9 @@ radius = 256.0
 [node name="Player" type="CharacterBody2D" unique_id=1446667991]
 y_sort_enabled = true
 script = ExtResource("1_dewec")
+
+[node name="Shadow" type="Node2D" parent="." unique_id=1658934795]
+script = ExtResource("2_yoq75")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=316637450]
 position = Vector2(0, -3)
