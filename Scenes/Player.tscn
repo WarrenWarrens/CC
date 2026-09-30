@@ -352,6 +352,12 @@ size = Vector2(89, 63)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
 size = Vector2(51, 64)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ttpud"]
+radius = 64.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vyp0t"]
+radius = 256.0
+
 [node name="Player" type="CharacterBody2D" unique_id=1446667991]
 y_sort_enabled = true
 script = ExtResource("1_dewec")
@@ -367,7 +373,7 @@ shape = SubResource("CapsuleShape2D_ttpud")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_vyp0t")
 animation = &"Idle"
-frame_progress = 0.06308552
+frame_progress = 0.01975743
 offset = Vector2(0, -32)
 
 [node name="Hitbox" type="Area2D" parent="Visuals" unique_id=801768740]
@@ -389,6 +395,20 @@ monitoring = false
 position = Vector2(-0.5, -32)
 shape = SubResource("RectangleShape2D_vyp0t")
 debug_color = Color(0, 0.63528955, 0.42274988, 0.41960785)
+
+[node name="InteractBox" type="Area2D" parent="Visuals" unique_id=1603369954]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/InteractBox" unique_id=159353624]
+position = Vector2(0, -32)
+shape = SubResource("CircleShape2D_ttpud")
+debug_color = Color(0.30711752, 0.12847656, 0.99999994, 0.41960785)
+
+[node name="DetectZone" type="Area2D" parent="Visuals" unique_id=160838712]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/DetectZone" unique_id=1730377980]
+position = Vector2(0, -32)
+shape = SubResource("CircleShape2D_vyp0t")
+debug_color = Color(0.55954015, 0.5262575, 0.53475285, 0.41960785)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1772076250]
 limit_left = 0

@@ -10,6 +10,9 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
+size = Vector2(20, 366)
+
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
 script = ExtResource("1_28xjk")
@@ -81,6 +84,10 @@ polygon = PackedVector2Array(0, 16, 0, 120, 1305, 118, 1552, -89, 2162, -88, 240
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Boundaries" unique_id=1321826544]
 polygon = PackedVector2Array(2, 360, 1513, 363, 1757, 158, 2368, 160, 2614, -49, 3174, -47, 3658, 364, 4873, 364, 4909, 1130, 10, 1106)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=1700547145]
+position = Vector2(-9, 213)
+shape = SubResource("RectangleShape2D_ttpud")
 
 [node name="RampAssistUp" type="Area2D" parent="." unique_id=102323400]
 collision_layer = 16

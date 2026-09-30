@@ -11,7 +11,7 @@ func reset():
 func _ready() -> void:
 	pass 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 func take_damage(amount: int):
