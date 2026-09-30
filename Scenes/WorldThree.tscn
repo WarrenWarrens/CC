@@ -6,13 +6,30 @@
 [ext_resource type="Texture2D" uid="uid://cxftcn7kqwxur" path="res://Assets/ground2.png" id="4_buomm"]
 [ext_resource type="Texture2D" uid="uid://32yi8om1h7ai" path="res://Assets/ground1.png" id="5_4h4gs"]
 [ext_resource type="Texture2D" uid="uid://qvufr7wtwjcy" path="res://Assets/ramp2.png" id="5_sn61f"]
+[ext_resource type="Shader" uid="uid://clggrbxucakp7" path="res://PaletteSwapSimple.gdshader" id="7_gatps"]
 [ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Scenes/Ramp.gd" id="7_sn61f"]
 [ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="8_28xjk"]
+[ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="8_buomm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ttpud"]
+shader = ExtResource("7_gatps")
+shader_parameter/tolerance = 0.02
+shader_parameter/dark_src = Color(0.45, 0.1, 0.1, 1)
+shader_parameter/base_src = Color(0.75, 0.15, 0.15, 1)
+shader_parameter/light_src = Color(0.95, 0.35, 0.3, 1)
+shader_parameter/dark_dst = Color(0.45, 0.1, 0.1, 1)
+shader_parameter/base_dst = Color(0.75, 0.15, 0.15, 1)
+shader_parameter/light_dst = Color(0.95, 0.35, 0.3, 1)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
 size = Vector2(20, 366)
+
+[sub_resource type="Gradient" id="Gradient_4h4gs"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ttpud"]
+gradient = SubResource("Gradient_4h4gs")
 
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
@@ -77,6 +94,12 @@ position = Vector2(2891.7498, -170)
 scale = Vector2(0.43632823, 0.6805556)
 texture = ExtResource("5_4h4gs")
 
+[node name="Sprite2D" type="Sprite2D" parent="Ground" unique_id=586373838]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ttpud")
+position = Vector2(-719, 3)
+texture = ExtResource("8_buomm")
+
 [node name="Boundaries" type="StaticBody2D" parent="." unique_id=117728836]
 physics_material_override = SubResource("PhysicsMaterial_ttpud")
 
@@ -108,11 +131,27 @@ rises_to_right = false
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistDown" unique_id=374897452]
 polygon = PackedVector2Array(3377, -292, 3172, -48, 3666, 364, 3872, 120)
 
-[node name="Enemy" parent="." unique_id=864659468 instance=ExtResource("8_28xjk")]
+[node name="Enemies" type="Node2D" parent="." unique_id=1274365995]
+
+[node name="Enemy" parent="Enemies" unique_id=864659468 instance=ExtResource("8_28xjk")]
 position = Vector2(506, 316)
 
-[node name="Enemy2" parent="." unique_id=1286390211 instance=ExtResource("8_28xjk")]
+[node name="Enemy2" parent="Enemies" unique_id=1286390211 instance=ExtResource("8_28xjk")]
 position = Vector2(678, 154)
 
-[node name="Enemy3" parent="." unique_id=176896922 instance=ExtResource("8_28xjk")]
+[node name="Enemy3" parent="Enemies" unique_id=176896922 instance=ExtResource("8_28xjk")]
 position = Vector2(403, 143)
+
+[node name="Lighting" type="Node2D" parent="." unique_id=419392471]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Lighting" unique_id=1639962234]
+z_index = 90
+color = Color(0.41981313, 0.41981313, 0.4198131, 1)
+
+[node name="PointLight2D" type="PointLight2D" parent="Lighting" unique_id=1822920187]
+position = Vector2(764, 232)
+scale = Vector2(3.875, 3.875)
+texture = SubResource("GradientTexture2D_ttpud")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="Lighting" unique_id=1946763391]
+energy = 0.57

@@ -13,6 +13,28 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ttpud"]
 radius = 3.0
 
+[sub_resource type="Gradient" id="Gradient_megsn"]
+offsets = PackedFloat32Array(0.13824885, 0.5760369)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ttpud"]
+gradient = SubResource("Gradient_megsn")
+fill = 1
+fill_from = Vector2(0.4957265, 0.5470086)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_yoq75"]
+offsets = PackedFloat32Array(0.38198757, 0.48136646, 0.58074534)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vyp0t"]
+gradient = SubResource("Gradient_yoq75")
+width = 256
+height = 256
+fill = 3
+fill_from = Vector2(0.02991453, 0.54273504)
+fill_to = Vector2(0, 0.54273504)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_arntx"]
 atlas = ExtResource("2_megsn")
 region = Rect2(0, 0, 41, 61)
@@ -372,6 +394,21 @@ rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ttpud")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=1373284604]
+
+[node name="PointLight2D" type="PointLight2D" parent="Visuals" unique_id=2005796175]
+visible = false
+position = Vector2(4, -32)
+shadow_enabled = true
+shadow_filter = 1
+texture = SubResource("GradientTexture2D_ttpud")
+
+[node name="PointLight2D2" type="PointLight2D" parent="Visuals" unique_id=218125501]
+position = Vector2(122, -39)
+energy = 0.39
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
+texture = SubResource("GradientTexture2D_vyp0t")
 
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1829035284]
 texture_filter = 1
