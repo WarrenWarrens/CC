@@ -403,6 +403,7 @@ shadow_filter = 1
 texture = SubResource("GradientTexture2D_ttpud")
 
 [node name="PointLight2D2" type="PointLight2D" parent="Visuals" unique_id=218125501]
+visible = false
 position = Vector2(122, -39)
 energy = 0.39
 shadow_enabled = true

@@ -146,12 +146,21 @@ position = Vector2(403, 143)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Lighting" unique_id=1639962234]
 z_index = 90
-color = Color(0.41981313, 0.41981313, 0.4198131, 1)
+color = Color(0.35044625, 0.3923709, 0.41333324, 1)
 
 [node name="PointLight2D" type="PointLight2D" parent="Lighting" unique_id=1822920187]
+visible = false
 position = Vector2(764, 232)
 scale = Vector2(3.875, 3.875)
 texture = SubResource("GradientTexture2D_ttpud")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="Lighting" unique_id=1946763391]
-energy = 0.57
+visible = false
+position = Vector2(1167.0001, -265.00006)
+rotation = -2.2183135
+energy = 0.5
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
+shadow_filter_smooth = 4.4
+height = 0.14
