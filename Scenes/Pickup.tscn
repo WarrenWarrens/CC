@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://ceagqvycyiqct"]
+
+[ext_resource type="Script" uid="uid://dsulbohyvx0ov" path="res://Script/Pickup.gd" id="1_gh8ky"]
+[ext_resource type="Texture2D" uid="uid://w3imcv8dxk1x" path="res://Assets/drink.png" id="1_uuccb"]
+[ext_resource type="Script" uid="uid://cknha0o0xqc7u" path="res://Script/Shadow.gd" id="2_gh8ky"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ttpud"]
+radius = 25.0
+height = 50.0
+
+[node name="Pickup" type="Area2D" unique_id=727026087]
+collision_layer = 0
+script = ExtResource("1_gh8ky")
+
+[node name="Shadow" type="Node2D" parent="." unique_id=1282259240]
+script = ExtResource("2_gh8ky")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=889769968]
+texture = ExtResource("1_uuccb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=190760273]
+shape = SubResource("CapsuleShape2D_ttpud")

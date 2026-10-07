@@ -7,9 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://32yi8om1h7ai" path="res://Assets/ground1.png" id="5_4h4gs"]
 [ext_resource type="Texture2D" uid="uid://qvufr7wtwjcy" path="res://Assets/ramp2.png" id="5_sn61f"]
 [ext_resource type="Shader" uid="uid://clggrbxucakp7" path="res://PaletteSwapSimple.gdshader" id="7_gatps"]
-[ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Scenes/Ramp.gd" id="7_sn61f"]
+[ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="7_sn61f"]
 [ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="8_28xjk"]
 [ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="8_buomm"]
+[ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Crate.tscn" id="11_buomm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ttpud"]
 shader = ExtResource("7_gatps")
@@ -164,3 +165,9 @@ shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 1
 shadow_filter_smooth = 4.4
 height = 0.14
+
+[node name="Crate" parent="." unique_id=1572332876 instance=ExtResource("11_buomm")]
+position = Vector2(986, 125)
+
+[node name="Crate2" parent="." unique_id=115203274 instance=ExtResource("11_buomm")]
+position = Vector2(1246, 292)

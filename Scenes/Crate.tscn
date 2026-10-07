@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://c3px2n6voxhp8"]
+
+[ext_resource type="Texture2D" uid="uid://dw68sqdfphac5" path="res://Assets/cardbox.png" id="1_7msr7"]
+[ext_resource type="Script" uid="uid://uncccl4lnlkb" path="res://Script/Crate.gd" id="1_frm5b"]
+[ext_resource type="PackedScene" uid="uid://ceagqvycyiqct" path="res://Scenes/Pickup.tscn" id="2_88exq"]
+[ext_resource type="Script" uid="uid://cknha0o0xqc7u" path="res://Script/Shadow.gd" id="2_frm5b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7msr7"]
+size = Vector2(25, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
+size = Vector2(25, 25)
+
+[node name="Crate" type="StaticBody2D" unique_id=1572332876]
+scale = Vector2(2, 2)
+collision_layer = 0
+script = ExtResource("1_frm5b")
+drop_scene = ExtResource("2_88exq")
+drop_count = 2
+
+[node name="Shadow" type="Node2D" parent="." unique_id=1526130923]
+script = ExtResource("2_frm5b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=563017012]
+position = Vector2(1.5, 8.5)
+shape = SubResource("RectangleShape2D_7msr7")
+debug_color = Color(0.9866112, 0, 0.32662338, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=110672286]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_7msr7")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1137247688]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1770205073]
+position = Vector2(1.5, -0.5)
+shape = SubResource("RectangleShape2D_vyp0t")

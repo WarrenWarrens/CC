@@ -3,8 +3,6 @@ extends Area2D
 
 @export_range(1.0, 80.0) var angle_degrees := 40.0
 @export var rises_to_right := true
-## 0 = compute the rise from the polygon. If the camera ends a few px off a floor,
-## set this to the exact pixel difference between the two floors (e.g. 207).
 @export var rise_override := 0.0
 
 var _footprints: Array[Dictionary] = []
@@ -20,7 +18,7 @@ func _ready() -> void:
 	_build_footprints()
 
 func _build_footprints() -> void:
-	var d := Vector2(1.0, get_slope())   # moving right by 1 changes y by slope
+	var d := Vector2(1.0, get_slope())   
 	for child in get_children():
 		if not (child is CollisionPolygon2D):
 			continue
@@ -30,7 +28,7 @@ func _build_footprints() -> void:
 		if pts.size() != 4:
 			push_warning("Ramp footprint needs exactly 4 points: " + str(child.name))
 			continue
-		pts.sort_custom(func(a, b): return a.x < b.x)   # left edge = first two, right edge = last two
+		pts.sort_custom(func(a, b): return a.x < b.x)   
 		var f := {
 			"lo": pts[0], "le": pts[1] - pts[0],
 			"ro": pts[2], "re": pts[3] - pts[2],
@@ -42,14 +40,11 @@ func _build_footprints() -> void:
 		f["rise"] = signf(get_slope()) * rise_override if rise_override > 0.0 else get_slope() * (sp.x + sp.y)
 		_footprints.append(f)
 
-# Distance (in x) from p back to the left edge and forward to the right edge, along the ramp direction
 func _split(f: Dictionary, p: Vector2) -> Vector2:
 	var s_left: float = (p - f.lo).cross(f.le) / f.ld
 	var s_right: float = (f.ro - p).cross(f.re) / f.rd
 	return Vector2(s_left, s_right)
 
-# How much the camera should be shifted (screen Y) by this ramp at world position p.
-# 0 left of the ramp, full rise right of it, proportional in between.
 func get_elevation_shift(p: Vector2) -> float:
 	var total := 0.0
 	for f in _footprints:
