@@ -401,13 +401,14 @@ radius = 64.0
 radius = 256.0
 
 [sub_resource type="Gradient" id="Gradient_glx4g"]
-colors = PackedColorArray(0.11414824, 0.4898488, 0.46171546, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.48672566, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.3782192, 2.9480084e-06, 0.00025150724, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_tgb25"]
 gradient = SubResource("Gradient_glx4g")
-fill = 1
-fill_from = Vector2(0.517094, 0.525641)
-fill_to = Vector2(0.96153843, 0.1923077)
+width = 156
+fill_from = Vector2(0.49310344, 0.5862069)
+fill_to = Vector2(0.49310344, 0.4)
 
 [sub_resource type="Gradient" id="Gradient_miouo"]
 offsets = PackedFloat32Array(0.16371681, 1)
@@ -506,9 +507,11 @@ texture_mode = 1
 
 [node name="LaserGlow" type="PointLight2D" parent="Visuals/AimRay" unique_id=1149424495]
 visible = false
-color = Color(0.056353115, 0.3750332, 0.62531114, 1)
-energy = 0.5
+scale = Vector2(4.8867188, 1)
+color = Color(0.31865287, 0, 0.009339812, 1)
+energy = 4.5
 texture = SubResource("GradientTexture2D_tgb25")
+offset = Vector2(78, 0)
 
 [node name="HitLight" type="PointLight2D" parent="Visuals/AimRay" unique_id=669442819]
 visible = false
