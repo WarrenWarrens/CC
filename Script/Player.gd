@@ -13,6 +13,8 @@ var altitude = 0.0
 var z_velocity = 0.0
 var current_slope = 0.0
 var facing_direction = Vector2.RIGHT
+var _hit_targets: Array = []
+const HIT_FRAMES := [1, 2] 
 
 @onready var body_sprite = $Visuals/Body
 @onready var visuals = $Visuals
@@ -31,6 +33,9 @@ func _ready():
 	camera.reset_smoothing()
 
 func _physics_process(delta):
+	if current_state != State.JUMPING and altitude <= 0.0:
+		fall(delta)
+		
 	match current_state:
 		State.NORMAL:
 			handle_movement()
@@ -88,6 +93,9 @@ func handle_actions():
 		current_state = State.PUNCHING
 		body_sprite.play("Attack")
 		hitbox.monitoring = true
+		_hit_targets.clear()
+		_on_body_frame_changed()
+		
 	elif Input.is_action_pressed("guard"):
 		current_state = State.GUARDING
 		body_sprite.play("Guard")
@@ -131,7 +139,16 @@ func take_damage(amount, knockback_dir):
 		get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
 		PlayerStats.take_damage(amount)
 	
-
+func fall(delta):
+	if altitude <= 0.0:
+		return
+	z_velocity -= GRAVITY * delta
+	altitude = maxf(altitude + z_velocity * delta, 0.0)
+	if altitude == 0.0:
+		z_velocity = 0.0
+	body_sprite.position.y = -altitude
+	
+	
 func _on_body_animation_finished():
 	if body_sprite.animation == "Attack":
 		hitbox.monitoring = false
@@ -141,7 +158,12 @@ func _on_body_animation_finished():
 func _on_hitbox_area_entered(area):
 	if current_state == State.PUNCHING:
 		var target = area.owner
-		if target and target != self and target.has_method("take_damage"):
+		if target and target != self and target.has_method("take_damage") and not _hit_targets.has(target):
+			_hit_targets.append(target)
 			var knockback = global_position.direction_to(target.global_position)
 			target.take_damage(10, knockback)
 			PlayerStats.add_psy(10)
+
+func _on_body_frame_changed() -> void:
+	if current_state == State.PUNCHING and body_sprite.animation == "Attack":
+		hitbox.set_deferred("monitoring", body_sprite.frame in HIT_FRAMES)
