@@ -53,6 +53,7 @@ func _physics_process(delta):
 			velocity = velocity.move_toward(Vector2.ZERO, 800 * delta)
 			move_and_slide()
 			
+	update_floor_layer()
 	camera.global_position = Vector2(global_position.x, camera_base_y + get_elevation_shift())
 	
 	

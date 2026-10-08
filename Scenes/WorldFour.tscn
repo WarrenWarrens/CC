@@ -8,36 +8,48 @@
 [ext_resource type="Texture2D" uid="uid://cpofv4e6rkxwo" path="res://Assets/tri45.png" id="6_pes1b"]
 [ext_resource type="Texture2D" uid="uid://bwaabb6gbocq7" path="res://Assets/par45.png" id="7_nudy2"]
 [ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Scenes/Player.tscn" id="7_y2fik"]
+[ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="9_eaeku"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
+size = Vector2(691.25, 1056)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eaeku"]
+size = Vector2(1241.5, 1056)
 
 [node name="WorldFour" type="Node2D" unique_id=1362542071]
 script = ExtResource("1_tf1n8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=680446690]
 modulate = Color(0.29954746, 0.29954746, 0.29954743, 1)
+z_index = -10
 texture_filter = 1
-position = Vector2(1277, 284)
-scale = Vector2(1, 3)
+position = Vector2(1277, -2.5)
+scale = Vector2(1, 4.5916667)
 texture = ExtResource("2_d6qmh")
 
 [node name="Ground" type="Node2D" parent="." unique_id=1607294695]
 
 [node name="Sprite2D" type="Sprite2D" parent="Ground" unique_id=1636554402]
+z_index = -2
 texture = ExtResource("3_ho1yb")
 offset = Vector2(320, 240)
 
 [node name="Sprite2D18" type="Sprite2D" parent="Ground" unique_id=971834598]
+z_index = -2
 position = Vector2(1295, -480)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("3_ho1yb")
 offset = Vector2(320, 240)
 
 [node name="Sprite2D17" type="Sprite2D" parent="Ground" unique_id=512676023]
+z_index = -2
 position = Vector2(-2, -350)
 scale = Vector2(0.64375, 0.5)
 texture = ExtResource("3_ho1yb")
 offset = Vector2(320, 240)
 
 [node name="Sprite2D33" type="Sprite2D" parent="Ground" unique_id=871224614]
+z_index = -2
 position = Vector2(-66, -708)
 texture = ExtResource("3_ho1yb")
 offset = Vector2(320, 240)
@@ -49,41 +61,48 @@ texture = ExtResource("3_ho1yb")
 offset = Vector2(320, 240)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Ground" unique_id=1301698038]
+z_index = -2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_nudy2")
 offset = Vector2(1280, 480)
 
 [node name="Sprite2D3" type="Sprite2D" parent="Ground" unique_id=128807780]
+z_index = 12
 position = Vector2(-91.00001, -96)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 offset = Vector2(1280, 486)
 
 [node name="Sprite2D5" type="Sprite2D" parent="Ground" unique_id=1735006055]
+z_index = 12
 position = Vector2(25.999992, -215)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 offset = Vector2(1280, 486)
 
 [node name="Sprite2D6" type="Sprite2D" parent="Ground" unique_id=1626704948]
+z_index = 2
 position = Vector2(-89.99999, 141.99997)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 offset = Vector2(1280, 486)
 
 [node name="Sprite2D7" type="Sprite2D" parent="Ground" unique_id=1219538971]
+z_index = 2
 position = Vector2(24.999992, 256)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 offset = Vector2(1280, 486)
 
 [node name="Sprite2D8" type="Sprite2D" parent="Ground" unique_id=1780566108]
+z_index = 2
 position = Vector2(140, 373)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 offset = Vector2(1280, 486)
 
 [node name="Sprite2D4" type="Sprite2D" parent="Ground" unique_id=1519671718]
+z_index = -2
 position = Vector2(640, 360)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_pes1b")
@@ -94,24 +113,29 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_nudy2")
 
 [node name="Sprite2D23" type="Sprite2D" parent="Ground" unique_id=1808734806]
+z_index = -2
 position = Vector2(708, 587)
 texture = ExtResource("4_nudy2")
 
 [node name="Sprite2D11" type="Sprite2D" parent="Ground" unique_id=1353094899]
+z_index = -2
 position = Vector2(1235, 4)
 texture = ExtResource("6_pes1b")
 
 [node name="Sprite2D16" type="Sprite2D" parent="Ground" unique_id=244789945]
+z_index = -2
 position = Vector2(443, -231)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_pes1b")
 
 [node name="Sprite2D28" type="Sprite2D" parent="Ground" unique_id=1967693920]
+z_index = -2
 position = Vector2(562, -351)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_pes1b")
 
 [node name="Sprite2D29" type="Sprite2D" parent="Ground" unique_id=1739861323]
+z_index = -2
 position = Vector2(677, -466)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_pes1b")
@@ -122,70 +146,73 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_pes1b")
 
 [node name="Sprite2D34" type="Sprite2D" parent="Ground" unique_id=1618426984]
+z_index = -2
 position = Vector2(544, -414)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_pes1b")
 
 [node name="Sprite2D12" type="Sprite2D" parent="Ground" unique_id=1300705470]
-z_index = 100
+z_index = 12
 position = Vector2(993, 121)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_nudy2")
 
 [node name="Sprite2D24" type="Sprite2D" parent="Ground" unique_id=1955460708]
-z_index = 100
+z_index = -2
 position = Vector2(1075, -116)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_nudy2")
 
 [node name="Sprite2D13" type="Sprite2D" parent="Ground" unique_id=1224323081]
-z_index = 100
+z_index = 22
 position = Vector2(842, 125)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 
 [node name="Sprite2D25" type="Sprite2D" parent="Ground" unique_id=869539110]
-z_index = 100
+z_index = 22
 position = Vector2(977.99994, -114)
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("5_eaeku")
 
 [node name="Sprite2D26" type="Sprite2D" parent="Ground" unique_id=274858843]
-z_index = 100
+z_index = 22
 position = Vector2(919, -173)
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("5_eaeku")
 
 [node name="Sprite2D27" type="Sprite2D" parent="Ground" unique_id=1691126401]
-z_index = 100
+z_index = 22
 position = Vector2(859, -232)
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("5_eaeku")
 
 [node name="Sprite2D30" type="Sprite2D" parent="Ground" unique_id=1270092048]
-z_index = 100
+z_index = 22
 position = Vector2(800, -290)
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("5_eaeku")
 
 [node name="Sprite2D31" type="Sprite2D" parent="Ground" unique_id=657704157]
-z_index = 100
+z_index = 12
 position = Vector2(762.00006, -350)
 scale = Vector2(0.22447918, 0.2244792)
 texture = ExtResource("5_eaeku")
 
 [node name="Sprite2D32" type="Sprite2D" parent="Ground" unique_id=1315740411]
-z_index = 100
+z_index = 22
 position = Vector2(741.00006, -329)
 scale = Vector2(0.22447918, 0.2244792)
 texture = ExtResource("5_eaeku")
 
 [node name="Sprite2D14" type="Sprite2D" parent="Ground" unique_id=573844581]
+z_index = 22
 position = Vector2(727, 9)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 
 [node name="Sprite2D15" type="Sprite2D" parent="Ground" unique_id=70691001]
+z_index = 22
 position = Vector2(609, -109)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
@@ -202,6 +229,7 @@ texture = ExtResource("7_nudy2")
 flip_h = true
 
 [node name="Sprite2D22" type="Sprite2D" parent="Ground" unique_id=1715699940]
+z_index = -2
 position = Vector2(1347, 585)
 texture = ExtResource("7_nudy2")
 flip_h = true
@@ -220,4 +248,44 @@ texture = ExtResource("7_nudy2")
 [node name="Node2D5" type="Node2D" parent="." unique_id=1501140529]
 
 [node name="Player" parent="." unique_id=1446667991 instance=ExtResource("7_y2fik")]
-position = Vector2(591, 456)
+z_index = 2
+position = Vector2(282, -254)
+
+[node name="RampAssistUp" type="Area2D" parent="." unique_id=1290634494]
+collision_layer = 16
+script = ExtResource("9_eaeku")
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="RampAssistUp" unique_id=1168027824]
+position = Vector2(44, -17)
+polygon = PackedVector2Array(755, 379, 642, 494, 986, 846, 1104, 729)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistUp" unique_id=2131789571]
+z_index = 2
+position = Vector2(-625, 118)
+polygon = PackedVector2Array(1307, 118, 1418, 248, 1652, 2, 1539, -105)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RampAssistUp" unique_id=400501047]
+position = Vector2(-542, -422)
+polygon = PackedVector2Array(1036, 310, 1378, 650, 1492, 543, 1145, 195)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=791941292]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1591130871]
+polygon = PackedVector2Array(2, 241, 681, 240, 759, 160, 486, -110, -1, -110)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1941638260]
+polygon = PackedVector2Array(877, 45, 972, -57, 701, -328, 602, -229)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1418237926]
+polygon = PackedVector2Array(800, 355, 908, 242, 2254, 240, 2256, -120, 1035, -116, 761, -389, 838, -467, -66, -469, -83, -852, 3048, -838, 3044, 926, 1666, 825, 1426, 585, 1025, 585)
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1651880134]
+polygon = PackedVector2Array(390, 827, 628, 590, 791, 586, 683, 481, -1, 482, 1, 823)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1613825244]
+position = Vector2(-345.625, 59)
+shape = SubResource("RectangleShape2D_ttpud")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1407556165]
+position = Vector2(1010.25, 1358)
+shape = SubResource("RectangleShape2D_eaeku")

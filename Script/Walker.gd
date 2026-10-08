@@ -20,3 +20,8 @@ func ramp_adjust(v: Vector2) -> Vector2:
 	
 func is_grounded() -> bool:
 	return true
+
+func update_floor_layer() -> void:
+	var z := Floors.character_z(self)
+	if z != z_index:
+		z_index = z
