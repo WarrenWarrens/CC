@@ -31,18 +31,25 @@ const FIRE_RATE = 0.5
 @onready var body_sprite = $Visuals/Body
 @onready var visuals = $Visuals
 @onready var hitbox = $Visuals/Hitbox
-@onready var laser_glow = $Visuals/AimRay/LaserGlow
+@onready var laser_glow = $Visuals/AimRay/LaserLine/LaserGlow
 @onready var hit_light = $Visuals/AimRay/HitLight
 
-@export var camera_base_y := 120
 @onready var camera: Camera2D = $Camera2D
-
+@export var camera_base_y := 120.0
+@export var auto_camera_base := true 
+@export var camera_limits := Rect2i(0, -10000, 5000, 20000)
 
 func _ready():
+	camera.limit_left = camera_limits.position.x
+	camera.limit_top = camera_limits.position.y
+	camera.limit_right = camera_limits.end.x
+	camera.limit_bottom = camera_limits.end.y
 	camera.top_level = true
 	camera.process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 10.0   
+	if auto_camera_base:
+		camera_base_y = global_position.y
 	camera.global_position = Vector2(global_position.x, camera_base_y)
 	camera.reset_smoothing()
 	laser_line.visible = false
@@ -66,6 +73,7 @@ func _physics_process(delta):
 		State.PUNCHING:
 			velocity = Vector2.ZERO
 			move_and_slide()
+			print(floor_id)
 		State.GUARDING:
 			velocity = Vector2.ZERO
 			move_and_slide()
@@ -77,9 +85,8 @@ func _physics_process(delta):
 			velocity = velocity.move_toward(Vector2.ZERO, 800 * delta)
 			move_and_slide()
 			
-	update_floor_layer()
-	camera.global_position = Vector2(global_position.x, camera_base_y + get_elevation_shift())
-	
+	update_floor_state()
+	camera.global_position = Vector2(global_position.x, camera_base_y + elevation)	
 	
 func get_elevation_shift() -> float:
 	var total := 0.0
@@ -239,11 +246,21 @@ func handle_aiming(delta):
 	if aim_ray.is_colliding():
 		var hit_point = aim_ray.to_local(aim_ray.get_collision_point())
 		laser_line.set_point_position(1, Vector2(hit_point.x, 0))
-		
+
+		# Position the LaserGlow halfway down the active laser beam so it hugs the beam
+		laser_glow.position = hit_point / 2.0
+		# Optional: scale the light's range or texture scale based on distance if you want it to look tighter
+
+		# Move the HitLight to the exact point of impact and turn it on
 		hit_light.position = hit_point
 		hit_light.visible = true
 	else:
 		laser_line.set_point_position(1, Vector2(500, 0))
+
+		# If not colliding, put the glow light halfway down the maximum 500px beam length
+		laser_glow.position = Vector2(250, 0)
+
+		# Turn off the HitLight if we are aiming at empty space
 		hit_light.visible = false
 
 	if Input.is_action_just_pressed("aim"):

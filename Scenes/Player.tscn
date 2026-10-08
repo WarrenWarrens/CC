@@ -400,13 +400,17 @@ radius = 64.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_vyp0t"]
 radius = 256.0
 
+[sub_resource type="Gradient" id="Gradient_eaeku"]
+offsets = PackedFloat32Array(0, 0.5011236, 1)
+colors = PackedColorArray(0.52156866, 0, 0, 1, 0, 0, 0, 1, 0.52026945, 1.4980697e-06, 3.3691526e-07, 1)
+
 [sub_resource type="Gradient" id="Gradient_glx4g"]
 offsets = PackedFloat32Array(0, 0.48672566, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.3782192, 2.9480084e-06, 0.00025150724, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_tgb25"]
 gradient = SubResource("Gradient_glx4g")
-width = 156
+width = 128
 fill_from = Vector2(0.49310344, 0.5862069)
 fill_to = Vector2(0.49310344, 0.4)
 
@@ -502,16 +506,17 @@ collide_with_bodies = false
 points = PackedVector2Array(0, 0, 500, 0)
 width = 6.0
 default_color = Color(0.6522269, 2.7675183e-06, 4.3317675e-07, 1)
+gradient = SubResource("Gradient_eaeku")
 texture = ExtResource("10_yoq75")
 texture_mode = 1
 
-[node name="LaserGlow" type="PointLight2D" parent="Visuals/AimRay" unique_id=1149424495]
+[node name="LaserGlow" type="PointLight2D" parent="Visuals/AimRay/LaserLine" unique_id=1149424495]
 visible = false
 scale = Vector2(4.8867188, 1)
 color = Color(0.31865287, 0, 0.009339812, 1)
 energy = 4.5
 texture = SubResource("GradientTexture2D_tgb25")
-offset = Vector2(78, 0)
+offset = Vector2(32, 0)
 
 [node name="HitLight" type="PointLight2D" parent="Visuals/AimRay" unique_id=669442819]
 visible = false
@@ -521,11 +526,9 @@ texture = SubResource("GradientTexture2D_7a8fh")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1772076250]
 limit_left = 0
-limit_top = -843
+limit_top = -10000
 limit_right = 5000
-limit_bottom = 480
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
+limit_bottom = 10000
 drag_left_margin = 0.0
 drag_top_margin = 0.0
 drag_right_margin = 0.0

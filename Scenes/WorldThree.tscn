@@ -35,9 +35,10 @@ script = ExtResource("1_28xjk")
 light_mask = 3
 visibility_layer = 3
 z_index = 2
-position = Vector2(181, 157)
+position = Vector2(4000, 157)
 collision_layer = 3
 collision_mask = 3
+camera_base_y = 0.0
 
 [node name="Ground" type="Node2D" parent="." unique_id=1849063933]
 
@@ -116,13 +117,10 @@ script = ExtResource("7_sn61f")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistUp" unique_id=1142761759]
 polygon = PackedVector2Array(1307, 118, 1512, 362, 1756, 157, 1553, -87)
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RampAssistUp" unique_id=360303295]
-position = Vector2(853, -214)
-polygon = PackedVector2Array(1307, 118, 1512, 362, 1756, 157, 1553, -87)
-
 [node name="RampAssistDown" type="Area2D" parent="." unique_id=898525670]
 script = ExtResource("7_sn61f")
 rises_to_right = false
+high_floor = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistDown" unique_id=374897452]
 polygon = PackedVector2Array(3377, -292, 3172, -48, 3666, 364, 3872, 120)
@@ -145,3 +143,13 @@ position = Vector2(986, 125)
 
 [node name="Crate2" parent="." unique_id=115203274 instance=ExtResource("11_buomm")]
 position = Vector2(1246, 292)
+
+[node name="Ramp" type="Area2D" parent="." unique_id=1409791031]
+script = ExtResource("7_sn61f")
+low_floor = 1
+high_floor = 2
+metadata/_custom_type_script = "uid://yk6whv2wyufn"
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Ramp" unique_id=360303295]
+position = Vector2(853, -214)
+polygon = PackedVector2Array(1307, 118, 1512, 362, 1756, 157, 1553, -87)
