@@ -1,6 +1,6 @@
 
 extends Walker  
-enum State { NORMAL, JUMPING, PUNCHING, GUARDING, DODGING, STUNNED }
+enum State { NORMAL, JUMPING, PUNCHING, GUARDING, DODGING, STUNNED, AIMING }
 var current_state = State.NORMAL
 
 const SPEED = 300.0
@@ -16,9 +16,23 @@ var facing_direction = Vector2.RIGHT
 var _hit_targets: Array = []
 const HIT_FRAMES := [1, 2] 
 
+var is_invincible = false
+const I_FRAME_DURATION = 0.5
+
+var aim_angle = 0.0
+const MAX_AIM_ANGLE = deg_to_rad(45.0)
+const AIM_SPEED = 2.0
+var can_shoot = true
+const FIRE_RATE = 0.5
+
+@onready var aim_ray = $Visuals/AimRay
+@onready var laser_line = $Visuals/AimRay/LaserLine
+
 @onready var body_sprite = $Visuals/Body
 @onready var visuals = $Visuals
 @onready var hitbox = $Visuals/Hitbox
+@onready var laser_glow = $Visuals/AimRay/LaserGlow
+@onready var hit_light = $Visuals/AimRay/HitLight
 
 @export var camera_base_y := 120
 @onready var camera: Camera2D = $Camera2D
@@ -31,6 +45,9 @@ func _ready():
 	camera.position_smoothing_speed = 10.0   
 	camera.global_position = Vector2(global_position.x, camera_base_y)
 	camera.reset_smoothing()
+	laser_line.visible = false
+	aim_ray.enabled = false
+	aim_ray.add_exception(self)
 
 func _physics_process(delta):
 	if current_state != State.JUMPING and altitude <= 0.0:
@@ -41,6 +58,8 @@ func _physics_process(delta):
 			handle_movement()
 			update_animations("Idle", "Walk")
 			handle_actions()
+		State.AIMING:
+			handle_aiming(delta)
 		State.JUMPING:
 			handle_movement() 
 			handle_jump(delta)
@@ -104,6 +123,8 @@ func handle_actions():
 		velocity = ramp_adjust(facing_direction * DODGE_SPEED)
 		body_sprite.play("Dodge")
 		get_tree().create_timer(0.3).timeout.connect(func(): current_state = State.NORMAL)
+	elif Input.is_action_just_pressed("aim"): 
+		current_state = State.AIMING
 
 func handle_jump(delta):
 	z_velocity -= GRAVITY * delta
@@ -122,22 +143,49 @@ func is_grounded() -> bool:
 
 
 func take_damage(amount, knockback_dir):
-	if current_state == State.DODGING:
+	#if current_state == State.DODGING:
+		#return
+	#elif current_state == State.GUARDING:
+		#PlayerStats.take_damage(ceili(amount / 2.0))
+		#hitbox.set_deferred("monitoring", false)
+		#velocity = knockback_dir * 75
+		#PlayerStats.use_stamina(2)
+#
+		#return
+	#else:
+		#hitbox.set_deferred("monitoring", false)
+		#current_state = State.STUNNED
+		#body_sprite.play("Stun")
+		#velocity = knockback_dir * 200
+		#get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
+		#PlayerStats.take_damage(amount)
+		
+	if is_invincible or current_state == State.DODGING:
 		return
 	elif current_state == State.GUARDING:
 		PlayerStats.take_damage(ceili(amount / 2.0))
 		hitbox.set_deferred("monitoring", false)
 		velocity = knockback_dir * 75
 		PlayerStats.use_stamina(2)
-
 		return
 	else:
+		if current_state == State.AIMING:
+			exit_aim() 
 		hitbox.set_deferred("monitoring", false)
 		current_state = State.STUNNED
 		body_sprite.play("Stun")
 		velocity = knockback_dir * 200
-		get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
 		PlayerStats.take_damage(amount)
+		
+		is_invincible = true
+		
+		var tween = create_tween().set_loops(10) 
+		tween.tween_property(body_sprite, "modulate:a", 0.3, I_FRAME_DURATION / 20.0)
+		tween.tween_property(body_sprite, "modulate:a", 1.0, I_FRAME_DURATION / 20.0)
+		
+		get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
+		
+		get_tree().create_timer(I_FRAME_DURATION).timeout.connect(func(): is_invincible = false)
 	
 func fall(delta):
 	if altitude <= 0.0:
@@ -167,3 +215,67 @@ func _on_hitbox_area_entered(area):
 func _on_body_frame_changed() -> void:
 	if current_state == State.PUNCHING and body_sprite.animation == "Attack":
 		hitbox.set_deferred("monitoring", body_sprite.frame in HIT_FRAMES)
+		
+func handle_aiming(delta):
+	velocity = Vector2.ZERO
+	move_and_slide()
+	
+	laser_line.visible = true
+	aim_ray.enabled = true
+	laser_glow.visible = true
+
+	body_sprite.play("Idle") 
+	
+	var input_x = Input.get_axis("left", "right")
+	if input_x != 0:
+		facing_direction.x = sign(input_x)
+		visuals.scale.x = facing_direction.x 
+		
+	var input_y = Input.get_axis("up", "down")
+	aim_angle += input_y * AIM_SPEED * delta
+	aim_angle = clamp(aim_angle, -MAX_AIM_ANGLE, MAX_AIM_ANGLE)
+	aim_ray.rotation = aim_angle
+
+	if aim_ray.is_colliding():
+		var hit_point = aim_ray.to_local(aim_ray.get_collision_point())
+		laser_line.set_point_position(1, Vector2(hit_point.x, 0))
+		
+		hit_light.position = hit_point
+		hit_light.visible = true
+	else:
+		laser_line.set_point_position(1, Vector2(500, 0))
+		hit_light.visible = false
+
+	if Input.is_action_just_pressed("aim"):
+		exit_aim()
+	elif Input.is_action_pressed("punch"): 
+		shoot()
+
+func shoot():
+	if not can_shoot:
+		return
+		
+	can_shoot = false
+
+	if aim_ray.is_colliding():
+		var collider = aim_ray.get_collider()
+		
+		var target = collider.owner 
+		
+		if target and target != self and target.has_method("take_damage"):
+			target.take_damage(5, Vector2.ZERO) 
+			
+	get_tree().create_timer(FIRE_RATE).timeout.connect(func(): can_shoot = true)
+
+func exit_aim():
+	current_state = State.NORMAL
+	laser_line.visible = false
+	aim_ray.enabled = false
+	laser_glow.visible = false 
+	hit_light.visible = false  
+	aim_angle = 0.0
+	aim_ray.rotation = 0.0
+
+func _input(event):
+	if current_state == State.AIMING and event is InputEventMouseMotion:
+		aim_angle += event.relative.y * 0.005

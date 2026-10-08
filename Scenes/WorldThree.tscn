@@ -27,11 +27,6 @@ shader_parameter/light_dst = Color(0.95, 0.35, 0.3, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
 size = Vector2(20, 366)
 
-[sub_resource type="Gradient" id="Gradient_4h4gs"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ttpud"]
-gradient = SubResource("Gradient_4h4gs")
-
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
 script = ExtResource("1_28xjk")
@@ -144,27 +139,6 @@ position = Vector2(678, 154)
 position = Vector2(403, 143)
 
 [node name="Lighting" type="Node2D" parent="." unique_id=419392471]
-
-[node name="CanvasModulate" type="CanvasModulate" parent="Lighting" unique_id=1639962234]
-z_index = 90
-color = Color(0.35044625, 0.3923709, 0.41333324, 1)
-
-[node name="PointLight2D" type="PointLight2D" parent="Lighting" unique_id=1822920187]
-visible = false
-position = Vector2(764, 232)
-scale = Vector2(3.875, 3.875)
-texture = SubResource("GradientTexture2D_ttpud")
-
-[node name="DirectionalLight2D" type="DirectionalLight2D" parent="Lighting" unique_id=1946763391]
-visible = false
-position = Vector2(1167.0001, -265.00006)
-rotation = -2.2183135
-energy = 0.5
-shadow_enabled = true
-shadow_color = Color(0, 0, 0, 1)
-shadow_filter = 1
-shadow_filter_smooth = 4.4
-height = 0.14
 
 [node name="Crate" parent="." unique_id=1572332876 instance=ExtResource("11_buomm")]
 position = Vector2(986, 125)

@@ -3,12 +3,15 @@
 [ext_resource type="Script" uid="uid://0pldnfg7dgrc" path="res://Script/Player.gd" id="1_dewec"]
 [ext_resource type="Texture2D" uid="uid://col12h5utam6h" path="res://Assets/Player/PPunch.png" id="2_megsn"]
 [ext_resource type="Script" uid="uid://cknha0o0xqc7u" path="res://Script/Shadow.gd" id="2_yoq75"]
+[ext_resource type="Texture2D" uid="uid://co3tox2hrugta" path="res://Assets/dead.png" id="3_ksbbd"]
 [ext_resource type="Texture2D" uid="uid://y185h78as771" path="res://Assets/Player/PDodge.png" id="3_yoq75"]
 [ext_resource type="Texture2D" uid="uid://dv56pyp3c00ea" path="res://Assets/Player/PGuard.png" id="4_ksbbd"]
 [ext_resource type="Texture2D" uid="uid://bx0hbmq7qibff" path="res://Assets/Player/pIdle.png" id="5_glx4g"]
 [ext_resource type="Texture2D" uid="uid://prrsybm82gb2" path="res://Assets/Player/PJump.png" id="6_miouo"]
 [ext_resource type="Texture2D" uid="uid://cfxpeu5de0cic" path="res://Assets/Player/PStun.png" id="7_o3h8g"]
 [ext_resource type="Texture2D" uid="uid://bv4au63a5e7sf" path="res://Assets/Player/PWalk.png" id="8_1e7my"]
+[ext_resource type="Texture2D" uid="uid://b7v06cejj4ksp" path="res://Assets/debugdiamond.png" id="9_glx4g"]
+[ext_resource type="Texture2D" uid="uid://bqferb34iu0vs" path="res://Assets/laser.png" id="10_yoq75"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ttpud"]
 radius = 3.0
@@ -203,6 +206,14 @@ region = Rect2(164, 0, 32, 71)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("3_ksbbd")
+}],
+"loop": 1,
+"name": &"Aim",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_arntx")
 }, {
 "duration": 1.0,
@@ -333,6 +344,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("9_glx4g")
+}],
+"loop": 1,
+"name": &"Shoot",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_v5fqo")
 }, {
 "duration": 1.0,
@@ -381,6 +400,25 @@ radius = 64.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_vyp0t"]
 radius = 256.0
 
+[sub_resource type="Gradient" id="Gradient_glx4g"]
+colors = PackedColorArray(0.11414824, 0.4898488, 0.46171546, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tgb25"]
+gradient = SubResource("Gradient_glx4g")
+fill = 1
+fill_from = Vector2(0.517094, 0.525641)
+fill_to = Vector2(0.96153843, 0.1923077)
+
+[sub_resource type="Gradient" id="Gradient_miouo"]
+offsets = PackedFloat32Array(0.16371681, 1)
+colors = PackedColorArray(0.99961597, 0.04415956, 0.024479685, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7a8fh"]
+gradient = SubResource("Gradient_miouo")
+fill = 1
+fill_from = Vector2(0.517094, 0.517094)
+fill_to = Vector2(0.6581197, 0.3974359)
+
 [node name="Player" type="CharacterBody2D" unique_id=1446667991]
 y_sort_enabled = true
 script = ExtResource("1_dewec")
@@ -414,8 +452,7 @@ texture = SubResource("GradientTexture2D_vyp0t")
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1829035284]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_vyp0t")
-animation = &"Idle"
-frame_progress = 0.01975743
+animation = &"Attack"
 offset = Vector2(0, -32)
 
 [node name="Hitbox" type="Area2D" parent="Visuals" unique_id=801768740]
@@ -451,6 +488,33 @@ debug_color = Color(0.30711752, 0.12847656, 0.99999994, 0.41960785)
 position = Vector2(0, -32)
 shape = SubResource("CircleShape2D_vyp0t")
 debug_color = Color(0.55954015, 0.5262575, 0.53475285, 0.41960785)
+
+[node name="AimRay" type="RayCast2D" parent="Visuals" unique_id=545120193]
+position = Vector2(15, -30)
+exclude_parent = false
+target_position = Vector2(500, 0)
+collision_mask = 3
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="LaserLine" type="Line2D" parent="Visuals/AimRay" unique_id=1784932490]
+points = PackedVector2Array(0, 0, 500, 0)
+width = 6.0
+default_color = Color(0.6522269, 2.7675183e-06, 4.3317675e-07, 1)
+texture = ExtResource("10_yoq75")
+texture_mode = 1
+
+[node name="LaserGlow" type="PointLight2D" parent="Visuals/AimRay" unique_id=1149424495]
+visible = false
+color = Color(0.056353115, 0.3750332, 0.62531114, 1)
+energy = 0.5
+texture = SubResource("GradientTexture2D_tgb25")
+
+[node name="HitLight" type="PointLight2D" parent="Visuals/AimRay" unique_id=669442819]
+visible = false
+color = Color(1, 0.26000598, 0.2008352, 1)
+energy = 1.5
+texture = SubResource("GradientTexture2D_7a8fh")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1772076250]
 limit_left = 0
