@@ -1,5 +1,7 @@
 
 extends Walker  
+enum FightingStyle { RED, BLUE, YELLOW, PURPLE }
+var current_style = FightingStyle.RED 
 enum State { NORMAL, JUMPING, PUNCHING, GUARDING, DODGING, STUNNED, AIMING }
 var current_state = State.NORMAL
 
@@ -27,7 +29,7 @@ const FIRE_RATE = 0.5
 
 @onready var aim_ray = $Visuals/AimRay
 @onready var laser_line = $Visuals/AimRay/LaserLine
-
+@onready var style_indicator = $Visuals/StyleIndicator
 @onready var body_sprite = $Visuals/Body
 @onready var visuals = $Visuals
 @onready var hitbox = $Visuals/Hitbox
@@ -58,6 +60,8 @@ func _ready():
 	aim_ray.add_exception(self)
 	laser_glow.visible = false
 	hit_light.visible = false
+	
+	switch_style(FightingStyle.RED)
 
 func _physics_process(delta):
 	if current_state != State.JUMPING and altitude <= 0.0:
@@ -152,23 +156,6 @@ func is_grounded() -> bool:
 
 
 func take_damage(amount, knockback_dir):
-	#if current_state == State.DODGING:
-		#return
-	#elif current_state == State.GUARDING:
-		#PlayerStats.take_damage(ceili(amount / 2.0))
-		#hitbox.set_deferred("monitoring", false)
-		#velocity = knockback_dir * 75
-		#PlayerStats.use_stamina(2)
-#
-		#return
-	#else:
-		#hitbox.set_deferred("monitoring", false)
-		#current_state = State.STUNNED
-		#body_sprite.play("Stun")
-		#velocity = knockback_dir * 200
-		#get_tree().create_timer(0.5).timeout.connect(func(): current_state = State.NORMAL)
-		#PlayerStats.take_damage(amount)
-		
 	if is_invincible or current_state == State.DODGING:
 		return
 	elif current_state == State.GUARDING:
@@ -225,50 +212,7 @@ func _on_body_frame_changed() -> void:
 	if current_state == State.PUNCHING and body_sprite.animation == "Attack":
 		hitbox.set_deferred("monitoring", body_sprite.frame in HIT_FRAMES)
 		
-#func handle_aiming(delta):
-	#velocity = Vector2.ZERO
-	#move_and_slide()
-	#
-	#laser_line.visible = true
-	#aim_ray.enabled = true
-	#laser_glow.visible = true
-#
-	#body_sprite.play("Idle") 
-	#
-	#var input_x = Input.get_axis("left", "right")
-	#if input_x != 0:
-		#facing_direction.x = sign(input_x)
-		#visuals.scale.x = facing_direction.x 
-		#
-	#var input_y = Input.get_axis("up", "down")
-	#aim_angle += input_y * AIM_SPEED * delta
-	#aim_angle = clamp(aim_angle, -MAX_AIM_ANGLE, MAX_AIM_ANGLE)
-	#aim_ray.rotation = aim_angle
-#
-	#if aim_ray.is_colliding():
-		#var hit_point = aim_ray.to_local(aim_ray.get_collision_point())
-		#laser_line.set_point_position(1, Vector2(hit_point.x, 0))
-#
-		## Position the LaserGlow halfway down the active laser beam so it hugs the beam
-		#laser_glow.position = hit_point / 2.0
-		## Optional: scale the light's range or texture scale based on distance if you want it to look tighter
-#
-		## Move the HitLight to the exact point of impact and turn it on
-		#hit_light.position = hit_point
-		#hit_light.visible = true
-	#else:
-		#laser_line.set_point_position(1, Vector2(500, 0))
-#
-		## If not colliding, put the glow light halfway down the maximum 500px beam length
-		#laser_glow.position = Vector2(250, 0)
-#
-		## Turn off the HitLight if we are aiming at empty space
-		#hit_light.visible = false
-#
-	#if Input.is_action_just_pressed("aim"):
-		#exit_aim()
-	#elif Input.is_action_pressed("punch"): 
-		#shoot()
+
 func handle_aiming(delta):
 	velocity = Vector2.ZERO
 	move_and_slide()
@@ -289,20 +233,16 @@ func handle_aiming(delta):
 	aim_angle = clamp(aim_angle, -MAX_AIM_ANGLE, MAX_AIM_ANGLE)
 	aim_ray.rotation = aim_angle
 
-	# CRITICAL: Force the raycast to calculate its new collision point right now
 	aim_ray.force_raycast_update()
 
 	if aim_ray.is_colliding():
 		var hit_point = aim_ray.to_local(aim_ray.get_collision_point())
 		laser_line.set_point_position(1, Vector2(hit_point.x, 0))
 
-		# FIX 1: Force the offset to 0 so the light stays perfectly centered
 		laser_glow.offset = Vector2.ZERO
 		
-		# Position it exactly halfway down the beam
 		laser_glow.position = Vector2(hit_point.x / 2.0, 0)
 		
-		# FIX 2: Dynamically read the texture width so the stretch math is flawless
 		var glow_width = laser_glow.texture.get_width()
 		laser_glow.scale.x = hit_point.x / float(glow_width)
 
@@ -351,3 +291,29 @@ func exit_aim():
 func _input(event):
 	if current_state == State.AIMING and event is InputEventMouseMotion:
 		aim_angle += event.relative.y * 0.005
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_1:
+			switch_style(FightingStyle.RED)
+		elif event.keycode == KEY_2:
+			switch_style(FightingStyle.BLUE)
+		elif event.keycode == KEY_3:
+			switch_style(FightingStyle.YELLOW)
+		elif event.keycode == KEY_4:
+			switch_style(FightingStyle.PURPLE)
+		
+func switch_style(new_style):
+	current_style = new_style
+
+	match current_style:
+		FightingStyle.RED:
+			style_indicator.color = Color.RED
+			print("STYLE: Switched to RED (Brawler)")
+		FightingStyle.BLUE:
+			style_indicator.color = Color.BLUE
+			print("STYLE: Switched to BLUE (Rush)")
+		FightingStyle.YELLOW:
+			style_indicator.color = Color.YELLOW
+			print("STYLE: Switched to YELLOW (Beast)")
+		FightingStyle.PURPLE:
+			style_indicator.color = Color.PURPLE
+			print("STYLE: Switched to PURPLE (Dragon)")

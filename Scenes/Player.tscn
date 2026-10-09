@@ -523,6 +523,12 @@ color = Color(1, 0.26000598, 0.2008352, 1)
 energy = 1.5
 texture = SubResource("GradientTexture2D_7a8fh")
 
+[node name="StyleIndicator" type="ColorRect" parent="Visuals" unique_id=1044328470]
+offset_left = -5.0
+offset_top = -80.0
+offset_right = 5.0
+offset_bottom = -70.0
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1772076250]
 limit_left = 0
 limit_top = -10000
