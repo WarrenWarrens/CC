@@ -410,7 +410,6 @@ colors = PackedColorArray(0, 0, 0, 1, 0.3782192, 2.9480084e-06, 0.00025150724, 1
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_tgb25"]
 gradient = SubResource("Gradient_glx4g")
-width = 128
 fill_from = Vector2(0.49310344, 0.5862069)
 fill_to = Vector2(0.49310344, 0.4)
 

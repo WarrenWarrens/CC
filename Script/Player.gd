@@ -52,9 +52,12 @@ func _ready():
 		camera_base_y = global_position.y
 	camera.global_position = Vector2(global_position.x, camera_base_y)
 	camera.reset_smoothing()
+	
 	laser_line.visible = false
 	aim_ray.enabled = false
 	aim_ray.add_exception(self)
+	laser_glow.visible = false
+	hit_light.visible = false
 
 func _physics_process(delta):
 	if current_state != State.JUMPING and altitude <= 0.0:
@@ -73,7 +76,6 @@ func _physics_process(delta):
 		State.PUNCHING:
 			velocity = Vector2.ZERO
 			move_and_slide()
-			print(floor_id)
 		State.GUARDING:
 			velocity = Vector2.ZERO
 			move_and_slide()
@@ -223,16 +225,60 @@ func _on_body_frame_changed() -> void:
 	if current_state == State.PUNCHING and body_sprite.animation == "Attack":
 		hitbox.set_deferred("monitoring", body_sprite.frame in HIT_FRAMES)
 		
+#func handle_aiming(delta):
+	#velocity = Vector2.ZERO
+	#move_and_slide()
+	#
+	#laser_line.visible = true
+	#aim_ray.enabled = true
+	#laser_glow.visible = true
+#
+	#body_sprite.play("Idle") 
+	#
+	#var input_x = Input.get_axis("left", "right")
+	#if input_x != 0:
+		#facing_direction.x = sign(input_x)
+		#visuals.scale.x = facing_direction.x 
+		#
+	#var input_y = Input.get_axis("up", "down")
+	#aim_angle += input_y * AIM_SPEED * delta
+	#aim_angle = clamp(aim_angle, -MAX_AIM_ANGLE, MAX_AIM_ANGLE)
+	#aim_ray.rotation = aim_angle
+#
+	#if aim_ray.is_colliding():
+		#var hit_point = aim_ray.to_local(aim_ray.get_collision_point())
+		#laser_line.set_point_position(1, Vector2(hit_point.x, 0))
+#
+		## Position the LaserGlow halfway down the active laser beam so it hugs the beam
+		#laser_glow.position = hit_point / 2.0
+		## Optional: scale the light's range or texture scale based on distance if you want it to look tighter
+#
+		## Move the HitLight to the exact point of impact and turn it on
+		#hit_light.position = hit_point
+		#hit_light.visible = true
+	#else:
+		#laser_line.set_point_position(1, Vector2(500, 0))
+#
+		## If not colliding, put the glow light halfway down the maximum 500px beam length
+		#laser_glow.position = Vector2(250, 0)
+#
+		## Turn off the HitLight if we are aiming at empty space
+		#hit_light.visible = false
+#
+	#if Input.is_action_just_pressed("aim"):
+		#exit_aim()
+	#elif Input.is_action_pressed("punch"): 
+		#shoot()
 func handle_aiming(delta):
 	velocity = Vector2.ZERO
 	move_and_slide()
-	
+
 	laser_line.visible = true
 	aim_ray.enabled = true
 	laser_glow.visible = true
 
-	body_sprite.play("Idle") 
-	
+	body_sprite.play("Shoot") 
+
 	var input_x = Input.get_axis("left", "right")
 	if input_x != 0:
 		facing_direction.x = sign(input_x)
@@ -243,24 +289,33 @@ func handle_aiming(delta):
 	aim_angle = clamp(aim_angle, -MAX_AIM_ANGLE, MAX_AIM_ANGLE)
 	aim_ray.rotation = aim_angle
 
+	# CRITICAL: Force the raycast to calculate its new collision point right now
+	aim_ray.force_raycast_update()
+
 	if aim_ray.is_colliding():
 		var hit_point = aim_ray.to_local(aim_ray.get_collision_point())
 		laser_line.set_point_position(1, Vector2(hit_point.x, 0))
 
-		# Position the LaserGlow halfway down the active laser beam so it hugs the beam
-		laser_glow.position = hit_point / 2.0
-		# Optional: scale the light's range or texture scale based on distance if you want it to look tighter
+		# FIX 1: Force the offset to 0 so the light stays perfectly centered
+		laser_glow.offset = Vector2.ZERO
+		
+		# Position it exactly halfway down the beam
+		laser_glow.position = Vector2(hit_point.x / 2.0, 0)
+		
+		# FIX 2: Dynamically read the texture width so the stretch math is flawless
+		var glow_width = laser_glow.texture.get_width()
+		laser_glow.scale.x = hit_point.x / float(glow_width)
 
-		# Move the HitLight to the exact point of impact and turn it on
 		hit_light.position = hit_point
 		hit_light.visible = true
 	else:
 		laser_line.set_point_position(1, Vector2(500, 0))
 
-		# If not colliding, put the glow light halfway down the maximum 500px beam length
+		laser_glow.offset = Vector2.ZERO
 		laser_glow.position = Vector2(250, 0)
+		var glow_width = laser_glow.texture.get_width()
+		laser_glow.scale.x = 500.0 / float(glow_width)
 
-		# Turn off the HitLight if we are aiming at empty space
 		hit_light.visible = false
 
 	if Input.is_action_just_pressed("aim"):
