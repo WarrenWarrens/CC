@@ -7,12 +7,12 @@ var current_state = State.NORMAL
 
 const SPEED = 300.0
 const DEPTH_SQUASH = 0.6
-const GRAVITY = 900.0
+#const GRAVITY = 900.0
 const JUMP_FORCE = 400.0
 const DODGE_SPEED = 600.0
 
-var altitude = 0.0
-var z_velocity = 0.0
+#var altitude = 0.0
+#var z_velocity = 0.0
 var current_slope = 0.0
 var facing_direction = Vector2.RIGHT
 var _hit_targets: Array = []

@@ -45,7 +45,7 @@ func take_damage(amount: int):
 
 func game_over():
 	reset()
-	get_tree().reload_current_scene()
+	get_tree().call_deferred("reload_current_scene")
 
 func change_health(amount: int):
 	health = clamp(health + amount, 0, max_health)

@@ -16,6 +16,15 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ttpud"]
 radius = 3.0
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ttpud"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+
+[sub_resource type="Gradient" id="Gradient_o3h8g"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_42q0v"]
+gradient = SubResource("Gradient_o3h8g")
+
 [sub_resource type="Gradient" id="Gradient_megsn"]
 offsets = PackedFloat32Array(0.13824885, 0.5760369)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -436,6 +445,15 @@ rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ttpud")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=1373284604]
+
+[node name="HeatAura" type="GPUParticles2D" parent="Visuals" unique_id=67750259]
+visible = false
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_ttpud")
+
+[node name="PointLight2D3" type="PointLight2D" parent="Visuals" unique_id=1258461701]
+visible = false
+texture = SubResource("GradientTexture2D_42q0v")
 
 [node name="PointLight2D" type="PointLight2D" parent="Visuals" unique_id=2005796175]
 visible = false
