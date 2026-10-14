@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b2r3p8nte0wg"]
+
+[ext_resource type="Script" uid="uid://cnpo0uxwb7nr3" path="res://Script/Door.gd" id="1_38ogf"]
+[ext_resource type="Texture2D" uid="uid://b7v06cejj4ksp" path="res://Assets/debugdiamond.png" id="2_mw28t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
+
+[node name="Door" type="Area2D" unique_id=993242610 groups=["doors"]]
+collision_layer = 0
+script = ExtResource("1_38ogf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=125700225]
+shape = SubResource("RectangleShape2D_ttpud")
+
+[node name="SpawnPoint" type="Marker2D" parent="." unique_id=2118248382]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1024385258]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_mw28t")

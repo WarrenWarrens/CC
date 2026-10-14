@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b4qdyttoij06r"]
 
-[ext_resource type="Script" uid="uid://glldpxycmf3j" path="res://Scenes/Ladder.gd" id="1_10d6d"]
+[ext_resource type="Script" uid="uid://glldpxycmf3j" path="res://Script/Ladder.gd" id="1_10d6d"]
 [ext_resource type="Texture2D" uid="uid://cu5hbysd3l7hn" path="res://Assets/Life.png" id="2_hojfu"]
 
 [node name="Ladder" type="Node2D" unique_id=323733151]

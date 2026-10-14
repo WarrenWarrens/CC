@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bwaabb6gbocq7" path="res://Assets/par45.png" id="7_nudy2"]
 [ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Scenes/Player.tscn" id="7_y2fik"]
 [ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="9_eaeku"]
-[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Scenes/LevelCamera.gd" id="10_pes1b"]
+[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Script/LevelCamera.gd" id="10_pes1b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
 size = Vector2(691.25, 1056)

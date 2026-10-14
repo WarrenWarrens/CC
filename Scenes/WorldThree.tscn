@@ -8,11 +8,12 @@
 [ext_resource type="Texture2D" uid="uid://qvufr7wtwjcy" path="res://Assets/ramp2.png" id="5_sn61f"]
 [ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="7_sn61f"]
 [ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="8_28xjk"]
-[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Scenes/LevelCamera.gd" id="10_gatps"]
+[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Script/LevelCamera.gd" id="10_gatps"]
 [ext_resource type="PackedScene" uid="uid://d4q5okgf1yam" path="res://Scenes/Platform.tscn" id="11_4h4gs"]
 [ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Crate.tscn" id="11_buomm"]
 [ext_resource type="PackedScene" uid="uid://b4qdyttoij06r" path="res://Scenes/Ladder.tscn" id="12_i0x0q"]
 [ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="13_ri24d"]
+[ext_resource type="PackedScene" uid="uid://b2r3p8nte0wg" path="res://Scenes/Door.tscn" id="14_ri24d"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
@@ -23,7 +24,7 @@ size = Vector2(20, 366)
 y_sort_enabled = true
 script = ExtResource("1_28xjk")
 
-[node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_pllyr")]
+[node name="Player" parent="." unique_id=1446667991 groups=["player"] instance=ExtResource("2_pllyr")]
 light_mask = 3
 visibility_layer = 3
 z_index = 2
@@ -170,3 +171,15 @@ scale = Vector2(3, 3)
 [node name="Ledge" parent="." unique_id=976586405 instance=ExtResource("13_ri24d")]
 position = Vector2(4658, 253)
 scale = Vector2(4, 4)
+
+[node name="Door" parent="." unique_id=993242610 instance=ExtResource("14_ri24d")]
+position = Vector2(46, 127)
+scale = Vector2(3, 3)
+door_id = "001"
+destination_door_id = "002"
+
+[node name="Door2" parent="." unique_id=823665030 instance=ExtResource("14_ri24d")]
+position = Vector2(4787, 214)
+scale = Vector2(3, 3)
+door_id = "002"
+destination_door_id = "001"

@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 PlayerStats="*uid://bycay211ygd3"
+SceneManager="*uid://wfxib1234o76"
 
 [display]
 

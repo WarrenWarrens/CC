@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bej6fn52m43lo"]
 
-[ext_resource type="Script" uid="uid://dfxr6clv1jv51" path="res://Ledge.gd" id="1_aq64u"]
+[ext_resource type="Script" uid="uid://dfxr6clv1jv51" path="res://Script/Ledge.gd" id="1_aq64u"]
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_ttpud"]
 

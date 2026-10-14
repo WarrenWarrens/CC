@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d4q5okgf1yam"]
 
-[ext_resource type="Script" uid="uid://0stu4upobfnm" path="res://Platform.gd" id="1_8n7cf"]
+[ext_resource type="Script" uid="uid://0stu4upobfnm" path="res://Script/Platform.gd" id="1_8n7cf"]
 [ext_resource type="Texture2D" uid="uid://12se27q3ys3q" path="res://Assets/sprite64.png" id="2_kti7u"]
 
 [node name="StaticBody2D" type="StaticBody2D" unique_id=452983872]
