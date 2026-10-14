@@ -55,6 +55,8 @@ func _ready():
 	camera.global_position = Vector2(global_position.x, camera_base_y)
 	camera.reset_smoothing()
 	
+	add_to_group("players")
+	
 	laser_line.visible = false
 	aim_ray.enabled = false
 	aim_ray.add_exception(self)
@@ -64,35 +66,43 @@ func _ready():
 	switch_style(FightingStyle.RED)
 
 func _physics_process(delta):
-	if current_state != State.JUMPING and altitude <= 0.0:
-		fall(delta)
-		
-	match current_state:
-		State.NORMAL:
-			handle_movement()
-			update_animations("Idle", "Walk")
-			handle_actions()
-		State.AIMING:
-			handle_aiming(delta)
-		State.JUMPING:
-			handle_movement() 
-			handle_jump(delta)
-		State.PUNCHING:
-			velocity = Vector2.ZERO
-			move_and_slide()
-		State.GUARDING:
-			velocity = Vector2.ZERO
-			move_and_slide()
-			if Input.is_action_just_released("guard"):
-				current_state = State.NORMAL
-		State.DODGING:
-			move_and_slide()
-		State.STUNNED:
-			velocity = velocity.move_toward(Vector2.ZERO, 800 * delta)
-			move_and_slide()
-			
-	update_floor_state()
-	camera.global_position = Vector2(global_position.x, camera_base_y + elevation)	
+	move_intent = Input.get_vector("left", "right", "up", "down")
+	if not traversing:
+		if current_state != State.JUMPING:
+			air_step(delta)
+		match current_state:
+			State.NORMAL:
+				handle_movement()
+				update_animations("Idle", "Walk")
+				handle_actions()
+			State.AIMING:
+				handle_aiming(delta)
+			State.JUMPING:
+				handle_movement() 
+				handle_jump(delta)
+			State.PUNCHING:
+				velocity = Vector2.ZERO
+				move_and_slide()
+			State.GUARDING:
+				velocity = Vector2.ZERO
+				move_and_slide()
+				if Input.is_action_just_released("guard"):
+					current_state = State.NORMAL
+			State.DODGING:
+				move_and_slide()
+			State.STUNNED:
+				velocity = velocity.move_toward(Vector2.ZERO, 800 * delta)
+				move_and_slide()
+		update_floor_state()
+	camera.global_position = Vector2(global_position.x, camera_base_y + elevation)
+	
+func handle_jump(delta):
+	if air_step(delta):
+		current_state = State.NORMAL
+	PlayerStats.add_psy(10)
+
+func _traversal_done():
+	current_state = State.NORMAL
 	
 func get_elevation_shift() -> float:
 	var total := 0.0
@@ -139,23 +149,14 @@ func handle_actions():
 	elif Input.is_action_just_pressed("aim"): 
 		current_state = State.AIMING
 
-func handle_jump(delta):
-	z_velocity -= GRAVITY * delta
-	altitude += z_velocity * delta
-	
-	if altitude <= 0:
-		altitude = 0.0
-		z_velocity = 0.0
-		current_state = State.NORMAL
-		
-	body_sprite.position.y = -altitude
-	PlayerStats.add_psy(10)
 
 func is_grounded() -> bool:
 	return current_state != State.JUMPING
 
 
 func take_damage(amount, knockback_dir):
+	if traversing: return
+	
 	if is_invincible or current_state == State.DODGING:
 		return
 	elif current_state == State.GUARDING:

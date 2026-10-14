@@ -27,8 +27,13 @@ func _ready():
 	#$DetectionZone.body_entered.connect(_on_detection_zone_body_entered)
 
 func _physics_process(delta):
+	
 	update_floor_state()
 	attack_cooldown_left = maxf(attack_cooldown_left - delta, 0.0)
+	
+	air_step(delta)
+	if traversing:
+		return
 	
 	match current_state:
 		State.IDLE:
@@ -53,7 +58,10 @@ func _physics_process(delta):
 		State.DEAD:
 			velocity = velocity.move_toward(Vector2.ZERO, 800 * delta)
 			move_and_slide()
-
+			
+func _traversal_done():
+	current_state = State.CHASING
+	
 func chase_player(delta):
 	var target_position = player.global_position + target_offset
 	var distance_to_player = global_position.distance_to(player.global_position)

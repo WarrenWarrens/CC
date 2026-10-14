@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bwaabb6gbocq7" path="res://Assets/par45.png" id="7_nudy2"]
 [ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Scenes/Player.tscn" id="7_y2fik"]
 [ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="9_eaeku"]
+[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Scenes/LevelCamera.gd" id="10_pes1b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
 size = Vector2(691.25, 1056)
@@ -64,12 +65,6 @@ scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 offset = Vector2(1280, 486)
 
-[node name="Sprite2D13" type="Sprite2D" parent="Ramps" unique_id=1224323081]
-z_index = 22
-position = Vector2(842, 125)
-scale = Vector2(0.7, 0.7)
-texture = ExtResource("5_eaeku")
-
 [node name="Sprite2D25" type="Sprite2D" parent="Ramps" unique_id=869539110]
 z_index = 22
 position = Vector2(977.99994, -114)
@@ -104,18 +99,6 @@ texture = ExtResource("5_eaeku")
 z_index = 22
 position = Vector2(741.00006, -329)
 scale = Vector2(0.22447918, 0.2244792)
-texture = ExtResource("5_eaeku")
-
-[node name="Sprite2D14" type="Sprite2D" parent="Ramps" unique_id=573844581]
-z_index = 22
-position = Vector2(727, 9)
-scale = Vector2(0.7, 0.7)
-texture = ExtResource("5_eaeku")
-
-[node name="Sprite2D15" type="Sprite2D" parent="Ramps" unique_id=70691001]
-z_index = 22
-position = Vector2(609, -109)
-scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_eaeku")
 
 [node name="Floor0" type="Node2D" parent="." unique_id=1660000997]
@@ -300,16 +283,6 @@ shape = SubResource("RectangleShape2D_ttpud")
 position = Vector2(1010.25, 1358)
 shape = SubResource("RectangleShape2D_eaeku")
 
-[node name="Ramp" type="Area2D" parent="." unique_id=1740215292]
-script = ExtResource("9_eaeku")
-low_floor = 2
-high_floor = 3
-metadata/_custom_type_script = "uid://yk6whv2wyufn"
-
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Ramp" unique_id=400501047]
-position = Vector2(-542, -422)
-polygon = PackedVector2Array(1036, 310, 1378, 650, 1492, 543, 1145, 195)
-
 [node name="Ramp2" type="Area2D" parent="." unique_id=442356028]
 script = ExtResource("9_eaeku")
 rises_to_right = false
@@ -318,3 +291,6 @@ metadata/_custom_type_script = "uid://yk6whv2wyufn"
 [node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Ramp2" unique_id=1168027824]
 position = Vector2(44, -17)
 polygon = PackedVector2Array(755, 379, 642, 494, 986, 846, 1104, 729)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=102103623]
+script = ExtResource("10_pes1b")

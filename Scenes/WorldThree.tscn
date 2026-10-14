@@ -6,21 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://cxftcn7kqwxur" path="res://Assets/ground2.png" id="4_buomm"]
 [ext_resource type="Texture2D" uid="uid://32yi8om1h7ai" path="res://Assets/ground1.png" id="5_4h4gs"]
 [ext_resource type="Texture2D" uid="uid://qvufr7wtwjcy" path="res://Assets/ramp2.png" id="5_sn61f"]
-[ext_resource type="Shader" uid="uid://clggrbxucakp7" path="res://PaletteSwapSimple.gdshader" id="7_gatps"]
 [ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="7_sn61f"]
 [ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="8_28xjk"]
-[ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="8_buomm"]
+[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Scenes/LevelCamera.gd" id="10_gatps"]
 [ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Crate.tscn" id="11_buomm"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ttpud"]
-shader = ExtResource("7_gatps")
-shader_parameter/tolerance = 0.02
-shader_parameter/dark_src = Color(0.45, 0.1, 0.1, 1)
-shader_parameter/base_src = Color(0.75, 0.15, 0.15, 1)
-shader_parameter/light_src = Color(0.95, 0.35, 0.3, 1)
-shader_parameter/dark_dst = Color(0.45, 0.1, 0.1, 1)
-shader_parameter/base_dst = Color(0.75, 0.15, 0.15, 1)
-shader_parameter/light_dst = Color(0.95, 0.35, 0.3, 1)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
@@ -91,12 +80,6 @@ position = Vector2(2891.7498, -170)
 scale = Vector2(0.43632823, 0.6805556)
 texture = ExtResource("5_4h4gs")
 
-[node name="Sprite2D" type="Sprite2D" parent="Ground" unique_id=586373838]
-texture_filter = 1
-material = SubResource("ShaderMaterial_ttpud")
-position = Vector2(-719, 3)
-texture = ExtResource("8_buomm")
-
 [node name="Boundaries" type="StaticBody2D" parent="." unique_id=117728836]
 physics_material_override = SubResource("PhysicsMaterial_ttpud")
 
@@ -153,3 +136,6 @@ metadata/_custom_type_script = "uid://yk6whv2wyufn"
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Ramp" unique_id=360303295]
 position = Vector2(853, -214)
 polygon = PackedVector2Array(1307, 118, 1512, 362, 1756, 157, 1553, -87)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1719420128]
+script = ExtResource("10_gatps")

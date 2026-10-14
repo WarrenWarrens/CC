@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bej6fn52m43lo"]
+
+[ext_resource type="Script" uid="uid://dfxr6clv1jv51" path="res://Ledge.gd" id="1_aq64u"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ttpud"]
+
+[node name="Ledge" type="Area2D" unique_id=976586405]
+script = ExtResource("1_aq64u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1111040835]
+rotation = -1.5707964
+shape = SubResource("SegmentShape2D_ttpud")
