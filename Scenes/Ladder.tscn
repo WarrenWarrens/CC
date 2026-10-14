@@ -1,12 +1,18 @@
 [gd_scene format=3 uid="uid://b4qdyttoij06r"]
 
 [ext_resource type="Script" uid="uid://glldpxycmf3j" path="res://Scenes/Ladder.gd" id="1_10d6d"]
+[ext_resource type="Texture2D" uid="uid://cu5hbysd3l7hn" path="res://Assets/Life.png" id="2_hojfu"]
 
 [node name="Ladder" type="Node2D" unique_id=323733151]
 script = ExtResource("1_10d6d")
 
 [node name="Top" type="Marker2D" parent="." unique_id=1979880633]
-position = Vector2(0, -10)
+position = Vector2(-9, -8)
 
 [node name="Bottom" type="Marker2D" parent="." unique_id=1452744331]
-position = Vector2(0, 10)
+position = Vector2(-8, 56)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1556379992]
+rotation = -1.5707964
+scale = Vector2(0.5, 1)
+texture = ExtResource("2_hojfu")

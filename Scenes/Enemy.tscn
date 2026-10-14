@@ -15,10 +15,10 @@ radius = 3.0
 radius = 200.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1exfc"]
-size = Vector2(29.5, 61.5)
+size = Vector2(29.5, 40.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo1ky"]
-size = Vector2(51, 62)
+size = Vector2(51, 42)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0o0ue"]
 atlas = ExtResource("2_mo1ky")
@@ -209,7 +209,7 @@ collision_mask = 4
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hitbox" unique_id=674062975]
-position = Vector2(15.25, -32.25)
+position = Vector2(15.25, -21.75)
 shape = SubResource("RectangleShape2D_1exfc")
 debug_color = Color(0.42157483, 0.46149063, 1, 0.41960785)
 
@@ -219,7 +219,7 @@ collision_mask = 0
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/Hurtbox" unique_id=305679832]
-position = Vector2(-5.5, -31)
+position = Vector2(-5.5, -21)
 shape = SubResource("RectangleShape2D_mo1ky")
 
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1139163891]
