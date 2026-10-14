@@ -225,7 +225,7 @@ shape = SubResource("RectangleShape2D_mo1ky")
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1139163891]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_ttpud")
-animation = &"Death"
+animation = &"Idle"
 offset = Vector2(0, -32)
 
 [connection signal="body_entered" from="Visuals/DetectionZone" to="." method="_on_detection_zone_body_entered"]
