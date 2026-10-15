@@ -35,11 +35,14 @@ const FIRE_RATE = 0.5
 @onready var hitbox = $Visuals/Hitbox
 @onready var laser_glow = $Visuals/AimRay/LaserLine/LaserGlow
 @onready var hit_light = $Visuals/AimRay/HitLight
-
+@onready var stats: Stats = $Stats
+@export var player_index := 0
 @onready var camera: Camera2D = $Camera2D
 @export var camera_base_y := 120.0
 @export var auto_camera_base := true 
 @export var camera_limits := Rect2i(0, -10000, 5000, 20000)
+var _last_floor := -99
+var speed_mult := 1.0
 
 func _ready():
 	camera.limit_left = camera_limits.position.x
@@ -63,7 +66,19 @@ func _ready():
 	laser_glow.visible = false
 	hit_light.visible = false
 	
-	switch_style(FightingStyle.RED)
+	#switch_style(FightingStyle.RED)
+	var slots := GameSession.get_slots()
+	var slot: Dictionary = slots[mini(player_index, slots.size() - 1)]
+	var def: CharacterDef = slot["def"]
+	stats.apply_character(def)
+	speed_mult = def.speed_mult
+	if def.sprite_frames:
+		body_sprite.sprite_frames = def.sprite_frames
+		body_sprite.play("Idle")
+		def.apply_skin(body_sprite, slot["tint"])
+	GameSession.register_player(stats)
+	stats.died.connect(_on_died)
+	switch_style(def.starting_style)
 
 func _physics_process(delta):
 	move_intent = Input.get_vector("left", "right", "up", "down")
@@ -94,21 +109,24 @@ func _physics_process(delta):
 				velocity = velocity.move_toward(Vector2.ZERO, 800 * delta)
 				move_and_slide()
 		update_floor_state()
+		if floor_id != _last_floor:
+			_last_floor = floor_id
+			print("floor ", floor_id, "  elevation ", snappedf(elevation, 0.1))
+			
 	camera.global_position = Vector2(global_position.x, camera_base_y + elevation)
 	
 func handle_jump(delta):
 	if air_step(delta):
 		current_state = State.NORMAL
-	PlayerStats.add_psy(10)
 
 func _traversal_done():
 	current_state = State.NORMAL
 	
-func get_elevation_shift() -> float:
-	var total := 0.0
-	for r in get_tree().get_nodes_in_group("ramps"):
-		total += r.get_elevation_shift(global_position)
-	return total
+#func get_elevation_shift() -> float:
+	#var total := 0.0
+	#for r in get_tree().get_nodes_in_group("ramps"):
+		#total += r.get_elevation_shift(global_position)
+	#return total
 	
 
 func handle_movement():
@@ -141,7 +159,7 @@ func handle_actions():
 	elif Input.is_action_pressed("guard"):
 		current_state = State.GUARDING
 		body_sprite.play("Guard")
-	elif Input.is_action_just_pressed("dodge") and PlayerStats.use_stamina(5):
+	elif Input.is_action_just_pressed("dodge") and Stats.use_stamina(5):
 		current_state = State.DODGING
 		velocity = ramp_adjust(facing_direction * DODGE_SPEED)
 		body_sprite.play("Dodge")
@@ -151,10 +169,10 @@ func handle_actions():
 
 
 func is_grounded() -> bool:
-	return current_state != State.JUMPING
-
+	return current_state != State.JUMPING and altitude <= 0.0
 
 func take_damage(amount, knockback_dir):
+	if stats.health <= 0: return
 	if traversing: return
 	
 	if is_invincible or current_state == State.DODGING:
@@ -184,14 +202,14 @@ func take_damage(amount, knockback_dir):
 		
 		get_tree().create_timer(I_FRAME_DURATION).timeout.connect(func(): is_invincible = false)
 	
-func fall(delta):
-	if altitude <= 0.0:
-		return
-	z_velocity -= GRAVITY * delta
-	altitude = maxf(altitude + z_velocity * delta, 0.0)
-	if altitude == 0.0:
-		z_velocity = 0.0
-	body_sprite.position.y = -altitude
+#func fall(delta):
+	#if altitude <= 0.0:
+		#return
+	#z_velocity -= GRAVITY * delta
+	#altitude = maxf(altitude + z_velocity * delta, 0.0)
+	#if altitude == 0.0:
+		#z_velocity = 0.0
+	#body_sprite.position.y = -altitude
 	
 	
 func _on_body_animation_finished():
@@ -301,7 +319,10 @@ func _input(event):
 			switch_style(FightingStyle.YELLOW)
 		elif event.keycode == KEY_4:
 			switch_style(FightingStyle.PURPLE)
-		
+func _on_died() -> void:
+	set_physics_process(false)    # stand-in until you have a death animation
+	create_tween().tween_property(self, "modulate:a", 0.3, 0.5)
+	
 func switch_style(new_style):
 	current_style = new_style
 

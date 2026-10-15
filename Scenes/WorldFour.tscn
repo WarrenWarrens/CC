@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://jhnqaj8kyhgq" path="res://Assets/diamond24045.png" id="5_eaeku"]
 [ext_resource type="Texture2D" uid="uid://cpofv4e6rkxwo" path="res://Assets/tri45.png" id="6_pes1b"]
 [ext_resource type="Texture2D" uid="uid://bwaabb6gbocq7" path="res://Assets/par45.png" id="7_nudy2"]
-[ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Scenes/Player.tscn" id="7_y2fik"]
+[ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Characters/Player.tscn" id="7_y2fik"]
 [ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="9_eaeku"]
 [ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Script/LevelCamera.gd" id="10_pes1b"]
 
@@ -237,7 +237,11 @@ offset = Vector2(320, 240)
 [node name="Player" parent="." unique_id=1446667991 instance=ExtResource("7_y2fik")]
 z_index = 22
 position = Vector2(559, 371)
+player_index = null
 camera_base_y = 0.0
+auto_camera_base = null
+camera_limits = null
+floor_id = null
 
 [node name="RampAssistUp" type="Area2D" parent="." unique_id=1290634494]
 collision_layer = 16

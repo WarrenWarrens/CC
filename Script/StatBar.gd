@@ -72,3 +72,12 @@ func _draw() -> void:
 	if chunks > 1:
 		for i in range(1, chunks):
 			draw_rect(Rect2(w * i / chunks - 1.0, _header_h, 2.0, bar_height), divider_color)
+			
+func bind(stats: Stats) -> void:
+	_bind_children(self, stats)
+
+func _bind_children(node: Node, stats: Stats) -> void:
+	for c in node.get_children():
+		if c is StatBar:
+			c.bind(stats)
+		_bind_children(c, stats)

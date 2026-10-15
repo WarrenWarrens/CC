@@ -63,7 +63,22 @@ func get_active_ramp() -> Ramp:
 		var end := r.end_progress_for(floor_id)
 		if end >= 0.0 and absf(r.progress_at(global_position) - end) < 0.4:
 			return r
+	_warn_floor_mismatch()
 	return null
+
+
+var _warned_ramps := {}
+
+## One-time warning when we stand at the end of a ramp that doesn't join our floor. Usually that means
+## floor_id is out of sync (wrong starting floor on a Player/Enemy, or a ramp with the wrong floor numbers).
+func _warn_floor_mismatch() -> void:
+	for r in ramps:
+		if _warned_ramps.has(r) or r.connects(floor_id):
+			continue
+		var progress := r.progress_at(global_position)
+		if progress < 0.25 or progress > 0.75:
+			_warned_ramps[r] = true
+			push_warning("%s is at the end of ramp '%s' (joins floors %d and %d) but its floor_id is %d. If it should be able to use that ramp, its floor_id is out of sync. (Harmless if the ramps just overlap on screen.)" % [name, r.name, r.low_floor, r.high_floor, floor_id])
 
 
 func get_slope() -> float:

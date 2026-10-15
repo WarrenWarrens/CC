@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dwhl3mkrh7e2n"]
 
 [ext_resource type="Script" uid="uid://saxx8vy4npnh" path="res://Script/World.gd" id="1_28xjk"]
-[ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Scenes/Player.tscn" id="2_pllyr"]
+[ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Characters/Player.tscn" id="2_pllyr"]
 [ext_resource type="Texture2D" uid="uid://cqk0p78nwjjd2" path="res://Assets/sky.png" id="3_gatps"]
 [ext_resource type="Texture2D" uid="uid://cxftcn7kqwxur" path="res://Assets/ground2.png" id="4_buomm"]
 [ext_resource type="Texture2D" uid="uid://32yi8om1h7ai" path="res://Assets/ground1.png" id="5_4h4gs"]
@@ -31,7 +31,11 @@ z_index = 2
 position = Vector2(4244, 185)
 collision_layer = 3
 collision_mask = 3
+player_index = null
 camera_base_y = 0.0
+auto_camera_base = null
+camera_limits = null
+floor_id = null
 
 [node name="Ground" type="Node2D" parent="." unique_id=1849063933]
 metadata/_edit_lock_ = true
