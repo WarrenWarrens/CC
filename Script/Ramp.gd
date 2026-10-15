@@ -84,10 +84,25 @@ func _build_footprints() -> void:
 		if pts.size() != 4:
 			push_warning("Ramp footprint needs exactly 4 points: " + str(child.name))
 			continue
-		pts.sort_custom(func(a, b): return a.x < b.x)   # left edge = first two, right edge = last two
+		# The walker enters and leaves through the two edges that are NOT parallel to the climb direction.
+		# (Picking them by x position breaks on 45 degree art, where the top corner can sit left of the bottom one.)
+		var dn := d.normalized()
+		var edges: Array = []
+		for i in 4:
+			var a: Vector2 = pts[i]
+			var b: Vector2 = pts[(i + 1) % 4]
+			edges.append({
+				"a": a,
+				"e": b - a,
+				"mid": (a + b) * 0.5,
+				"cross": absf(dn.cross((b - a).normalized())),
+			})
+		edges.sort_custom(func(x, y): return x["cross"] > y["cross"])
+		var pair: Array = [edges[0], edges[1]]
+		pair.sort_custom(func(x, y): return x["mid"].dot(dn) < y["mid"].dot(dn))   # start edge first
 		var f := {
-			"lo": pts[0], "le": pts[1] - pts[0],
-			"ro": pts[2], "re": pts[3] - pts[2],
+			"lo": pair[0]["a"], "le": pair[0]["e"],
+			"ro": pair[1]["a"], "re": pair[1]["e"],
 		}
 		f["ld"] = d.cross(f.le)
 		f["rd"] = d.cross(f.re)
