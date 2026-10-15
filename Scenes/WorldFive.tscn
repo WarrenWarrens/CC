@@ -16,14 +16,12 @@
 [ext_resource type="PackedScene" uid="uid://d4q5okgf1yam" path="res://Scenes/Platform.tscn" id="11_2d8f3"]
 [ext_resource type="PackedScene" uid="uid://b4qdyttoij06r" path="res://Scenes/Ladder.tscn" id="12_n0yck"]
 [ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="16_fcpsy"]
-[ext_resource type="Script" uid="uid://dfxr6clv1jv51" path="res://Script/Ledge.gd" id="17_xckvv"]
+[ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="17_xckvv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
 size = Vector2(20, 239)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_ttpud"]
 
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
@@ -136,9 +134,10 @@ position = Vector2(986, 125)
 
 [node name="Platform" type="Node2D" parent="." unique_id=624010535]
 
-[node name="StaticBody2D" parent="Platform" unique_id=452983872 instance=ExtResource("11_2d8f3")]
-position = Vector2(2025, 5)
+[node name="Platform" parent="Platform" unique_id=452983872 instance=ExtResource("11_2d8f3")]
+position = Vector2(2024, 6)
 floor_id = 2
+show_top_in_game = true
 
 [node name="Ladders" type="Node2D" parent="." unique_id=1809568372]
 
@@ -159,15 +158,16 @@ texture = ExtResource("16_fcpsy")
 
 [node name="Ledges" type="Node2D" parent="." unique_id=989063067]
 
-[node name="Ledge" type="Area2D" parent="Ledges" unique_id=976586405]
-position = Vector2(2119, -65)
-script = ExtResource("17_xckvv")
-to_floor = 2
+[node name="Ledge" parent="Ledges" unique_id=976586405 instance=ExtResource("17_xckvv")]
+position = Vector2(2151, -64)
+scale = Vector2(7, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ledges/Ledge" unique_id=1111040835]
-position = Vector2(-130, 1)
-rotation = -1.5707964
-scale = Vector2(1, 25)
-shape = SubResource("SegmentShape2D_ttpud")
+[node name="Ledge2" parent="Ledges" unique_id=907579289 instance=ExtResource("17_xckvv")]
+position = Vector2(2312, -126.00001)
+rotation = 1.5707964
+scale = Vector2(5, 1)
+kind = 1
+lower_floor = 2
+upper_floor = 3
 
 [editable path="Ladders/Ladder"]
