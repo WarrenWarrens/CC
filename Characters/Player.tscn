@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bv4au63a5e7sf" path="res://Assets/Player/PWalk.png" id="8_1e7my"]
 [ext_resource type="Texture2D" uid="uid://b7v06cejj4ksp" path="res://Assets/debugdiamond.png" id="9_glx4g"]
 [ext_resource type="Texture2D" uid="uid://bqferb34iu0vs" path="res://Assets/laser.png" id="10_yoq75"]
-[ext_resource type="Script" uid="uid://5sr58tj15hmr" path="res://Scenes/Stats.gd" id="13_miouo"]
+[ext_resource type="Script" uid="uid://5sr58tj15hmr" path="res://Characters/Stats.gd" id="13_miouo"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ttpud"]
 radius = 3.0

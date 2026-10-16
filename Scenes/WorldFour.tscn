@@ -237,11 +237,7 @@ offset = Vector2(320, 240)
 [node name="Player" parent="." unique_id=1446667991 instance=ExtResource("7_y2fik")]
 z_index = 22
 position = Vector2(559, 371)
-player_index = null
 camera_base_y = 0.0
-auto_camera_base = null
-camera_limits = null
-floor_id = null
 
 [node name="RampAssistUp" type="Area2D" parent="." unique_id=1290634494]
 collision_layer = 16

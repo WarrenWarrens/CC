@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://m8dr44jj6kwf"]
 
-[ext_resource type="Script" uid="uid://c6nscldmif1h3" path="res://Scenes/HUD.gd" id="1_jo1ms"]
+[ext_resource type="Script" uid="uid://c6nscldmif1h3" path="res://Script/HUD.gd" id="1_jo1ms"]
 [ext_resource type="Script" uid="uid://dhfk4wsm5m6p" path="res://Script/StatBar.gd" id="1_sd512"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1426414201]

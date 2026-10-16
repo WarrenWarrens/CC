@@ -34,10 +34,7 @@ z_index = 2
 position = Vector2(795, 167)
 collision_layer = 3
 collision_mask = 3
-player_index = null
 camera_base_y = 0.0
-auto_camera_base = null
-camera_limits = null
 floor_id = 1
 
 [node name="LevelOne" type="Node2D" parent="." unique_id=1849063933]
@@ -91,8 +88,14 @@ physics_material_override = SubResource("PhysicsMaterial_ttpud")
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=1773466694]
-position = Vector2(-9, 238.5)
+position = Vector2(-10, 239)
 shape = SubResource("RectangleShape2D_vyp0t")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundaries" unique_id=119865761]
+polygon = PackedVector2Array(0, 120, 1305, 120, 1509, -85, 1768, -85, 1870, -187, 2311, -187, 2312, -85, 3031, -86, 3025, -867, 3, -864)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Boundaries" unique_id=546665044]
+polygon = PackedVector2Array(0, 360, 1550, 365, 1754, 160, 1755, 155, 3031, 154, 3027, 471, 2, 514)
 
 [node name="RampAssistUp" type="Area2D" parent="." unique_id=102323400]
 collision_layer = 16
