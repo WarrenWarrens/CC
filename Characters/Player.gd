@@ -149,7 +149,7 @@ func handle_actions():
 		current_state = State.JUMPING
 		z_velocity = JUMP_FORCE
 		body_sprite.play("Jump") 
-	elif Input.is_action_just_pressed("punch") and PlayerStats.use_stamina(2):
+	elif Input.is_action_just_pressed("punch") and stats.use_stamina(2):
 		current_state = State.PUNCHING
 		body_sprite.play("Attack")
 		hitbox.monitoring = true
@@ -159,7 +159,7 @@ func handle_actions():
 	elif Input.is_action_pressed("guard"):
 		current_state = State.GUARDING
 		body_sprite.play("Guard")
-	elif Input.is_action_just_pressed("dodge") and Stats.use_stamina(5):
+	elif Input.is_action_just_pressed("dodge") and stats.use_stamina(5):
 		current_state = State.DODGING
 		velocity = ramp_adjust(facing_direction * DODGE_SPEED)
 		body_sprite.play("Dodge")
@@ -178,10 +178,10 @@ func take_damage(amount, knockback_dir):
 	if is_invincible or current_state == State.DODGING:
 		return
 	elif current_state == State.GUARDING:
-		PlayerStats.take_damage(ceili(amount / 2.0))
+		stats.take_damage(ceili(amount / 2.0))
 		hitbox.set_deferred("monitoring", false)
 		velocity = knockback_dir * 75
-		PlayerStats.use_stamina(2)
+		stats.use_stamina(2)
 		return
 	else:
 		if current_state == State.AIMING:
@@ -190,7 +190,7 @@ func take_damage(amount, knockback_dir):
 		current_state = State.STUNNED
 		body_sprite.play("Stun")
 		velocity = knockback_dir * 200
-		PlayerStats.take_damage(amount)
+		stats.take_damage(amount)
 		
 		is_invincible = true
 		
@@ -225,7 +225,7 @@ func _on_hitbox_area_entered(area):
 			_hit_targets.append(target)
 			var knockback = global_position.direction_to(target.global_position)
 			target.take_damage(10, knockback)
-			PlayerStats.add_psy(10)
+			stats.add_psy(10)
 
 func _on_body_frame_changed() -> void:
 	if current_state == State.PUNCHING and body_sprite.animation == "Attack":

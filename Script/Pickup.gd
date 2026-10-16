@@ -48,5 +48,5 @@ func _on_body_entered(body: Node2D) -> void:
 	if _collected or body.name != "Player":
 		return
 	_collected = true
-	PlayerStats.change_health(20)
+	#stats.change_health(20)
 	queue_free()

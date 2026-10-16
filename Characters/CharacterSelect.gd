@@ -7,6 +7,7 @@ var _rows: Array[Dictionary] = []
 
 
 func _ready() -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)   # a root Control would otherwise be 0x0
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]:
@@ -29,6 +30,11 @@ func _ready() -> void:
 	start.pressed.connect(_on_start)
 	box.add_child(start)
 	start.grab_focus()
+
+	var back := Button.new()
+	back.text = "Back"
+	back.pressed.connect(GameSession.back_to_menu)
+	box.add_child(back)
 
 
 func _make_row(i: int) -> HBoxContainer:

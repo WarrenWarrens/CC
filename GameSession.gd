@@ -6,7 +6,11 @@ extends Node
 const MAX_PLAYERS := 4
 const CHARACTER_DIR := "res://Characters"
 const SELECT_SCENE := "res://Scenes/CharacterSelect.tscn"   # change to your paths
-const FIRST_LEVEL := "res://Scenes/WorldOne.tscn"
+const MENU_SCENE := "res://MainMenu/MainMenu.tscn"
+const FIRST_LEVEL := "res://Scenes/WorldFive.tscn"
+
+## The level the select screen will start. Set by open_select().
+var next_level := FIRST_LEVEL
 
 var roster: Array[CharacterDef] = []
 
@@ -29,13 +33,21 @@ func get_slots() -> Array[Dictionary]:
 	return slots
 
 
-func start_level(path := FIRST_LEVEL) -> void:
+## Starts a level. With no path it starts `next_level` (what the main menu picked).
+func start_level(path := "") -> void:
 	_alive = 0
-	get_tree().change_scene_to_file(path)
+	get_tree().change_scene_to_file(path if path != "" else next_level)
 
 
-func open_select() -> void:
+## The main menu calls this: remember which level was chosen, then show the character select screen.
+func open_select(level_path := "") -> void:
+	if level_path != "":
+		next_level = level_path
 	get_tree().change_scene_to_file(SELECT_SCENE)
+
+
+func back_to_menu() -> void:
+	get_tree().change_scene_to_file(MENU_SCENE)
 
 
 ## Each Player calls this once it has its Stats.

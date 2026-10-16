@@ -25,6 +25,9 @@ var _header_h := 0.0
 var _title_label: Label
 var _value_label: Label
 
+# FIX: Add a reference to hold the specific player's Stats node
+var _target_stats: Stats = null
+
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_header_h = font_size + 4.0
@@ -32,7 +35,17 @@ func _ready() -> void:
 	_title_label.text = title
 	_value_label = _make_label(HORIZONTAL_ALIGNMENT_RIGHT)
 	_value_label.visible = show_values
-	_shown = float(PlayerStats.get(stat))  
+	
+	# Fallback for singleplayer testing if bind() isn't called quickly enough
+	if Engine.is_editor_hint() == false and _target_stats == null:
+		var players = get_tree().get_nodes_in_group("players")
+		if players.size() > 0 and players[0].has_node("Stats"):
+			_target_stats = players[0].get_node("Stats")
+			
+	if _target_stats:
+		_shown = float(_target_stats.get(stat))
+	else:
+		_shown = 0.0
 
 func _make_label(align: HorizontalAlignment) -> Label:
 	var l := Label.new()
@@ -47,8 +60,14 @@ func _bar_w() -> float:
 
 func _process(delta: float) -> void:
 	_time += delta
-	_target = float(PlayerStats.get(stat))
-	_max = maxf(float(PlayerStats.get("max_" + stat)), 0.001)
+	
+	# FIX: Only attempt to read stats if we have a valid reference
+	if not is_instance_valid(_target_stats):
+		return
+		
+	# Read from the instanced Stats node, not the old PlayerStats Autoload
+	_target = float(_target_stats.get(stat))
+	_max = maxf(float(_target_stats.get("max_" + stat)), 0.001)
 	_shown = move_toward(_shown, _target, _max * drain_speed * delta)
 
 	var w := _bar_w()
@@ -73,8 +92,11 @@ func _draw() -> void:
 		for i in range(1, chunks):
 			draw_rect(Rect2(w * i / chunks - 1.0, _header_h, 2.0, bar_height), divider_color)
 			
-func bind(stats: Stats) -> void:
-	_bind_children(self, stats)
+# FIX: Make bind setup the direct reference for this specific bar
+func bind(target_stats: Stats) -> void:
+	_target_stats = target_stats
+	if is_inside_tree():
+		_shown = float(_target_stats.get(stat))
 
 func _bind_children(node: Node, stats: Stats) -> void:
 	for c in node.get_children():
