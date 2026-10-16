@@ -2,6 +2,7 @@ extends Area2D
 class_name Door
 
 @export var door_id: String = ""
+@export var door_floor_id: int = 0
 
 @export_group("Destination")
 @export_file("*.tscn") var destination_scene_path: String = ""
@@ -69,6 +70,9 @@ func _teleport_locally(player: Node2D) -> void:
 		player.global_position = target_door.spawn_point.global_position
 		target_door._start_cooldown()
 		_snap_cameras(player)
+		var w := player as Walker
+		w.floor_id = door_floor_id
+
 	)
 
 func _start_cooldown() -> void:

@@ -17,6 +17,8 @@
 [ext_resource type="PackedScene" uid="uid://b4qdyttoij06r" path="res://Scenes/Ladder.tscn" id="12_n0yck"]
 [ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="16_fcpsy"]
 [ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="17_xckvv"]
+[ext_resource type="PackedScene" uid="uid://b2r3p8nte0wg" path="res://Scenes/Door.tscn" id="18_rvry2"]
+[ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="19_fcpsy"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
@@ -87,14 +89,14 @@ texture = ExtResource("8_rvry2")
 physics_material_override = SubResource("PhysicsMaterial_ttpud")
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=1773466694]
+[node name="Left" type="CollisionShape2D" parent="Boundaries" unique_id=1773466694]
 position = Vector2(-10, 239)
 shape = SubResource("RectangleShape2D_vyp0t")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundaries" unique_id=119865761]
+[node name="Top" type="CollisionPolygon2D" parent="Boundaries" unique_id=119865761]
 polygon = PackedVector2Array(0, 120, 1305, 120, 1509, -85, 1768, -85, 1870, -187, 2311, -187, 2312, -85, 3031, -86, 3025, -867, 3, -864)
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Boundaries" unique_id=546665044]
+[node name="Bottom" type="CollisionPolygon2D" parent="Boundaries" unique_id=546665044]
 polygon = PackedVector2Array(0, 360, 1550, 365, 1754, 160, 1755, 155, 3031, 154, 3027, 471, 2, 514)
 
 [node name="RampAssistUp" type="Area2D" parent="." unique_id=102323400]
@@ -177,5 +179,35 @@ scale = Vector2(5, 3)
 kind = 1
 lower_floor = 2
 upper_floor = 3
+
+[node name="Doors" type="Node2D" parent="." unique_id=1590519640]
+
+[node name="Door" parent="Doors" unique_id=993242610 instance=ExtResource("18_rvry2")]
+position = Vector2(181, 159)
+scale = Vector2(3, 3)
+door_id = "001"
+door_floor_id = 1
+destination_door_id = "002"
+
+[node name="Door2" parent="Doors" unique_id=2067703749 instance=ExtResource("18_rvry2")]
+position = Vector2(2785, -88)
+scale = Vector2(3, 3)
+door_id = "002"
+door_floor_id = 2
+destination_door_id = "001"
+
+[node name="Enemy" type="Node2D" parent="." unique_id=1582444898]
+
+[node name="Enemy" parent="Enemy" unique_id=864659468 instance=ExtResource("19_fcpsy")]
+position = Vector2(2942, -39)
+floor_id = 2
+
+[node name="Enemy2" parent="Enemy" unique_id=194145769 instance=ExtResource("19_fcpsy")]
+position = Vector2(2961, 120)
+floor_id = 2
+
+[node name="Enemy3" parent="Enemy" unique_id=139526224 instance=ExtResource("19_fcpsy")]
+position = Vector2(2889, 50)
+floor_id = 2
 
 [editable path="Ladders/Ladder"]
