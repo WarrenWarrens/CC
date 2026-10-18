@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c7b4yq52byco3"]
 
-[ext_resource type="Script" uid="uid://c164ggowkhmyt" path="res://Characters/CharacterSelect.gd" id="1_rq1t4"]
+[ext_resource type="Script" uid="uid://c164ggowkhmyt" path="res://Characters/CharacterSelect.gd" id="1_r5nmx"]
 
 [node name="Control" type="Control" unique_id=1362907438]
 layout_mode = 3
@@ -9,4 +9,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_rq1t4")
+script = ExtResource("1_r5nmx")

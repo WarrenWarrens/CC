@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CharacterDef" format=3 uid="uid://b6d27vd03t4au"]
+
+[ext_resource type="Script" uid="uid://cfx5mpm15mma8" path="res://Characters/CharacterDef.gd" id="1_jxamy"]
+
+[resource]
+script = ExtResource("1_jxamy")
+id = &"tank"
+display_name = "Tank"
+max_health = 400
+start_health = 300
+max_stamina = 40.0
+metadata/_custom_type_script = "uid://cfx5mpm15mma8"

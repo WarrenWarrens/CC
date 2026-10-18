@@ -94,7 +94,7 @@ position = Vector2(-10, 239)
 shape = SubResource("RectangleShape2D_vyp0t")
 
 [node name="Top" type="CollisionPolygon2D" parent="Boundaries" unique_id=119865761]
-polygon = PackedVector2Array(0, 120, 1305, 120, 1509, -85, 1768, -85, 1870, -187, 2311, -187, 2312, -85, 3031, -86, 3025, -867, 3, -864)
+polygon = PackedVector2Array(0, 120, 1305, 120, 1509, -85, 1768, -85, 1870, -187, 2311, -187, 2311.7744, -107.988815, 2312, -85, 3031, -86, 3025, -867, 3, -864)
 
 [node name="Bottom" type="CollisionPolygon2D" parent="Boundaries" unique_id=546665044]
 polygon = PackedVector2Array(0, 360, 1550, 365, 1754, 160, 1755, 155, 3031, 154, 3027, 471, 2, 514)
@@ -119,6 +119,7 @@ collision_layer = 16
 script = ExtResource("7_asll7")
 low_floor = 2
 high_floor = 3
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="RampAssistUp2" unique_id=2103188788]
 position = Vector2(1873, -82)
