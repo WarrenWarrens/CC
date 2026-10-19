@@ -38,6 +38,36 @@ script = ExtResource("15_avcxa")
 entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_fjoli")])
 metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
 
+[sub_resource type="Resource" id="Resource_l6opw"]
+script = ExtResource("14_fjoli")
+item = ExtResource("15_7qjx6")
+metadata/_custom_type_script = "uid://dwipcnm6nscwa"
+
+[sub_resource type="Resource" id="Resource_57qra"]
+script = ExtResource("15_avcxa")
+entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_l6opw")])
+metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
+
+[sub_resource type="Resource" id="Resource_74v00"]
+script = ExtResource("14_fjoli")
+item = ExtResource("15_7qjx6")
+metadata/_custom_type_script = "uid://dwipcnm6nscwa"
+
+[sub_resource type="Resource" id="Resource_pbrct"]
+script = ExtResource("15_avcxa")
+entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_74v00")])
+metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
+
+[sub_resource type="Resource" id="Resource_tg1wv"]
+script = ExtResource("14_fjoli")
+item = ExtResource("15_7qjx6")
+metadata/_custom_type_script = "uid://dwipcnm6nscwa"
+
+[sub_resource type="Resource" id="Resource_fvm8j"]
+script = ExtResource("15_avcxa")
+entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_tg1wv")])
+metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
+
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
 script = ExtResource("1_wnph4")
@@ -211,14 +241,17 @@ destination_door_id = "001"
 
 [node name="Enemy" parent="Enemy" unique_id=864659468 instance=ExtResource("19_fcpsy")]
 position = Vector2(2942, -39)
-floor_id = null
+loot = SubResource("Resource_57qra")
+floor_id = 2
 
 [node name="Enemy2" parent="Enemy" unique_id=194145769 instance=ExtResource("19_fcpsy")]
 position = Vector2(2961, 120)
-floor_id = null
+loot = SubResource("Resource_pbrct")
+floor_id = 2
 
 [node name="Enemy3" parent="Enemy" unique_id=139526224 instance=ExtResource("19_fcpsy")]
 position = Vector2(2889, 50)
-floor_id = null
+loot = SubResource("Resource_fvm8j")
+floor_id = 2
 
 [editable path="Ladders/Ladder"]
