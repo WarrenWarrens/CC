@@ -1,162 +1,176 @@
-class_name Ledge
-extends Area2D
-## A climb or a drop across the wall between two FLOORS, where there is no ramp.
+class_name Platform
+extends StaticBody2D
+## A raised block you jump onto (stepping stones, crates, a low wall you can climb).
 ##
-## Picture the wall face between two strips of floor:
+## Two shapes describe it:
+##   Wall  (CollisionPolygon2D) where the block touches the ground. It is SOLID: walkers bump into it
+##                              and have to jump over it. Rename your existing "CollisionPolygon2D" to "Wall"
+##                              (or leave it, the old name still works).
+##   Top   (Polygon2D)          where you can WALK on top, drawn in screen space (so it sits `height` px above
+##                              the wall). It is a Polygon2D, NOT a collision shape, so it never blocks anything.
+##                              It is coloured in the editor so you can see it, and hidden in game.
 ##
-##     upper floor  ..........................   <- the LIP (top edge of the wall)
-##     ============= wall face, `height` px ====
-##     lower floor  ..........................   <- the BASE (bottom edge of the wall)
+## If there is no Top node, the top is the Wall shape moved up by `height` (the old behaviour).
+## Put the node's origin on the FRONT edge of the base, make it a direct child of your y-sorted root,
+## and set z_index = floor*10 + 5.
 ##
-## CLIMB: the zone is a thin band on the LOWER floor, right along the base. Jump at the wall while
-##        pushing up and the walker grabs the lip, climbs, and ends up on the upper floor (floor id goes up).
-## DROP:  the zone is a thin band on the UPPER floor, right along the lip. Push down (or jump off, if
-##        `drop_needs_jump`) and the walker falls to the lower floor (floor id goes down).
-## For a wall you can climb AND jump off, use two Ledge nodes, one of each kind.
-##
-## Scene layout:  Ledge (Area2D, this script)  >  CollisionShape2D (a RectangleShape2D band ~20px thick)
-## `height` is the screen distance between the two strips' facing edges (the same number a ladder spans).
+## Heights up to ~88 can be jumped onto. Between 84 and (88 + mantle_reach) the walker grabs the edge and climbs.
+## Taller than that = plain wall.
 
-enum Kind { CLIMB, DROP }
-
-@export var kind := Kind.CLIMB
-@export var lower_floor := 1
-@export var upper_floor := 2
-## Wall height in screen px = floor difference. The camera moves by exactly this much.
-@export var height := 102.0
-## How far INTO the destination floor the walker lands, so it isn't left standing on the very edge.
-@export var landing_offset := 8.0
-## Drops only: false = just walking into the edge drops you, true = you have to be airborne.
-@export var drop_needs_jump := false
-## Climbs only: false = you don't have to jump, just walk into the cliff and keep pushing up
-## for `climb_hold_time` seconds and the walker vaults it. Only for walls up to `max_auto_climb_height`.
-@export var climb_needs_jump := true
-@export var climb_hold_time := 0.15
-@export var max_auto_climb_height := 130.0
-## Climbs: how far above the wall's lip the SPRITE may be and still count (a high jump, e.g. off a platform).
-## The walker switches floors the moment its sprite is level with the lip, not when its shadow reaches the wall.
-@export var max_early_reach := 200.0
-## Drops: if the walker is in the air over the zone it falls to the lower floor without needing a key held.
-@export var airborne_ignores_push := true
-@export var mantle_reach := 28.0          # climbs: how far above its head a walker can grab
+@export var floor_id := 0
+## How tall the block is in screen px. Ignored (calculated for you) when `derive_height` is on and a Top exists.
+@export var height := 50.0
+## With a Top shape: height = how far the Top sits above the Wall (centre to centre).
+@export var derive_height := true
+## How far the camera rises while standing on this platform. Leave 0 for the first stones in a sequence
+## and set the last one to the total climb, so the camera only shifts at the end.
+@export var camera_rise := 0.0
+@export var mantle_reach := 28.0     # how far above its head a walker can grab
+@export var grab_distance := 14.0    # how close to the wall edge counts as "touching the wall"
 @export var mantle_time := 0.45
-@export var mantle_animation := &"Mantle"
+@export var mantle_animation := &"Mantle"   # optional animation name on Visuals/Body
+@export var show_top_in_game := false       # debug: keep the green Top shape visible while playing
 
-var _from_floor := 0
-var _to_floor := 0
-var _dy := 0.0           # screen-Y change to the other floor: negative = up (climb), positive = down (drop)
-var _push := Vector2.UP  # the direction the walker has to be pushing
-var _hold := {}          # walker instance id -> seconds spent pushing into the cliff (auto climb)
-var _probe := CircleShape2D.new()
-const LOCK_MS := 350     # after a walker uses a ledge, no ledge may grab it again for this long (stops ping-pong)
+var _wall := PackedVector2Array()
+var _top := PackedVector2Array()
+var _top_centroid := Vector2.ZERO
+var _passable := {}   # walker instance id -> bool, so exceptions are only changed when they flip
 
 
 func _ready() -> void:
-	_probe.radius = 1.0
-	monitoring = false       # we test the walkers ourselves (see _physics_process); the Area2D is just the zone's shape
-	monitorable = false
-	if kind == Kind.CLIMB:
-		_from_floor = lower_floor
-		_to_floor = upper_floor
-		_dy = -height
-		_push = Vector2.UP
-	else:
-		_from_floor = upper_floor
-		_to_floor = lower_floor
-		_dy = height
-		_push = Vector2.DOWN
+	add_to_group("platforms")
 
-
-func _physics_process(delta: float) -> void:
-	var active := {}
-	var now := Time.get_ticks_msec()
-	for node in get_tree().get_nodes_in_group("walkers"):
-		var w := node as Walker
-		if w == null or w.traversing or w.surface != null or w.floor_id != _from_floor:
-			continue
-		if int(w.get_meta(&"ledge_lock", 0)) > now:
-			continue
-		var lift := _sprite_lift(w)
-		# the point we test is the feet, moved up by how far the sprite is above the lip
-		if not _zone_contains(w.global_position - Vector2(0.0, lift)):
-			continue
-		if _wants_through(w, delta, active):
-			_use(w, lift)
-	for id in _hold.keys():
-		if not active.has(id):
-			_hold.erase(id)   # stopped pushing or left the zone: start over next time
-
-
-## Climbs only: how many px the walker's sprite is above the lip (0 = at or below it).
-func _sprite_lift(w: Walker) -> float:
-	if kind != Kind.CLIMB or w.altitude <= height:
-		return 0.0
-	return minf(w.altitude - height, max_early_reach)
-
-
-func _zone_contains(p: Vector2) -> bool:
-	for child in get_children():
-		var cs := child as CollisionShape2D
-		if cs != null and not cs.disabled and cs.shape != null:
-			if cs.shape.collide(cs.global_transform, _probe, Transform2D(0.0, p)):
-				return true
-		var cp := child as CollisionPolygon2D
-		if cp != null and not cp.disabled:
-			if Geometry2D.is_point_in_polygon(cp.to_local(p), cp.polygon):
-				return true
-	return false
-
-
-func _wants_through(w: Walker, delta: float, active: Dictionary) -> bool:
-	var airborne := w.altitude > 0.0 or w.z_velocity > 0.0
-	var pushing := w.move_intent.normalized().dot(_push) >= 0.5
-	if kind == Kind.DROP:
-		if airborne and airborne_ignores_push:
-			return true                       # in the air over the edge: you fall
-		if drop_needs_jump and not airborne:
-			return false
-		return pushing
-	if not pushing:
-		return false
-	if airborne:
-		return w.altitude + mantle_reach >= height     # a jump that reaches the lip
-	if climb_needs_jump or height > max_auto_climb_height:
-		return false
-	var id := w.get_instance_id()                       # walking: has to keep pushing for a moment
-	_hold[id] = float(_hold.get(id, 0.0)) + delta
-	active[id] = true
-	return _hold[id] >= climb_hold_time
-
-
-func _use(w: Walker, lift := 0.0) -> void:
-	var inset := landing_offset * signf(_dy)    # "into" the destination strip: up for a climb, down for a drop
-	w.set_meta(&"ledge_lock", Time.get_ticks_msec() + LOCK_MS)
-	if lift > 0.0:
-		w.shift_level(-lift, 0.0)    # the sprite is already above the lip: move the feet up to where it is, sprite stays put
-	w.floor_id = _to_floor
-	w.shift_level(_dy + inset, _dy)
-	w.refresh_z()
-	if kind == Kind.DROP:
-		return   # the sprite is now above its feet and Walker.air_step brings it down
-	if lift > 0.0:
-		w.altitude = maxf(w.altitude, 1.0)   # came in high: no mantle, the jump just carries on over the upper floor
-		w.sync_body()
+	var wall_node := get_node_or_null("Wall") as CollisionPolygon2D
+	if wall_node == null:
+		wall_node = get_node_or_null("CollisionPolygon2D") as CollisionPolygon2D
+	if wall_node == null:
+		push_error("Platform '%s' needs a CollisionPolygon2D child named Wall (the solid base)." % name)
 		return
+	_wall = _polygon_to_global(wall_node, wall_node.polygon)
+
+	var top_node := get_node_or_null("Top") as Polygon2D
+	if top_node != null and top_node.polygon.size() >= 3:
+		_top = _polygon_to_global(top_node, top_node.polygon)
+		top_node.visible = show_top_in_game
+		if derive_height:
+			height = _centroid(_wall).y - _centroid(_top).y
+			if height <= 0.0:
+				push_warning("Platform '%s': the Top shape should be drawn ABOVE the Wall shape." % name)
+	else:
+		for p in _wall:
+			_top.append(p + Vector2(0.0, -height))
+	_top_centroid = _centroid(_top)
+
+
+func _polygon_to_global(node: Node2D, poly: PackedVector2Array) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	for p in poly:
+		out.append(node.to_global(p))
+	return out
+
+
+func _centroid(poly: PackedVector2Array) -> Vector2:
+	var sum := Vector2.ZERO
+	for p in poly:
+		sum += p
+	return sum / maxf(poly.size(), 1)
+
+
+func wall_contains(p: Vector2) -> bool:
+	return Geometry2D.is_point_in_polygon(p, _wall)
+
+
+func top_contains(p: Vector2) -> bool:
+	return Geometry2D.is_point_in_polygon(p, _top)
+
+
+func _mantlable() -> bool:
+	return height > Walker.JUMP_APEX - 4.0 and height <= Walker.JUMP_APEX + mantle_reach
+
+
+func _closest_on(poly: PackedVector2Array, p: Vector2) -> Vector2:
+	var best := poly[0]
+	var best_d := INF
+	for i in poly.size():
+		var q := Geometry2D.get_closest_point_to_segment(p, poly[i], poly[(i + 1) % poly.size()])
+		var d := p.distance_squared_to(q)
+		if d < best_d:
+			best_d = d
+			best = q
+	return best
+
+
+## Called by Walker.air_step while falling. Lands on the top if we cross its plane above the walkable area.
+func try_land(w: Walker, prev_ground_alt: float) -> bool:
+	if w.floor_id != floor_id or w.surface == self or w.traversing:
+		return false
+	if prev_ground_alt < height or w.ground_altitude() > height:
+		return false
+	# where our feet would be on the top plane must be inside the walkable Top shape
+	if not top_contains(w.ground_pos() - Vector2(0.0, height)):
+		return false
+	w.set_surface(self)
+	w.altitude = 0.0
+	w.z_velocity = 0.0
+	w.sync_body()
+	return true
+
+
+## Called every frame by Walker.update_floor_state: lets walkers pass through the wall when they are above
+## it, and starts a mantle when they are airborne against a wall they can just reach.
+func update_for(w: Walker) -> void:
+	if w.floor_id != floor_id:
+		_set_passable(w, true)
+		return
+	var g_alt := w.ground_altitude()
+	var passable := w.surface != null or g_alt >= height - 1.0
+	_set_passable(w, passable)
+	if passable or w.traversing or not _mantlable():
+		return
+	if g_alt <= 0.0 and w.z_velocity <= 0.0:
+		return   # on the ground: walking into a wall does nothing, you have to jump
+	if g_alt + mantle_reach < height:
+		return
+	var g := w.ground_pos()
+	if wall_contains(g) or g.distance_to(_closest_on(_wall, g)) > grab_distance:
+		return
+	_mantle(w, g)
+
+
+func _set_passable(w: Walker, passable: bool) -> void:
+	var id := w.get_instance_id()
+	if _passable.get(id, false) == passable:
+		return
+	_passable[id] = passable
+	if passable:
+		w.add_collision_exception_with(self)
+	else:
+		w.remove_collision_exception_with(self)
+
+
+func _mantle(w: Walker, g: Vector2) -> void:
+	var on_top_plane := g - Vector2(0.0, height)           # where we would be on the top plane
+	var edge := _closest_on(_top, on_top_plane)            # nearest point of the walkable area
+	var inward := (_top_centroid - edge).normalized()
+	var target := edge + inward * 10.0                     # feet position on top, a little in from the lip
 	w.begin_traversal()
+	w.set_surface(self)       # feet jump up by `height`; the sprite now hangs below them
 	w.play_anim(mantle_animation)
 	var tw := w.create_tween()
-	tw.tween_method(_climb_step.bind(w, w.altitude), 0.0, 1.0, mantle_time).set_trans(Tween.TRANS_SINE)
-	tw.tween_callback(_climb_done.bind(w))
+	tw.tween_method(_mantle_step.bind(w, w.global_position, target, w.altitude), 0.0, 1.0, mantle_time) \
+		.set_trans(Tween.TRANS_SINE)
+	tw.tween_callback(_mantle_done.bind(w))
 
 
-func _climb_step(k: float, w: Walker, from_alt: float) -> void:
+func _mantle_step(k: float, w: Walker, from_pos: Vector2, to_pos: Vector2, from_alt: float) -> void:
 	if not is_instance_valid(w):
 		return
+	w.global_position = from_pos.lerp(to_pos, k)
 	w.altitude = lerpf(from_alt, 0.0, k)
 	w.sync_body()
 
 
-func _climb_done(w: Walker) -> void:
+func _mantle_done(w: Walker) -> void:
 	if not is_instance_valid(w):
 		return
 	w.altitude = 0.0
