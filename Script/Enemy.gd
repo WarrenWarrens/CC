@@ -19,6 +19,7 @@ var current_slope = 0.0
 @onready var body_sprite = $Visuals/Body
 @onready var visuals = $Visuals
 @onready var hitbox = $Visuals/Hitbox
+@export var loot: LootTable
 
 func _ready():
 	var random_angle = randf() * PI * 2
@@ -114,6 +115,7 @@ func die(knockback_dir):
 	current_state = State.DEAD
 	velocity = knockback_dir * 150
 	body_sprite.play("Death")   
+	loot.drop(self, knockback_dir)
 
 	set_deferred("collision_layer", 0)                    
 	$Visuals/Hurtbox.set_deferred("monitorable", false)   

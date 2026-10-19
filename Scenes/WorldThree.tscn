@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="8_28xjk"]
 [ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Script/LevelCamera.gd" id="10_gatps"]
 [ext_resource type="PackedScene" uid="uid://d4q5okgf1yam" path="res://Scenes/Platform.tscn" id="11_4h4gs"]
-[ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Crate.tscn" id="11_buomm"]
+[ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Breakable.tscn" id="11_buomm"]
 [ext_resource type="PackedScene" uid="uid://b4qdyttoij06r" path="res://Scenes/Ladder.tscn" id="12_i0x0q"]
 [ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="13_ri24d"]
 [ext_resource type="PackedScene" uid="uid://b2r3p8nte0wg" path="res://Scenes/Door.tscn" id="14_ri24d"]
@@ -31,11 +31,7 @@ z_index = 2
 position = Vector2(4244, 185)
 collision_layer = 3
 collision_mask = 3
-player_index = null
 camera_base_y = 0.0
-auto_camera_base = null
-camera_limits = null
-floor_id = null
 
 [node name="Ground" type="Node2D" parent="." unique_id=1849063933]
 metadata/_edit_lock_ = true
@@ -135,20 +131,27 @@ metadata/_edit_lock_ = true
 
 [node name="Enemy" parent="Enemies" unique_id=864659468 instance=ExtResource("8_28xjk")]
 position = Vector2(506, 316)
+floor_id = null
 
 [node name="Enemy2" parent="Enemies" unique_id=1286390211 instance=ExtResource("8_28xjk")]
 position = Vector2(678, 154)
+floor_id = null
 
 [node name="Enemy3" parent="Enemies" unique_id=176896922 instance=ExtResource("8_28xjk")]
 position = Vector2(403, 143)
+floor_id = null
 
 [node name="Lighting" type="Node2D" parent="." unique_id=419392471]
 
 [node name="Crate" parent="." unique_id=1572332876 instance=ExtResource("11_buomm")]
 position = Vector2(986, 125)
+hits_to_break = null
+toss_distance = null
 
 [node name="Crate2" parent="." unique_id=115203274 instance=ExtResource("11_buomm")]
 position = Vector2(1246, 292)
+hits_to_break = null
+toss_distance = null
 
 [node name="Ramp" type="Area2D" parent="." unique_id=1409791031]
 script = ExtResource("7_sn61f")
@@ -166,7 +169,6 @@ script = ExtResource("10_gatps")
 [node name="StaticBody2D" parent="." unique_id=452983872 instance=ExtResource("11_4h4gs")]
 position = Vector2(4056.0002, 238)
 scale = Vector2(3, 3)
-camera_rise = 50.0
 
 [node name="Ladder" parent="." unique_id=323733151 instance=ExtResource("12_i0x0q")]
 position = Vector2(4899, 150)

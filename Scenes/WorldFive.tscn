@@ -11,10 +11,13 @@
 [ext_resource type="Texture2D" uid="uid://cndy3qbw2srtw" path="res://Assets/purple2.png" id="7_xckvv"]
 [ext_resource type="Texture2D" uid="uid://bk848pkqvtsg7" path="res://Assets/yellow2.png" id="8_rvry2"]
 [ext_resource type="Texture2D" uid="uid://djtwltfbb1m5j" path="res://Assets/yellow1.png" id="8_ya0eq"]
-[ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Crate.tscn" id="9_avcxa"]
 [ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Script/LevelCamera.gd" id="10_7qjx6"]
 [ext_resource type="PackedScene" uid="uid://d4q5okgf1yam" path="res://Scenes/Platform.tscn" id="11_2d8f3"]
 [ext_resource type="PackedScene" uid="uid://b4qdyttoij06r" path="res://Scenes/Ladder.tscn" id="12_n0yck"]
+[ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Breakable.tscn" id="13_fcpsy"]
+[ext_resource type="Script" uid="uid://dwipcnm6nscwa" path="res://Script/Lootentry.gd" id="14_fjoli"]
+[ext_resource type="Resource" uid="uid://bsho5igm2tpei" path="res://Resources/drink.tres" id="15_7qjx6"]
+[ext_resource type="Script" uid="uid://cswnmbjmmd2fy" path="res://Script/Loottable.gd" id="15_avcxa"]
 [ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="16_fcpsy"]
 [ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="17_xckvv"]
 [ext_resource type="PackedScene" uid="uid://b2r3p8nte0wg" path="res://Scenes/Door.tscn" id="18_rvry2"]
@@ -24,6 +27,16 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyp0t"]
 size = Vector2(20, 239)
+
+[sub_resource type="Resource" id="Resource_fjoli"]
+script = ExtResource("14_fjoli")
+item = ExtResource("15_7qjx6")
+metadata/_custom_type_script = "uid://dwipcnm6nscwa"
+
+[sub_resource type="Resource" id="Resource_mppsq"]
+script = ExtResource("15_avcxa")
+entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_fjoli")])
+metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
 
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
@@ -135,18 +148,15 @@ script = ExtResource("10_7qjx6")
 
 [node name="Crates" type="Node2D" parent="." unique_id=970952348]
 
-[node name="Crate2" parent="Crates" unique_id=115203274 instance=ExtResource("9_avcxa")]
-position = Vector2(1246, 292)
-
-[node name="Crate" parent="Crates" unique_id=1572332876 instance=ExtResource("9_avcxa")]
-position = Vector2(986, 125)
+[node name="Breakable" parent="Crates" unique_id=1572332876 instance=ExtResource("13_fcpsy")]
+position = Vector2(427, 189)
+floor_id = 1
+loot = SubResource("Resource_mppsq")
 
 [node name="Platform" type="Node2D" parent="." unique_id=624010535]
 
 [node name="Platform" parent="Platform" unique_id=452983872 instance=ExtResource("11_2d8f3")]
 position = Vector2(2024, 6)
-floor_id = 2
-show_top_in_game = true
 
 [node name="Ladders" type="Node2D" parent="." unique_id=1809568372]
 
@@ -201,14 +211,14 @@ destination_door_id = "001"
 
 [node name="Enemy" parent="Enemy" unique_id=864659468 instance=ExtResource("19_fcpsy")]
 position = Vector2(2942, -39)
-floor_id = 2
+floor_id = null
 
 [node name="Enemy2" parent="Enemy" unique_id=194145769 instance=ExtResource("19_fcpsy")]
 position = Vector2(2961, 120)
-floor_id = 2
+floor_id = null
 
 [node name="Enemy3" parent="Enemy" unique_id=139526224 instance=ExtResource("19_fcpsy")]
 position = Vector2(2889, 50)
-floor_id = 2
+floor_id = null
 
 [editable path="Ladders/Ladder"]

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemDef" format=3 uid="uid://bsho5igm2tpei"]
+
+[ext_resource type="Script" uid="uid://21xjawo1noa0" path="res://Script/Itemdef.gd" id="1_mb0qs"]
+[ext_resource type="Texture2D" uid="uid://w3imcv8dxk1x" path="res://Assets/drink.png" id="2_i6rkr"]
+
+[resource]
+script = ExtResource("1_mb0qs")
+texture = ExtResource("2_i6rkr")
+metadata/_custom_type_script = "uid://21xjawo1noa0"
