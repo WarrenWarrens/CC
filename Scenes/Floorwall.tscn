@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://xh438ufdmot4"]
+
+[ext_resource type="Script" uid="uid://c1yr1gt5dn7nn" path="res://FloorWall.gd" id="1_3d4e7"]
+
+[node name="StaticBody2D" type="StaticBody2D" unique_id=1311400071]
+script = ExtResource("1_3d4e7")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1696371256]
