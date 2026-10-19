@@ -1,4 +1,3 @@
-
 extends Walker  
 enum FightingStyle { RED, BLUE, YELLOW, PURPLE }
 var current_style = FightingStyle.RED 
