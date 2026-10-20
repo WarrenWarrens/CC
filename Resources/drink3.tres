@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDef" format=3 uid="uid://dn6qo5jpr55md"]
+
+[ext_resource type="Script" uid="uid://21xjawo1noa0" path="res://Script/Itemdef.gd" id="1_xhopw"]
+[ext_resource type="Texture2D" uid="uid://bk1s7udnvlnmf" path="res://Assets/drink3.png" id="2_xhopw"]
+
+[resource]
+script = ExtResource("1_xhopw")
+id = &"item3"
+display_name = "Stamina"
+texture = ExtResource("2_xhopw")
+kind = 1
+amount = 5.0
+metadata/_custom_type_script = "uid://21xjawo1noa0"

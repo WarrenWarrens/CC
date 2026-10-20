@@ -16,8 +16,10 @@
 [ext_resource type="PackedScene" uid="uid://b4qdyttoij06r" path="res://Scenes/Ladder.tscn" id="12_n0yck"]
 [ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Breakable.tscn" id="13_fcpsy"]
 [ext_resource type="Script" uid="uid://dwipcnm6nscwa" path="res://Script/Lootentry.gd" id="14_fjoli"]
+[ext_resource type="Resource" uid="uid://b7fhamftyhthj" path="res://Resources/drink2.tres" id="15_2d8f3"]
 [ext_resource type="Resource" uid="uid://bsho5igm2tpei" path="res://Resources/drink.tres" id="15_7qjx6"]
 [ext_resource type="Script" uid="uid://cswnmbjmmd2fy" path="res://Script/Loottable.gd" id="15_avcxa"]
+[ext_resource type="Resource" uid="uid://dn6qo5jpr55md" path="res://Resources/drink3.tres" id="16_2d8f3"]
 [ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="16_fcpsy"]
 [ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="17_xckvv"]
 [ext_resource type="PackedScene" uid="uid://b2r3p8nte0wg" path="res://Scenes/Door.tscn" id="18_rvry2"]
@@ -30,14 +32,20 @@ size = Vector2(20, 239)
 
 [sub_resource type="Resource" id="Resource_fjoli"]
 script = ExtResource("14_fjoli")
-item = ExtResource("15_7qjx6")
+item = ExtResource("15_2d8f3")
 max_count = 5
+metadata/_custom_type_script = "uid://dwipcnm6nscwa"
+
+[sub_resource type="Resource" id="Resource_jshfx"]
+script = ExtResource("14_fjoli")
+item = ExtResource("16_2d8f3")
+max_count = 3
 metadata/_custom_type_script = "uid://dwipcnm6nscwa"
 
 [sub_resource type="Resource" id="Resource_mppsq"]
 script = ExtResource("15_avcxa")
-entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_fjoli")])
-rolls = 5
+entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_fjoli"), SubResource("Resource_jshfx")])
+rolls = 4
 metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_avcxa"]
@@ -188,6 +196,11 @@ script = ExtResource("10_7qjx6")
 
 [node name="Breakable" parent="Breakable" unique_id=1572332876 instance=ExtResource("13_fcpsy")]
 position = Vector2(427, 189)
+floor_id = 1
+loot = SubResource("Resource_mppsq")
+
+[node name="Breakable2" parent="Breakable" unique_id=1067359481 instance=ExtResource("13_fcpsy")]
+position = Vector2(596, 304)
 floor_id = 1
 loot = SubResource("Resource_mppsq")
 
