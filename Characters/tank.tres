@@ -1,6 +1,8 @@
 [gd_resource type="Resource" script_class="CharacterDef" format=3 uid="uid://b6d27vd03t4au"]
 
 [ext_resource type="Script" uid="uid://cfx5mpm15mma8" path="res://Characters/CharacterDef.gd" id="1_jxamy"]
+[ext_resource type="Resource" path="res://Characters/Attacks/light1.tres" id="2_light1"]
+[ext_resource type="Resource" path="res://Characters/Attacks/heavy1.tres" id="3_heavy1"]
 
 [resource]
 script = ExtResource("1_jxamy")
@@ -9,4 +11,7 @@ display_name = "Tank"
 max_health = 400
 start_health = 300
 max_stamina = 40.0
+light_attack = ExtResource("2_light1")
+heavy_attack = ExtResource("3_heavy1")
+main_color = Color(0.2, 0.4, 0.8, 1)
 metadata/_custom_type_script = "uid://cfx5mpm15mma8"

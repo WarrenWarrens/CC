@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDef" format=3]
+
+[ext_resource type="Script" path="res://Script/EnemyDef.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+damage = 6
+base_speed = 120.0
+attack_cooldown = 0.8
+stun_time = 0.5
+detect_radius = 280.0
+recolor = true
+id = &"rusher"
+display_name = "Rusher"
+max_health = 20
+start_health = 20
+speed_mult = 1.5
+main_color = Color(0.25, 0.55, 0.2, 1)

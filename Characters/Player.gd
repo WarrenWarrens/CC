@@ -21,7 +21,15 @@ var sprint_stamina_accumulator = 0.0
 var current_slope = 0.0
 var facing_direction = Vector2.RIGHT
 var _hit_targets: Array = []
-const HIT_FRAMES := [1, 2] 
+
+# Combos: the player runs "the current move" (an AttackDef). See Characters/AttackDef.gd.
+const COMBO_WINDOW := 0.25         # seconds after a move ends in which the next press still continues the combo
+var light_start: AttackDef
+var heavy_start: AttackDef
+var current_attack: AttackDef
+var _buffer := ""                  # "light" or "heavy": pressed during the current move
+var _combo_from: AttackDef         # the move that just ended, while the combo window is open
+var _combo_left := 0.0
 
 var is_invincible = false
 const I_FRAME_DURATION = 0.5
@@ -38,6 +46,7 @@ const FIRE_RATE = 0.5
 @onready var body_sprite = $Visuals/Body
 @onready var visuals = $Visuals
 @onready var hitbox = $Visuals/Hitbox
+@onready var hit_shape: CollisionShape2D = $Visuals/Hitbox/CollisionShape2D
 @onready var laser_glow = $Visuals/AimRay/LaserLine/LaserGlow
 @onready var hit_light = $Visuals/AimRay/HitLight
 @onready var stats: Stats = $Stats
@@ -64,6 +73,7 @@ func _ready():
 	camera.reset_smoothing()
 	
 	add_to_group("players")
+	hit_shape.shape = RectangleShape2D.new()   # the scene's shape is shared; each move resizes its own
 	
 	laser_line.visible = false
 	aim_ray.enabled = false
@@ -80,13 +90,16 @@ func _ready():
 	if def.sprite_frames:
 		body_sprite.sprite_frames = def.sprite_frames
 		body_sprite.play("Idle")
-		def.apply_skin(body_sprite, slot["tint"])
+	def.apply_skin(body_sprite, slot["tint"])
+	light_start = def.light_attack if def.light_attack else AttackDef.new()
+	heavy_start = def.heavy_attack if def.heavy_attack else AttackDef.default_heavy()
 	GameSession.register_player(stats)
 	stats.died.connect(_on_died)
 	switch_style(def.starting_style)
 
 func _physics_process(delta):
 	move_intent = Input.get_vector("left", "right", "up", "down")
+	_combo_left = maxf(_combo_left - delta, 0.0)
 	if not traversing:
 		if current_state != State.JUMPING:
 			air_step(delta)
@@ -221,6 +234,9 @@ func take_damage(amount, knockback_dir):
 		if current_state == State.AIMING:
 			exit_aim() 
 		hitbox.set_deferred("monitoring", false)
+		current_attack = null            # a hit breaks the combo
+		_combo_left = 0.0
+		body_sprite.speed_scale = 1.0
 		current_state = State.STUNNED
 		body_sprite.play("Stun")
 		velocity = knockback_dir * 200
@@ -247,24 +263,80 @@ func take_damage(amount, knockback_dir):
 	
 	
 func _on_body_animation_finished():
-	if body_sprite.animation == "Attack":
-		hitbox.monitoring = false
-		current_state = State.NORMAL
+	if current_state == State.PUNCHING:
+		end_attack()
 
 
 func _on_hitbox_area_entered(area):
-	if current_state == State.PUNCHING:
+	if current_state == State.PUNCHING and current_attack:
 		var target = area.owner
 		if target and target != self and target.has_method("take_damage") and not _hit_targets.has(target):
+			if target is Walker and target.floor_id != floor_id:
+				return   # you can't hit someone on another floor
 			_hit_targets.append(target)
-			var knockback = global_position.direction_to(target.global_position)
-			target.take_damage(10, knockback)
+			var knockback = global_position.direction_to(target.global_position) * current_attack.knockback_scale
+			target.take_damage(current_attack.damage, knockback)
 			stats.add_psy(10)
 
 func _on_body_frame_changed() -> void:
-	if current_state == State.PUNCHING and body_sprite.animation == "Attack":
-		hitbox.set_deferred("monitoring", body_sprite.frame in HIT_FRAMES)
-		
+	if current_state == State.PUNCHING and current_attack:
+		hitbox.set_deferred("monitoring", body_sprite.frame in current_attack.hit_frames)
+
+
+# --- attacks and combos -----------------------------------------------------------
+
+## The move a fresh press starts. Inside the combo window it continues the combo, otherwise it is the first move.
+func _first_move(kind: String) -> AttackDef:
+	var root := light_start if kind == "light" else heavy_start
+	if _combo_left > 0.0 and _combo_from:
+		var next := _combo_from.next_light if kind == "light" else _combo_from.next_heavy
+		return next if next else root
+	return root
+
+
+func start_attack(a: AttackDef) -> void:
+	if a == null or not stats.use_stamina(a.stamina_cost):
+		return
+	current_attack = a
+	_buffer = ""
+	_combo_left = 0.0
+	_hit_targets.clear()
+	current_state = State.PUNCHING
+	hit_shape.shape.size = a.hitbox_size
+	hit_shape.position = a.hitbox_offset
+	var anim: StringName = a.animation if body_sprite.sprite_frames.has_animation(a.animation) else &"Attack"
+	body_sprite.speed_scale = a.speed_scale
+	body_sprite.play(anim)
+	body_sprite.set_frame_and_progress(0, 0.0)   # play() alone would not restart a move that is already playing
+	hitbox.set_deferred("monitoring", 0 in a.hit_frames)
+
+
+## Runs every physics frame of an attack: step forward, and chain into the next move if a button was pressed.
+func handle_attack() -> void:
+	var a := current_attack
+	if Input.is_action_just_pressed("punch"):
+		_buffer = "light"
+	elif Input.is_action_just_pressed("heavy"):
+		_buffer = "heavy"
+
+	var lunging := not a.hit_frames.is_empty() and body_sprite.frame <= a.hit_frames[0]
+	velocity = ramp_adjust(Vector2(facing_direction.x * a.lunge, 0.0)) if lunging else Vector2.ZERO
+	move_and_slide()
+
+	if _buffer != "" and body_sprite.frame >= a.cancel_frame:
+		var next := a.next_light if _buffer == "light" else a.next_heavy
+		_buffer = ""
+		start_attack(next)   # no next move (or no stamina) = the press is ignored
+
+
+func end_attack() -> void:
+	hitbox.monitoring = false
+	body_sprite.speed_scale = 1.0
+	_combo_from = current_attack
+	_combo_left = COMBO_WINDOW
+	current_attack = null
+	current_state = State.NORMAL
+
 
 func handle_aiming(delta):
 	velocity = Vector2.ZERO
