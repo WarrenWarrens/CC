@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDef" format=3 uid="uid://dbckhs7v52ja2"]
+
+[ext_resource type="Script" uid="uid://21xjawo1noa0" path="res://Script/Itemdef.gd" id="1_hcjjo"]
+[ext_resource type="Texture2D" uid="uid://cq0favto0g5xm" path="res://Assets/m10.png" id="2_nvwkk"]
+
+[resource]
+script = ExtResource("1_hcjjo")
+id = &"item4"
+display_name = "10$"
+texture = ExtResource("2_nvwkk")
+kind = 3
+amount = 10.0
+metadata/_custom_type_script = "uid://21xjawo1noa0"

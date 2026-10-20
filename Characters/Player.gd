@@ -9,6 +9,12 @@ const DEPTH_SQUASH = 0.6
 #const GRAVITY = 900.0
 const JUMP_FORCE = 400.0
 const DODGE_SPEED = 600.0
+const SPRINT_SPEED_MULT = 1.6
+const SPRINT_JUMP_MULT = 1.25
+const SPRINT_STAMINA_DRAIN = 5.0
+
+var is_sprinting = false
+var sprint_stamina_accumulator = 0.0 
 
 #var altitude = 0.0
 #var z_velocity = 0.0
@@ -99,13 +105,13 @@ func _physics_process(delta):
 			air_step(delta)
 		match current_state:
 			State.NORMAL:
-				handle_movement()
+				handle_movement(delta)
 				update_animations("Idle", "Walk")
 				handle_actions()
 			State.AIMING:
 				handle_aiming(delta)
 			State.JUMPING:
-				handle_movement() 
+				handle_movement(delta) 
 				handle_jump(delta)
 			State.PUNCHING:
 				velocity = Vector2.ZERO
@@ -141,26 +147,55 @@ func _traversal_done():
 	#return total
 	
 
-func handle_movement():
+func handle_movement(delta):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
-	velocity = ramp_adjust(Vector2(input_dir.x * SPEED, input_dir.y * SPEED * DEPTH_SQUASH))
+	is_sprinting = false
+	var current_speed = SPEED
+	
+	
+	if Input.is_action_pressed("sprint") and input_dir != Vector2.ZERO and is_grounded():
+		sprint_stamina_accumulator += SPRINT_STAMINA_DRAIN * delta
+		
+		if sprint_stamina_accumulator >= 1.0:
+			if stats.use_stamina(1):
+				sprint_stamina_accumulator -= 1.0
+				is_sprinting = true
+			else:
+				sprint_stamina_accumulator = 0.0
+		else:
+			is_sprinting = true
+			
+		if is_sprinting:
+			current_speed = SPEED * SPRINT_SPEED_MULT
+
+	velocity = ramp_adjust(Vector2(input_dir.x * current_speed, input_dir.y * current_speed * DEPTH_SQUASH))
 	move_and_slide()
 	
 	if input_dir.x != 0:
 		facing_direction.x = sign(input_dir.x)
-		visuals.scale.x = facing_direction.x 
+		visuals.scale.x = facing_direction.x
+	
+	#velocity = ramp_adjust(Vector2(input_dir.x * SPEED, input_dir.y * SPEED * DEPTH_SQUASH))
+	#move_and_slide()
+	#
+	#if input_dir.x != 0:
+		#facing_direction.x = sign(input_dir.x)
+		#visuals.scale.x = facing_direction.x 
 
 func update_animations(idle_anim, walk_anim):
 	if velocity.length() > 0:
-		body_sprite.play(walk_anim)
+		if is_sprinting:
+			body_sprite.play("Sprint")
+		else:
+			body_sprite.play(walk_anim)
 	else:
 		body_sprite.play(idle_anim)
 
 func handle_actions():
 	if Input.is_action_just_pressed("ui_accept"):
 		current_state = State.JUMPING
-		z_velocity = JUMP_FORCE
-		body_sprite.play("Jump") 
+		z_velocity = JUMP_FORCE * (SPRINT_JUMP_MULT if is_sprinting else 1.0)
+		body_sprite.play("Jump")
 	elif Input.is_action_just_pressed("punch") and stats.use_stamina(2):
 		current_state = State.PUNCHING
 		body_sprite.play("Attack")
@@ -311,8 +346,10 @@ func handle_aiming(delta):
 	aim_ray.enabled = true
 	laser_glow.visible = true
 
-	body_sprite.play("Shoot") 
-
+	if body_sprite.animation != "Aim":
+		body_sprite.play("Aim")
+	elif body_sprite.frame == body_sprite.sprite_frames.get_frame_count("Aim") - 1:
+		body_sprite.pause() 
 	var input_x = Input.get_axis("left", "right")
 	if input_x != 0:
 		facing_direction.x = sign(input_x)
@@ -377,6 +414,7 @@ func exit_aim():
 	hit_light.visible = false  
 	aim_angle = 0.0
 	aim_ray.rotation = 0.0
+	body_sprite.play() 
 
 func _input(event):
 	if current_state == State.AIMING and event is InputEventMouseMotion:

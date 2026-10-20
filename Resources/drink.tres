@@ -5,5 +5,6 @@
 
 [resource]
 script = ExtResource("1_mb0qs")
+display_name = "Health"
 texture = ExtResource("2_i6rkr")
 metadata/_custom_type_script = "uid://21xjawo1noa0"
