@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AttackDef" format=3]
+
+[ext_resource type="Script" path="res://Characters/AttackDef.gd" id="1_def"]
+[ext_resource type="Resource" path="res://Characters/Attacks/light2.tres" id="2_light2"]
+[ext_resource type="Resource" path="res://Characters/Attacks/heavy1.tres" id="3_heavy1"]
+
+[resource]
+script = ExtResource("1_def")
+damage = 8
+speed_scale = 1.2
+lunge = 30.0
+next_light = ExtResource("2_light2")
+next_heavy = ExtResource("3_heavy1")

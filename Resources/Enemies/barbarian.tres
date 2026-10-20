@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyDef" format=3]
+
+[ext_resource type="Script" path="res://Script/EnemyDef.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+damage = 16
+defence = 3
+base_speed = 120.0
+attack_cooldown = 1.6
+stun_time = 0.25
+knockback_resist = 0.5
+recolor = true
+id = &"barbarian"
+display_name = "Barbarian"
+max_health = 90
+start_health = 90
+speed_mult = 0.7
+main_color = Color(0.45, 0.28, 0.1, 1)

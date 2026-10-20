@@ -2,7 +2,10 @@ extends Area2D
 class_name Door
 
 @export var door_id: String = ""
+## The floor this door stands on. Whoever comes OUT of this door is put on this floor.
 @export var door_floor_id: int = 0
+## Camera rise of that floor (0 = ground floor, -102 = one 102px ledge up). Only needed if the camera sits wrong after the door.
+@export var door_elevation: float = 0.0
 
 @export_group("Destination")
 @export_file("*.tscn") var destination_scene_path: String = ""
@@ -69,10 +72,8 @@ func _teleport_locally(player: Node2D) -> void:
 	SceneManager.fade_and_run(func():
 		player.global_position = target_door.spawn_point.global_position
 		target_door._start_cooldown()
+		target_door._arrive(player)
 		_snap_cameras(player)
-		var w := player as Walker
-		w.floor_id = door_floor_id
-
 	)
 
 func _start_cooldown() -> void:
@@ -83,8 +84,18 @@ func _spawn_player() -> void:
 	var player = get_tree().get_first_node_in_group("players")
 	if player:
 		player.global_position = spawn_point.global_position
+		_arrive(player)
 		_snap_cameras(player)
 		SceneManager.target_door_id = ""
+
+## Called on the door the player comes OUT of: puts them on this door's floor.
+func _arrive(player: Node2D) -> void:
+	var walker := player as Walker
+	if walker == null:
+		return
+	walker.floor_id = door_floor_id
+	walker.elevation = door_elevation
+	walker.refresh_z()   # draw order and which walls we collide with follow the floor
 
 func _find_door_in_scene(target_id: String) -> Door:
 	for door in get_tree().get_nodes_in_group("doors"):
@@ -93,7 +104,6 @@ func _find_door_in_scene(target_id: String) -> Door:
 	return null
 
 func _snap_cameras(player: Node2D) -> void:
-	if "elevation" in player: player.elevation = 0.0
 	if "current_slope" in player: player.current_slope = 0.0
 
 	var player_cam = player.get_node_or_null("Camera2D")
