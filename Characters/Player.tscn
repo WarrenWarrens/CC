@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://0pldnfg7dgrc" path="res://Characters/Player.gd" id="1_lli6r"]
 [ext_resource type="Texture2D" uid="uid://col12h5utam6h" path="res://Assets/Player/PPunch.png" id="2_megsn"]
 [ext_resource type="Script" uid="uid://cknha0o0xqc7u" path="res://Script/Shadow.gd" id="2_yoq75"]
-[ext_resource type="Texture2D" uid="uid://co3tox2hrugta" path="res://Assets/dead.png" id="3_ksbbd"]
 [ext_resource type="Texture2D" uid="uid://y185h78as771" path="res://Assets/Player/PDodge.png" id="3_yoq75"]
 [ext_resource type="Texture2D" uid="uid://dv56pyp3c00ea" path="res://Assets/Player/PGuard.png" id="4_ksbbd"]
 [ext_resource type="Texture2D" uid="uid://bx0hbmq7qibff" path="res://Assets/Player/pIdle.png" id="5_glx4g"]
@@ -51,6 +50,26 @@ height = 256
 fill = 3
 fill_from = Vector2(0.02991453, 0.54273504)
 fill_to = Vector2(0, 0.54273504)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3ugx"]
+atlas = ExtResource("12_icbm8")
+region = Rect2(0, 0, 47, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ve2pf"]
+atlas = ExtResource("12_icbm8")
+region = Rect2(45, 0, 41, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msof6"]
+atlas = ExtResource("12_icbm8")
+region = Rect2(141, 0, 47, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nj7v"]
+atlas = ExtResource("12_icbm8")
+region = Rect2(84, 0, 54, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gk2rw"]
+atlas = ExtResource("12_icbm8")
+region = Rect2(138, 0, 54, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_arntx"]
 atlas = ExtResource("2_megsn")
@@ -240,26 +259,6 @@ region = Rect2(470, 0, 59, 65)
 atlas = ExtResource("11_2grho")
 region = Rect2(529, 0, 40, 65)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_u3ugx"]
-atlas = ExtResource("12_icbm8")
-region = Rect2(0, 0, 47, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ve2pf"]
-atlas = ExtResource("12_icbm8")
-region = Rect2(45, 0, 41, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_msof6"]
-atlas = ExtResource("12_icbm8")
-region = Rect2(141, 0, 47, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4nj7v"]
-atlas = ExtResource("12_icbm8")
-region = Rect2(84, 0, 54, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gk2rw"]
-atlas = ExtResource("12_icbm8")
-region = Rect2(138, 0, 54, 64)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_ua2re"]
 atlas = ExtResource("11_2grho")
 region = Rect2(0, 0, 43, 65)
@@ -348,11 +347,23 @@ region = Rect2(164, 0, 32, 71)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_ksbbd")
+"texture": SubResource("AtlasTexture_u3ugx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ve2pf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msof6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nj7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gk2rw")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"Aim",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -546,26 +557,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_u3ugx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ve2pf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_msof6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4nj7v")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gk2rw")
-}],
-"loop": 0,
-"name": &"Shoot",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_ua2re")
 }, {
 "duration": 1.0,
@@ -686,11 +677,6 @@ fill_to = Vector2(0.6581197, 0.3974359)
 [node name="Player" type="CharacterBody2D" unique_id=1446667991]
 y_sort_enabled = true
 script = ExtResource("1_lli6r")
-player_index = null
-camera_base_y = null
-auto_camera_base = null
-camera_limits = null
-floor_id = null
 
 [node name="Shadow" type="Node2D" parent="." unique_id=1658934795]
 script = ExtResource("2_yoq75")
@@ -730,9 +716,7 @@ texture = SubResource("GradientTexture2D_vyp0t")
 [node name="Body" type="AnimatedSprite2D" parent="Visuals" unique_id=1829035284]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_vyp0t")
-animation = &"Shoot"
-frame = 4
-frame_progress = 1.0
+animation = &"Attack2"
 offset = Vector2(0, -32)
 
 [node name="Hitbox" type="Area2D" parent="Visuals" unique_id=801768740]
