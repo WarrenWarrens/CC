@@ -31,12 +31,20 @@ size = Vector2(20, 239)
 [sub_resource type="Resource" id="Resource_fjoli"]
 script = ExtResource("14_fjoli")
 item = ExtResource("15_7qjx6")
+max_count = 5
 metadata/_custom_type_script = "uid://dwipcnm6nscwa"
 
 [sub_resource type="Resource" id="Resource_mppsq"]
 script = ExtResource("15_avcxa")
 entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_fjoli")])
+rolls = 5
 metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_avcxa"]
+size = Vector2(25, 35.05356)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7qjx6"]
+size = Vector2(20, 24.199997)
 
 [sub_resource type="Resource" id="Resource_l6opw"]
 script = ExtResource("14_fjoli")
@@ -110,7 +118,7 @@ position = Vector2(2074, -85)
 texture = ExtResource("5_ya0eq")
 
 [node name="Sprite2D2" type="Sprite2D" parent="LevelTwo" unique_id=1841536801]
-position = Vector2(2711, -86)
+position = Vector2(2711, -85)
 texture = ExtResource("5_ya0eq")
 
 [node name="Sprite2D4" type="Sprite2D" parent="LevelTwo" unique_id=599975232]
@@ -176,9 +184,9 @@ metadata/_edit_lock_ = true
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1719420128]
 script = ExtResource("10_7qjx6")
 
-[node name="Crates" type="Node2D" parent="." unique_id=970952348]
+[node name="Breakable" type="Node2D" parent="." unique_id=970952348]
 
-[node name="Breakable" parent="Crates" unique_id=1572332876 instance=ExtResource("13_fcpsy")]
+[node name="Breakable" parent="Breakable" unique_id=1572332876 instance=ExtResource("13_fcpsy")]
 position = Vector2(427, 189)
 floor_id = 1
 loot = SubResource("Resource_mppsq")
@@ -187,6 +195,7 @@ loot = SubResource("Resource_mppsq")
 
 [node name="Platform" parent="Platform" unique_id=452983872 instance=ExtResource("11_2d8f3")]
 position = Vector2(2024, 6)
+floor_id = 2
 
 [node name="Ladders" type="Node2D" parent="." unique_id=1809568372]
 
@@ -213,6 +222,22 @@ scale = Vector2(7, 1)
 lower_floor = 2
 upper_floor = 3
 
+[node name="CollisionShape2D" parent="Ledges/Ledge" index="0" unique_id=1111040835]
+position = Vector2(-5.330353, 0)
+shape = SubResource("RectangleShape2D_avcxa")
+
+[node name="Ledge4" parent="Ledges" unique_id=1940589835 instance=ExtResource("17_xckvv")]
+position = Vector2(2151, -64)
+scale = Vector2(7, 1)
+kind = 1
+lower_floor = 2
+upper_floor = 3
+climb_needs_jump = false
+
+[node name="CollisionShape2D" parent="Ledges/Ledge4" index="0" unique_id=1111040835]
+position = Vector2(-5.330353, 0)
+shape = SubResource("RectangleShape2D_avcxa")
+
 [node name="Ledge2" parent="Ledges" unique_id=907579289 instance=ExtResource("17_xckvv")]
 position = Vector2(2312, -126.00001)
 rotation = 1.5707964
@@ -220,6 +245,24 @@ scale = Vector2(5, 3)
 kind = 1
 lower_floor = 2
 upper_floor = 3
+climb_needs_jump = false
+
+[node name="CollisionShape2D" parent="Ledges/Ledge2" index="0" unique_id=1111040835]
+position = Vector2(0.10000229, 0)
+scale = Vector2(0.10000001, 1.0000002)
+shape = SubResource("RectangleShape2D_7qjx6")
+
+[node name="Ledge3" parent="Ledges" unique_id=1176425976 instance=ExtResource("17_xckvv")]
+position = Vector2(2312, -126.00001)
+rotation = 1.5707964
+scale = Vector2(5, 3)
+lower_floor = 2
+upper_floor = 3
+
+[node name="CollisionShape2D" parent="Ledges/Ledge3" index="0" unique_id=1111040835]
+position = Vector2(0.10000229, 0)
+scale = Vector2(0.10000001, 1.0000002)
+shape = SubResource("RectangleShape2D_7qjx6")
 
 [node name="Doors" type="Node2D" parent="." unique_id=1590519640]
 
@@ -255,3 +298,7 @@ loot = SubResource("Resource_fvm8j")
 floor_id = 2
 
 [editable path="Ladders/Ladder"]
+[editable path="Ledges/Ledge"]
+[editable path="Ledges/Ledge4"]
+[editable path="Ledges/Ledge2"]
+[editable path="Ledges/Ledge3"]
