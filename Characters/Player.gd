@@ -319,7 +319,8 @@ func handle_attack() -> void:
 	elif Input.is_action_just_pressed("heavy"):
 		_buffer = "heavy"
 
-	var lunging := not a.hit_frames.is_empty() and body_sprite.frame <= a.hit_frames[0]
+	var lunging: bool = not a.hit_frames.is_empty() and body_sprite.frame <= a.hit_frames[0]
+
 	velocity = ramp_adjust(Vector2(facing_direction.x * a.lunge, 0.0)) if lunging else Vector2.ZERO
 	move_and_slide()
 
