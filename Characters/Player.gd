@@ -1,7 +1,7 @@
 extends Walker  
 enum FightingStyle { RED, BLUE, YELLOW, PURPLE }
 var current_style = FightingStyle.RED 
-enum State { NORMAL, JUMPING, PUNCHING, GUARDING, DODGING, STUNNED, AIMING }
+enum State { NORMAL, JUMPING, ATTACKING, GUARDING, DODGING, STUNNED, AIMING }
 var current_state = State.NORMAL
 
 const SPEED = 300.0
@@ -113,7 +113,7 @@ func _physics_process(delta):
 			State.JUMPING:
 				handle_movement(delta) 
 				handle_jump(delta)
-			State.PUNCHING:
+			State.ATTACKING:
 				handle_attack()
 			State.GUARDING:
 				velocity = Vector2.ZERO
@@ -195,7 +195,7 @@ func handle_actions():
 		current_state = State.JUMPING
 		z_velocity = JUMP_FORCE * (SPRINT_JUMP_MULT if is_sprinting else 1.0)
 		body_sprite.play("Jump")
-	elif Input.is_action_just_pressed("punch"):
+	elif Input.is_action_just_pressed("light"):
 		start_attack(_first_move("light"))
 	elif Input.is_action_just_pressed("heavy"):
 		start_attack(_first_move("heavy"))
@@ -259,12 +259,12 @@ func take_damage(amount, knockback_dir):
 	
 	
 func _on_body_animation_finished():
-	if current_state == State.PUNCHING:
+	if current_state == State.ATTACKING:
 		end_attack()
 
 
 func _on_hitbox_area_entered(area):
-	if current_state == State.PUNCHING and current_attack:
+	if current_state == State.ATTACKING and current_attack:
 		var target = area.owner
 		if target and target != self and target.has_method("take_damage") and not _hit_targets.has(target):
 			if target is Walker and target.floor_id != floor_id:
@@ -275,7 +275,7 @@ func _on_hitbox_area_entered(area):
 			stats.add_psy(10)
 
 func _on_body_frame_changed() -> void:
-	if current_state == State.PUNCHING and current_attack:
+	if current_state == State.ATTACKING and current_attack:
 		hitbox.set_deferred("monitoring", body_sprite.frame in current_attack.hit_frames)
 
 
@@ -297,7 +297,7 @@ func start_attack(a: AttackDef) -> void:
 	_buffer = ""
 	_combo_left = 0.0
 	_hit_targets.clear()
-	current_state = State.PUNCHING
+	current_state = State.ATTACKING
 	hit_shape.shape.size = a.hitbox_size
 	hit_shape.position = a.hitbox_offset
 	var anim: StringName = a.animation if body_sprite.sprite_frames.has_animation(a.animation) else &"Attack"
@@ -311,7 +311,7 @@ func start_attack(a: AttackDef) -> void:
 ## Runs every physics frame of an attack: step forward, and chain into the next move if a button was pressed.
 func handle_attack() -> void:
 	var a := current_attack
-	if Input.is_action_just_pressed("punch"):
+	if Input.is_action_just_pressed("light"):
 		_buffer = "light"
 	elif Input.is_action_just_pressed("heavy"):
 		_buffer = "heavy"
@@ -385,7 +385,7 @@ func handle_aiming(delta):
 
 	if Input.is_action_just_pressed("aim"):
 		exit_aim()
-	elif Input.is_action_pressed("punch"): 
+	elif Input.is_action_pressed("light"): 
 		shoot()
 
 func shoot():
