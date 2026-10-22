@@ -6,8 +6,15 @@
 
 [resource]
 script = ExtResource("1_def")
+animation = &"Attack"
 damage = 8
-speed_scale = 1.2
+knockback_scale = 1.0
+stamina_cost = 2.0
+speed_scale = 1.4
+hit_frames = Array[int]([1, 2])
+hitbox_size = Vector2(47, 25)
+hitbox_offset = Vector2(23.5, -28.5)
 lunge = 30.0
+cancel_frame = 2
 next_light = ExtResource("2_light2")
 next_heavy = ExtResource("3_heavy1")

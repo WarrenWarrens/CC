@@ -114,8 +114,7 @@ func _physics_process(delta):
 				handle_movement(delta) 
 				handle_jump(delta)
 			State.PUNCHING:
-				velocity = Vector2.ZERO
-				move_and_slide()
+				handle_attack()
 			State.GUARDING:
 				velocity = Vector2.ZERO
 				move_and_slide()
@@ -196,13 +195,10 @@ func handle_actions():
 		current_state = State.JUMPING
 		z_velocity = JUMP_FORCE * (SPRINT_JUMP_MULT if is_sprinting else 1.0)
 		body_sprite.play("Jump")
-	elif Input.is_action_just_pressed("punch") and stats.use_stamina(2):
-		current_state = State.PUNCHING
-		body_sprite.play("Attack")
-		hitbox.monitoring = true
-		_hit_targets.clear()
-		_on_body_frame_changed()
-		
+	elif Input.is_action_just_pressed("punch"):
+		start_attack(_first_move("light"))
+	elif Input.is_action_just_pressed("heavy"):
+		start_attack(_first_move("heavy"))
 	elif Input.is_action_pressed("guard"):
 		current_state = State.GUARDING
 		body_sprite.play("Guard")
@@ -306,6 +302,7 @@ func start_attack(a: AttackDef) -> void:
 	hit_shape.position = a.hitbox_offset
 	var anim: StringName = a.animation if body_sprite.sprite_frames.has_animation(a.animation) else &"Attack"
 	body_sprite.speed_scale = a.speed_scale
+	body_sprite.sprite_frames.set_animation_loop(anim, false)   # a looping move would never finish and the player would be stuck
 	body_sprite.play(anim)
 	body_sprite.set_frame_and_progress(0, 0.0)   # play() alone would not restart a move that is already playing
 	hitbox.set_deferred("monitoring", 0 in a.hit_frames)

@@ -25,8 +25,18 @@ func drop(source: Node2D, knockback_dir := Vector2.ZERO) -> void:
 			var dir := Vector2.DOWN.rotated(randf() * TAU)
 			if knockback_dir != Vector2.ZERO:
 				dir = (-knockback_dir).rotated(randf_range(-0.6, 0.6))
-			var target := source.global_position + dir * randf_range(toss_distance.x, toss_distance.y)
+			var target := _keep_inside(source, floor_id, source.global_position + dir * randf_range(toss_distance.x, toss_distance.y))
 			Pickup.spawn(e.item, parent, source.global_position, floor_id, target)
+
+
+## Stops a toss at the first wall of this floor, so items never land outside the play area.
+func _keep_inside(source: Node2D, floor_id: int, target: Vector2) -> Vector2:
+	var query := PhysicsRayQueryParameters2D.create(source.global_position, target, Walker.floor_bit(floor_id))
+	var hit := source.get_world_2d().direct_space_state.intersect_ray(query)
+	if hit.is_empty():
+		return target
+	var back: Vector2 = (source.global_position - target).normalized()
+	return hit.position + back * 8.0   # a little in front of the wall
 
 
 func _pick() -> LootEntry:

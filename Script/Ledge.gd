@@ -12,18 +12,23 @@ extends Area2D
 ##        pushing up and the walker grabs the lip, climbs, and ends up on the upper floor (floor id goes up).
 ## DROP:  the zone is a thin band on the UPPER floor, right along the lip. Push down (or jump off, if
 ##        `drop_needs_jump`) and the walker falls to the lower floor (floor id goes down).
-## For a wall you can climb AND jump off, use two Ledge nodes, one of each kind.
+## BOTH: one node does both. Draw the zone on the LOWER floor's base (like a climb). Walkers on the lower
+##       floor climb it; walkers on the upper floor drop off the same spot, one `height` further up the screen.
+##       Walking off the lip drops the floor id and starts the fall at once.
+## Direction: climbing means pushing `climb_direction` (screen up by default); dropping is the opposite.
 ##
 ## Scene layout:  Ledge (Area2D, this script)  >  CollisionShape2D (a RectangleShape2D band ~20px thick)
 ## `height` is the screen distance between the two strips' facing edges (the same number a ladder spans).
 
-enum Kind { CLIMB, DROP }
+enum Kind { CLIMB, DROP, BOTH }
 
 @export var kind := Kind.CLIMB
 @export var lower_floor := 1
 @export var upper_floor := 2
 ## Wall height in screen px = floor difference. The camera moves by exactly this much.
 @export var height := 102.0
+## The way you push to climb. Screen up for a normal wall; use (1,0) etc. for a side-on wall.
+@export var climb_direction := Vector2.UP
 ## How far INTO the destination floor the walker lands, so it isn't left standing on the very edge.
 @export var landing_offset := 8.0
 ## Drops only: false = just walking into the edge drops you, true = you have to be airborne.
@@ -42,29 +47,26 @@ enum Kind { CLIMB, DROP }
 @export var mantle_time := 0.45
 @export var mantle_animation := &"Mantle"
 
-var _from_floor := 0
-var _to_floor := 0
-var _dy := 0.0           # screen-Y change to the other floor: negative = up (climb), positive = down (drop)
-var _push := Vector2.UP  # the direction the walker has to be pushing
+var _up := Vector2.UP    # climb_direction, normalised
 var _hold := {}          # walker instance id -> seconds spent pushing into the cliff (auto climb)
 var _probe := CircleShape2D.new()
 const LOCK_MS := 350     # after a walker uses a ledge, no ledge may grab it again for this long (stops ping-pong)
 
 
 func _ready() -> void:
-	_probe.radius = 1.0
+	_probe.radius = 4.0
 	monitoring = false       # we test the walkers ourselves (see _physics_process); the Area2D is just the zone's shape
 	monitorable = false
-	if kind == Kind.CLIMB:
-		_from_floor = lower_floor
-		_to_floor = upper_floor
-		_dy = -height
-		_push = Vector2.UP
-	else:
-		_from_floor = upper_floor
-		_to_floor = lower_floor
-		_dy = height
-		_push = Vector2.DOWN
+	_up = climb_direction.normalized()
+
+
+## Is this walker climbing from here, or dropping from here? Returns "" if neither applies on its floor.
+func _mode_for(w: Walker) -> StringName:
+	if kind != Kind.DROP and w.floor_id == lower_floor:
+		return &"climb"
+	if kind != Kind.CLIMB and w.floor_id == upper_floor:
+		return &"drop"
+	return &""
 
 
 func _physics_process(delta: float) -> void:
@@ -72,16 +74,23 @@ func _physics_process(delta: float) -> void:
 	var now := Time.get_ticks_msec()
 	for node in get_tree().get_nodes_in_group("walkers"):
 		var w := node as Walker
-		if w == null or w.traversing or w.surface != null or w.floor_id != _from_floor:
+		if w == null or w.traversing or w.surface != null:
+			continue
+		var mode := _mode_for(w)
+		if mode == &"":
 			continue
 		if int(w.get_meta(&"ledge_lock", 0)) > now:
 			continue
-		var lift := _sprite_lift(w)
+		var lift := _sprite_lift(w) if mode == &"climb" else 0.0
 		# the point we test is the feet, moved up by how far the sprite is above the lip
-		if not _zone_contains(w.global_position - Vector2(0.0, lift)):
+		var p := w.global_position - Vector2(0.0, lift)
+		if mode == &"drop" and kind == Kind.BOTH:
+			p += Vector2(0.0, height)   # the drop zone is the same band one wall-height further up the screen
+		# fast walkers can step over a thin band in one frame, so look at where they are heading too
+		if not (_zone_contains(p) or _zone_contains(p + w.velocity * delta)):
 			continue
-		if _wants_through(w, delta, active):
-			_use(w, lift)
+		if _wants_through(w, mode, delta, active):
+			_use(w, mode, lift)
 	for id in _hold.keys():
 		if not active.has(id):
 			_hold.erase(id)   # stopped pushing or left the zone: start over next time
@@ -89,7 +98,7 @@ func _physics_process(delta: float) -> void:
 
 ## Climbs only: how many px the walker's sprite is above the lip (0 = at or below it).
 func _sprite_lift(w: Walker) -> float:
-	if kind != Kind.CLIMB or w.altitude <= height:
+	if w.altitude <= height:
 		return 0.0
 	return minf(w.altitude - height, max_early_reach)
 
@@ -107,10 +116,11 @@ func _zone_contains(p: Vector2) -> bool:
 	return false
 
 
-func _wants_through(w: Walker, delta: float, active: Dictionary) -> bool:
+func _wants_through(w: Walker, mode: StringName, delta: float, active: Dictionary) -> bool:
 	var airborne := w.altitude > 0.0 or w.z_velocity > 0.0
-	var pushing := w.move_intent.normalized().dot(_push) >= 0.5
-	if kind == Kind.DROP:
+	var push := _up if mode == &"climb" else -_up
+	var pushing := w.move_intent.normalized().dot(push) >= 0.5
+	if mode == &"drop":
 		if airborne and airborne_ignores_push:
 			return true                       # in the air over the edge: you fall
 		if drop_needs_jump and not airborne:
@@ -128,15 +138,17 @@ func _wants_through(w: Walker, delta: float, active: Dictionary) -> bool:
 	return _hold[id] >= climb_hold_time
 
 
-func _use(w: Walker, lift := 0.0) -> void:
-	var inset := landing_offset * signf(_dy)    # "into" the destination strip: up for a climb, down for a drop
+func _use(w: Walker, mode: StringName, lift := 0.0) -> void:
+	var climbing := mode == &"climb"
+	var dy := -height if climbing else height          # screen-Y change: up for a climb, down for a drop
+	var inset := landing_offset * signf(dy)             # "into" the destination strip
 	w.set_meta(&"ledge_lock", Time.get_ticks_msec() + LOCK_MS)
 	if lift > 0.0:
 		w.shift_level(-lift, 0.0)    # the sprite is already above the lip: move the feet up to where it is, sprite stays put
-	w.floor_id = _to_floor
-	w.shift_level(_dy + inset, _dy)
+	w.floor_id = upper_floor if climbing else lower_floor
+	w.shift_level(dy + inset, dy)
 	w.refresh_z()
-	if kind == Kind.DROP:
+	if not climbing:
 		return   # the sprite is now above its feet and Walker.air_step brings it down
 	if lift > 0.0:
 		w.altitude = maxf(w.altitude, 1.0)   # came in high: no mantle, the jump just carries on over the upper floor

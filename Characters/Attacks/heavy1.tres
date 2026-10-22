@@ -4,9 +4,13 @@
 
 [resource]
 script = ExtResource("1_def")
-damage = 22
-knockback_scale = 2.2
+animation = &"Slap"
+damage = 20
+knockback_scale = 2.0
 stamina_cost = 5.0
-speed_scale = 0.7
-hitbox_size = Vector2(60, 34)
-lunge = 60.0
+speed_scale = 0.9
+hit_frames = Array[int]([1])
+hitbox_size = Vector2(66, 36)
+hitbox_offset = Vector2(30, -30)
+lunge = 50.0
+cancel_frame = 2

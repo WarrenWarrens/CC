@@ -4,9 +4,13 @@
 
 [resource]
 script = ExtResource("1_def")
+animation = &"Kick"
 damage = 28
 knockback_scale = 2.8
 stamina_cost = 6.0
-speed_scale = 0.65
-hitbox_size = Vector2(68, 36)
+speed_scale = 0.9
+hit_frames = Array[int]([2, 3, 4])
+hitbox_size = Vector2(72, 40)
+hitbox_offset = Vector2(34, -36)
 lunge = 70.0
+cancel_frame = 6
