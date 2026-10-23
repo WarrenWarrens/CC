@@ -15,8 +15,9 @@ func _ready() -> void:
 
 
 func bind(player_stats: Node) -> void:
-	for bar in find_children("*", "StatBar", true, false):
-		bar.bind(player_stats)
+	for node in find_children("*", "Control", true, false):
+		if node is StatBar:
+			node.bind(player_stats)
 
 
 func _use_bottom_bar() -> void:
