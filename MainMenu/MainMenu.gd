@@ -1,11 +1,15 @@
 extends Node2D
 
 var level: int = 1
+## Music for this screen. Drag a .wav / .ogg / .mp3 here in the Inspector (select the root node).
+## Leave it empty to keep whatever is already playing; the same track in two scenes carries on without restarting.
+@export var music: AudioStream
 @onready var music_slider = $CenterContainer/SettingsMenu/MusicVolumeSlider
 @onready var sfx_slider = $CenterContainer/SettingsMenu/SfxVolumeSlider
 
 
 func _ready() -> void:
+	Audio.play_music(music)
 	music_slider.value = Audio.get_volume(&"Music")  
 	sfx_slider.value = Audio.get_volume(&"SFX")
 	$CenterContainer/SettingsMenu/Fullscreen.button_pressed = true if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN else false

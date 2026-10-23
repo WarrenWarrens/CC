@@ -3,10 +3,14 @@ extends Control
 ## the scene GameSession.SELECT_SCENE points to. The whole UI is built in code, so there is nothing else to set up.
 ## Each row: join checkbox, character dropdown, colour picker (the skin tint). Player 1 is always in.
 
+## Music for this screen. Drag a .wav / .ogg / .mp3 here in the Inspector (select the root node).
+## Leave it empty to keep whatever is already playing; the same track in two scenes carries on without restarting.
+@export var music: AudioStream
 var _rows: Array[Dictionary] = []
 
 
 func _ready() -> void:
+	Audio.play_music(music)
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)   # a root Control would otherwise be 0x0
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
