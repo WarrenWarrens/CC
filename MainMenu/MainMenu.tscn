@@ -75,47 +75,48 @@ layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="Fullscreen" type="CheckBox" parent="CenterContainer/SettingsMenu" unique_id=549410826]
+visible = false
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 10
 text = "Fullscreen"
 
 [node name="MusicVolumeSlider" type="HSlider" parent="CenterContainer/SettingsMenu" unique_id=1835344305]
-custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 max_value = 1.0
 step = 0.001
 
 [node name="Label" type="Label" parent="CenterContainer/SettingsMenu/MusicVolumeSlider" unique_id=646423217]
-custom_minimum_size = Vector2(484, 55)
-layout_mode = 0
-offset_top = -16.0
-offset_right = 484.0
-offset_bottom = 39.0
-theme_override_font_sizes/font_size = 30
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -34.0
+offset_right = 34.0
+offset_bottom = 20.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 10
 text = "Music Volume"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SfxVolumeSlider" type="HSlider" parent="CenterContainer/SettingsMenu"]
-custom_minimum_size = Vector2(0, 80)
+[node name="SfxVolumeSlider" type="HSlider" parent="CenterContainer/SettingsMenu" unique_id=991215128]
 layout_mode = 2
 max_value = 1.0
 step = 0.001
 
-[node name="Label" type="Label" parent="CenterContainer/SettingsMenu/SfxVolumeSlider"]
-custom_minimum_size = Vector2(484, 55)
+[node name="Label" type="Label" parent="CenterContainer/SettingsMenu/SfxVolumeSlider" unique_id=708654203]
 layout_mode = 0
 offset_top = -16.0
-offset_right = 484.0
-offset_bottom = 39.0
-theme_override_font_sizes/font_size = 30
+offset_right = 70.0
+offset_bottom = -2.0
+theme_override_font_sizes/font_size = 10
 text = "Sound Volume"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Button" type="Button" parent="CenterContainer/SettingsMenu" unique_id=3674057]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 8
 text = "Back"
 
 [node name="CreditsMenu" type="VBoxContainer" parent="CenterContainer" unique_id=2003360930]

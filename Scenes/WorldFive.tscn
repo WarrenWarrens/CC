@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://saxx8vy4npnh" path="res://Script/World.gd" id="1_wnph4"]
 [ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Characters/Player.tscn" id="2_56ktj"]
+[ext_resource type="AudioStream" uid="uid://yi4km2ijf7hf" path="res://Audio/music/mm.mp3" id="2_n0yck"]
 [ext_resource type="Texture2D" uid="uid://cqk0p78nwjjd2" path="res://Assets/sky.png" id="3_8xwjy"]
 [ext_resource type="Texture2D" uid="uid://dmbrjltbpwy0r" path="res://Assets/grey2.png" id="4_3jlm2"]
 [ext_resource type="Texture2D" uid="uid://svsya7w1lvb2" path="res://Assets/red4.png" id="5_ya0eq"]
@@ -87,6 +88,7 @@ metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
 script = ExtResource("1_wnph4")
+music = ExtResource("2_n0yck")
 
 [node name="Player" parent="." unique_id=1446667991 groups=["player"] instance=ExtResource("2_56ktj")]
 light_mask = 3

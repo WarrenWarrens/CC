@@ -6,7 +6,6 @@ var current_state = State.NORMAL
 
 const SPEED = 300.0
 const DEPTH_SQUASH = 0.6
-#const GRAVITY = 900.0
 const JUMP_FORCE = 400.0
 const DODGE_SPEED = 600.0
 const SPRINT_SPEED_MULT = 1.6
@@ -16,19 +15,17 @@ const SPRINT_STAMINA_DRAIN = 5.0
 var is_sprinting = false
 var sprint_stamina_accumulator = 0.0 
 
-#var altitude = 0.0
-#var z_velocity = 0.0
+
 var current_slope = 0.0
 var facing_direction = Vector2.RIGHT
 var _hit_targets: Array = []
 
-# Combos: the player runs "the current move" (an AttackDef). See Characters/AttackDef.gd.
-const COMBO_WINDOW := 0.25         # seconds after a move ends in which the next press still continues the combo
+const COMBO_WINDOW := 0.25        
 var light_start: AttackDef
 var heavy_start: AttackDef
 var current_attack: AttackDef
-var _buffer := ""                  # "light" or "heavy": pressed during the current move
-var _combo_from: AttackDef         # the move that just ended, while the combo window is open
+var _buffer := ""                 
+var _combo_from: AttackDef        
 var _combo_left := 0.0
 
 var is_invincible = false
@@ -57,7 +54,7 @@ const FIRE_RATE = 0.5
 @export var camera_limits := Rect2i(0, -10000, 5000, 20000)
 var _last_floor := -99
 var speed_mult := 1.0
-const BACKPEDAL_MULT := 0.75     # moving away from a locked-on target is slower
+const BACKPEDAL_MULT := 0.75    
 var lock_on: LockOn
 
 func _ready():
@@ -78,7 +75,7 @@ func _ready():
 	lock_on = LockOn.new()
 	add_child(lock_on)
 	lock_on.setup(self, $Visuals/DetectZone)
-	hit_shape.shape = RectangleShape2D.new()   # the scene's shape is shared; each move resizes its own
+	hit_shape.shape = RectangleShape2D.new()  
 	
 	laser_line.visible = false
 	aim_ray.enabled = false
@@ -148,12 +145,7 @@ func handle_jump(delta):
 func _traversal_done():
 	current_state = State.NORMAL
 	
-#func get_elevation_shift() -> float:
-	#var total := 0.0
-	#for r in get_tree().get_nodes_in_group("ramps"):
-		#total += r.get_elevation_shift(global_position)
-	#return total
-	
+
 
 func handle_movement(delta):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
@@ -176,7 +168,6 @@ func handle_movement(delta):
 		if is_sprinting:
 			current_speed = SPEED * SPRINT_SPEED_MULT
 
-	# locked on: always look at the target; otherwise look where you walk
 	var look := lock_on.facing_toward()
 	if look == 0.0:
 		look = signf(input_dir.x)
@@ -187,12 +178,7 @@ func handle_movement(delta):
 		velocity.x *= BACKPEDAL_MULT
 	move_and_slide()
 	
-	#velocity = ramp_adjust(Vector2(input_dir.x * SPEED, input_dir.y * SPEED * DEPTH_SQUASH))
-	#move_and_slide()
-	#
-	#if input_dir.x != 0:
-		#facing_direction.x = sign(input_dir.x)
-		#visuals.scale.x = facing_direction.x 
+
 
 ## Turns the character to face left (-1) or right (1). 0 keeps the current direction.
 func face(dir: float) -> void:
@@ -207,7 +193,7 @@ func update_animations(idle_anim, walk_anim):
 	if velocity.length() > 0:
 		_step_timer -= get_physics_process_delta_time()
 		if _step_timer <= 0.0:
-			_step_timer = 0.25 if is_sprinting else 0.38   # seconds between footsteps
+			_step_timer = 0.25 if is_sprinting else 0.38   
 			Audio.play(&"step", -10.0)
 		if is_sprinting:
 			body_sprite.play("Sprint")
@@ -258,7 +244,7 @@ func take_damage(amount, knockback_dir):
 		if current_state == State.AIMING:
 			exit_aim() 
 		hitbox.set_deferred("monitoring", false)
-		current_attack = null            # a hit breaks the combo
+		current_attack = null           
 		_combo_left = 0.0
 		body_sprite.speed_scale = 1.0
 		current_state = State.STUNNED
@@ -277,16 +263,7 @@ func take_damage(amount, knockback_dir):
 		
 		get_tree().create_timer(I_FRAME_DURATION).timeout.connect(func(): is_invincible = false)
 	
-#func fall(delta):
-	#if altitude <= 0.0:
-		#return
-	#z_velocity -= GRAVITY * delta
-	#altitude = maxf(altitude + z_velocity * delta, 0.0)
-	#if altitude == 0.0:
-		#z_velocity = 0.0
-	#body_sprite.position.y = -altitude
-	
-	
+
 func _on_body_animation_finished():
 	if current_state == State.ATTACKING:
 		end_attack()
@@ -297,7 +274,7 @@ func _on_hitbox_area_entered(area):
 		var target = area.owner
 		if target and target != self and target.has_method("take_damage") and not _hit_targets.has(target):
 			if target is Walker and target.floor_id != floor_id:
-				return   # you can't hit someone on another floor
+				return  
 			_hit_targets.append(target)
 			var knockback = global_position.direction_to(target.global_position) * current_attack.knockback_scale
 			target.take_damage(current_attack.damage, knockback)
@@ -309,7 +286,6 @@ func _on_body_frame_changed() -> void:
 		hitbox.set_deferred("monitoring", body_sprite.frame in current_attack.hit_frames)
 
 
-# --- attacks and combos -----------------------------------------------------------
 
 ## The move a fresh press starts. Inside the combo window it continues the combo, otherwise it is the first move.
 func _first_move(kind: String) -> AttackDef:
@@ -324,7 +300,7 @@ func start_attack(a: AttackDef) -> void:
 	if a == null or not stats.use_stamina(a.stamina_cost):
 		return
 	current_attack = a
-	face(lock_on.facing_toward())    # attacks swing at the locked target
+	face(lock_on.facing_toward())   
 	_buffer = ""
 	_combo_left = 0.0
 	_hit_targets.clear()
@@ -333,10 +309,10 @@ func start_attack(a: AttackDef) -> void:
 	hit_shape.position = a.hitbox_offset
 	var anim: StringName = a.animation if body_sprite.sprite_frames.has_animation(a.animation) else &"Attack"
 	body_sprite.speed_scale = a.speed_scale
-	body_sprite.sprite_frames.set_animation_loop(anim, false)   # a looping move would never finish and the player would be stuck
+	body_sprite.sprite_frames.set_animation_loop(anim, false)  
 	Audio.play(&"swing")
 	body_sprite.play(anim)
-	body_sprite.set_frame_and_progress(0, 0.0)   # play() alone would not restart a move that is already playing
+	body_sprite.set_frame_and_progress(0, 0.0) 
 	hitbox.set_deferred("monitoring", 0 in a.hit_frames)
 
 
@@ -356,7 +332,7 @@ func handle_attack() -> void:
 	if _buffer != "" and body_sprite.frame >= a.cancel_frame:
 		var next := a.next_light if _buffer == "light" else a.next_heavy
 		_buffer = ""
-		start_attack(next)   # no next move (or no stamina) = the press is ignored
+		start_attack(next)  
 
 
 func end_attack() -> void:
@@ -384,8 +360,7 @@ func handle_aiming(delta):
 	face(look if look != 0.0 else Input.get_axis("left", "right"))
 
 	if lock_on.target != null:
-		# locked on: the laser follows the target by itself
-		var to_target := visuals.to_local(lock_on.aim_point()) - aim_ray.position
+		var to_target = visuals.to_local(lock_on.aim_point()) - aim_ray.position
 		aim_angle = atan2(to_target.y, absf(to_target.x))
 	else:
 		aim_angle += Input.get_axis("up", "down") * AIM_SPEED * delta
@@ -462,7 +437,7 @@ func _input(event):
 		elif event.keycode == KEY_4:
 			switch_style(FightingStyle.PURPLE)
 func _on_died() -> void:
-	set_physics_process(false)    # stand-in until you have a death animation
+	set_physics_process(false)    
 	create_tween().tween_property(self, "modulate:a", 0.3, 0.5)
 	
 func switch_style(new_style):

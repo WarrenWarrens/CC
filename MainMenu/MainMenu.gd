@@ -6,7 +6,7 @@ var level: int = 1
 
 
 func _ready() -> void:
-	music_slider.value = Audio.get_volume(&"Music")   # show the saved levels
+	music_slider.value = Audio.get_volume(&"Music")  
 	sfx_slider.value = Audio.get_volume(&"SFX")
 	$CenterContainer/SettingsMenu/Fullscreen.button_pressed = true if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN else false
 
