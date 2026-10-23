@@ -9,6 +9,7 @@ func _ready() -> void:
 	add_child(hud)
 	hud.bind($Player.stats)
 	Audio.play_music(music)
+	add_child(PauseMenu.new())
 	
 	#if show_hud:
 		#add_child(HUD_SCENE.instantiate())

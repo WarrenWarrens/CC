@@ -96,6 +96,23 @@ text = "Music Volume"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="SfxVolumeSlider" type="HSlider" parent="CenterContainer/SettingsMenu"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+
+[node name="Label" type="Label" parent="CenterContainer/SettingsMenu/SfxVolumeSlider"]
+custom_minimum_size = Vector2(484, 55)
+layout_mode = 0
+offset_top = -16.0
+offset_right = 484.0
+offset_bottom = 39.0
+theme_override_font_sizes/font_size = 30
+text = "Sound Volume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Button" type="Button" parent="CenterContainer/SettingsMenu" unique_id=3674057]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
@@ -161,6 +178,7 @@ color = Color(0.330078, 0.99999994, 0.9244244, 1)
 [connection signal="pressed" from="CenterContainer/MenuButtons/Exit" to="." method="_on_exit_pressed"]
 [connection signal="toggled" from="CenterContainer/SettingsMenu/Fullscreen" to="." method="_on_fullscreen_toggled"]
 [connection signal="value_changed" from="CenterContainer/SettingsMenu/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
+[connection signal="value_changed" from="CenterContainer/SettingsMenu/SfxVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]
 [connection signal="pressed" from="CenterContainer/SettingsMenu/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CenterContainer/CreditsMenu/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CenterContainer/LevelsMenu/TestLevelButton" to="." method="_on_test_level_button_pressed"]
