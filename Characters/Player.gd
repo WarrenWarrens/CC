@@ -57,6 +57,8 @@ const FIRE_RATE = 0.5
 @export var camera_limits := Rect2i(0, -10000, 5000, 20000)
 var _last_floor := -99
 var speed_mult := 1.0
+const BACKPEDAL_MULT := 0.75     # moving away from a locked-on target is slower
+var lock_on: LockOn
 
 func _ready():
 	camera.limit_left = camera_limits.position.x
@@ -73,6 +75,9 @@ func _ready():
 	camera.reset_smoothing()
 	
 	add_to_group("players")
+	lock_on = LockOn.new()
+	add_child(lock_on)
+	lock_on.setup(self, $Visuals/DetectZone)
 	hit_shape.shape = RectangleShape2D.new()   # the scene's shape is shared; each move resizes its own
 	
 	laser_line.visible = false
@@ -99,6 +104,10 @@ func _ready():
 
 func _physics_process(delta):
 	move_intent = Input.get_vector("left", "right", "up", "down")
+	if Input.is_action_just_pressed("lock_on"):
+		lock_on.toggle()
+	elif Input.is_action_just_pressed("lock_cycle"):
+		lock_on.cycle()
 	_combo_left = maxf(_combo_left - delta, 0.0)
 	if not traversing:
 		if current_state != State.JUMPING:
@@ -167,12 +176,16 @@ func handle_movement(delta):
 		if is_sprinting:
 			current_speed = SPEED * SPRINT_SPEED_MULT
 
+	# locked on: always look at the target; otherwise look where you walk
+	var look := lock_on.facing_toward()
+	if look == 0.0:
+		look = signf(input_dir.x)
+	face(look)
+
 	velocity = ramp_adjust(Vector2(input_dir.x * current_speed, input_dir.y * current_speed * DEPTH_SQUASH))
+	if lock_on.target != null and input_dir.x != 0.0 and signf(input_dir.x) != facing_direction.x:
+		velocity.x *= BACKPEDAL_MULT
 	move_and_slide()
-	
-	if input_dir.x != 0:
-		facing_direction.x = sign(input_dir.x)
-		visuals.scale.x = facing_direction.x
 	
 	#velocity = ramp_adjust(Vector2(input_dir.x * SPEED, input_dir.y * SPEED * DEPTH_SQUASH))
 	#move_and_slide()
@@ -180,6 +193,13 @@ func handle_movement(delta):
 	#if input_dir.x != 0:
 		#facing_direction.x = sign(input_dir.x)
 		#visuals.scale.x = facing_direction.x 
+
+## Turns the character to face left (-1) or right (1). 0 keeps the current direction.
+func face(dir: float) -> void:
+	if dir != 0.0:
+		facing_direction.x = dir
+		visuals.scale.x = dir
+
 
 var _step_timer := 0.0
 
@@ -304,6 +324,7 @@ func start_attack(a: AttackDef) -> void:
 	if a == null or not stats.use_stamina(a.stamina_cost):
 		return
 	current_attack = a
+	face(lock_on.facing_toward())    # attacks swing at the locked target
 	_buffer = ""
 	_combo_left = 0.0
 	_hit_targets.clear()
@@ -359,13 +380,15 @@ func handle_aiming(delta):
 		body_sprite.play("Aim")
 	elif body_sprite.frame == body_sprite.sprite_frames.get_frame_count("Aim") - 1:
 		body_sprite.pause() 
-	var input_x = Input.get_axis("left", "right")
-	if input_x != 0:
-		facing_direction.x = sign(input_x)
-		visuals.scale.x = facing_direction.x 
-		
-	var input_y = Input.get_axis("up", "down")
-	aim_angle += input_y * AIM_SPEED * delta
+	var look := lock_on.facing_toward()
+	face(look if look != 0.0 else Input.get_axis("left", "right"))
+
+	if lock_on.target != null:
+		# locked on: the laser follows the target by itself
+		var to_target := visuals.to_local(lock_on.aim_point()) - aim_ray.position
+		aim_angle = atan2(to_target.y, absf(to_target.x))
+	else:
+		aim_angle += Input.get_axis("up", "down") * AIM_SPEED * delta
 	aim_angle = clamp(aim_angle, -MAX_AIM_ANGLE, MAX_AIM_ANGLE)
 	aim_ray.rotation = aim_angle
 

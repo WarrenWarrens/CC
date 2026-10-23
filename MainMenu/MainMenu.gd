@@ -2,9 +2,12 @@ extends Node2D
 
 var level: int = 1
 @onready var music_slider = $CenterContainer/SettingsMenu/MusicVolumeSlider
+@onready var sfx_slider = $CenterContainer/SettingsMenu/SfxVolumeSlider
 
 
 func _ready() -> void:
+	music_slider.value = Audio.get_volume(&"Music")   # show the saved levels
+	sfx_slider.value = Audio.get_volume(&"SFX")
 	$CenterContainer/SettingsMenu/Fullscreen.button_pressed = true if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN else false
 
 func _on_play_pressed() -> void:
@@ -23,7 +26,16 @@ func _on_exit_pressed() -> void:
 	get_tree().quit()
 	
 
+func _on_music_volume_slider_value_changed(value: float) -> void:
+	Audio.set_volume(&"Music", value)
+
+
+func _on_sfx_volume_slider_value_changed(value: float) -> void:
+	Audio.set_volume(&"SFX", value)
+
+
 func _on_button_pressed() -> void:
+	Audio.save_settings()
 	$CenterContainer/MenuButtons.visible = true
 	$CenterContainer/SettingsMenu.visible = false
 	$CenterContainer/CreditsMenu.visible = false
