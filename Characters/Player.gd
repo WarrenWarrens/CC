@@ -181,8 +181,14 @@ func handle_movement(delta):
 		#facing_direction.x = sign(input_dir.x)
 		#visuals.scale.x = facing_direction.x 
 
+var _step_timer := 0.0
+
 func update_animations(idle_anim, walk_anim):
 	if velocity.length() > 0:
+		_step_timer -= get_physics_process_delta_time()
+		if _step_timer <= 0.0:
+			_step_timer = 0.25 if is_sprinting else 0.38   # seconds between footsteps
+			Audio.play(&"step", -10.0)
 		if is_sprinting:
 			body_sprite.play("Sprint")
 		else:
@@ -194,6 +200,7 @@ func handle_actions():
 	if Input.is_action_just_pressed("ui_accept"):
 		current_state = State.JUMPING
 		z_velocity = JUMP_FORCE * (SPRINT_JUMP_MULT if is_sprinting else 1.0)
+		Audio.play(&"jump")
 		body_sprite.play("Jump")
 	elif Input.is_action_just_pressed("light"):
 		start_attack(_first_move("light"))
@@ -204,6 +211,7 @@ func handle_actions():
 		body_sprite.play("Guard")
 	elif Input.is_action_just_pressed("dodge") and stats.use_stamina(5):
 		current_state = State.DODGING
+		Audio.play(&"dodge")
 		velocity = ramp_adjust(facing_direction * DODGE_SPEED)
 		body_sprite.play("Dodge")
 		get_tree().create_timer(0.3).timeout.connect(func(): current_state = State.NORMAL)
@@ -237,6 +245,7 @@ func take_damage(amount, knockback_dir):
 		body_sprite.play("Stun")
 		velocity = knockback_dir * 200
 		stats.take_damage(amount)
+		Audio.play(&"hurt")
 		
 		is_invincible = true
 		
@@ -273,6 +282,7 @@ func _on_hitbox_area_entered(area):
 			var knockback = global_position.direction_to(target.global_position) * current_attack.knockback_scale
 			target.take_damage(current_attack.damage, knockback)
 			stats.add_psy(10)
+			Audio.play(&"hit")
 
 func _on_body_frame_changed() -> void:
 	if current_state == State.ATTACKING and current_attack:
@@ -303,6 +313,7 @@ func start_attack(a: AttackDef) -> void:
 	var anim: StringName = a.animation if body_sprite.sprite_frames.has_animation(a.animation) else &"Attack"
 	body_sprite.speed_scale = a.speed_scale
 	body_sprite.sprite_frames.set_animation_loop(anim, false)   # a looping move would never finish and the player would be stuck
+	Audio.play(&"swing")
 	body_sprite.play(anim)
 	body_sprite.set_frame_and_progress(0, 0.0)   # play() alone would not restart a move that is already playing
 	hitbox.set_deferred("monitoring", 0 in a.hit_frames)
@@ -393,6 +404,7 @@ func shoot():
 		return
 		
 	can_shoot = false
+	Audio.play(&"shoot")
 
 	if aim_ray.is_colliding():
 		var collider = aim_ray.get_collider()
