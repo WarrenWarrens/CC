@@ -8,6 +8,7 @@ const SPEED = 300.0
 const DEPTH_SQUASH = 0.6
 const JUMP_FORCE = 400.0
 const DODGE_SPEED = 600.0
+const DODGE_DEPTH_MULT = 0.35     # dodging up or down the screen goes this fraction of the sideways distance
 const SPRINT_SPEED_MULT = 1.6
 const SPRINT_JUMP_MULT = 1.25
 const SPRINT_STAMINA_DRAIN = 5.0
@@ -218,7 +219,9 @@ func handle_actions():
 	elif Input.is_action_just_pressed("dodge") and stats.use_stamina(5):
 		current_state = State.DODGING
 		Audio.play(&"dodge")
-		velocity = ramp_adjust(facing_direction * DODGE_SPEED)
+		# dodge the way you are pushing; with nothing held, dodge forward. Up and down are shorter.
+		var dodge_dir := move_intent if move_intent != Vector2.ZERO else facing_direction
+		velocity = ramp_adjust(Vector2(dodge_dir.x * DODGE_SPEED, dodge_dir.y * DODGE_SPEED * DODGE_DEPTH_MULT))
 		body_sprite.play("Dodge")
 		get_tree().create_timer(0.3).timeout.connect(func(): current_state = State.NORMAL)
 	elif Input.is_action_just_pressed("aim"): 
@@ -403,6 +406,7 @@ func shoot():
 		
 	can_shoot = false
 	Audio.play(&"shoot")
+	SoftLight.flash(get_parent(), aim_ray.global_transform * Vector2(14.0, 0.0))   # muzzle flash
 
 	if aim_ray.is_colliding():
 		var collider = aim_ray.get_collider()
