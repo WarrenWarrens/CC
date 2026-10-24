@@ -35,6 +35,8 @@ var move_intent := Vector2.ZERO
 var ramps: Array[Ramp] = []
 var _tracked_ramp: Ramp = null
 var _tracked_progress := 0.0
+## Where this walker was placed when the level started. Doors can use it to frame the camera the same way (see Door.auto_elevation).
+var start_y := 0.0
 var _base_mask := 0     # the collision mask set in the scene, without the per-floor wall bits
 
 
@@ -45,6 +47,7 @@ static func floor_bit(f: int) -> int:
 
 func _enter_tree() -> void:
 	add_to_group("walkers")
+	start_y = global_position.y
 	_base_mask = collision_mask & ~FLOOR_LAYER_BITS
 	refresh_collision()
 

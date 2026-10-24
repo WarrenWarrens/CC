@@ -36,14 +36,14 @@ func get_slots() -> Array[Dictionary]:
 ## Starts a level. With no path it starts `next_level` (what the main menu picked).
 func start_level(path := "") -> void:
 	_alive = 0
-	get_tree().change_scene_to_file(path if path != "" else next_level)
+	SceneManager.load_scene(path if path != "" else next_level)
 
 
 ## The main menu calls this: remember which level was chosen, then show the character select screen.
 func open_select(level_path := "") -> void:
 	if level_path != "":
 		next_level = level_path
-	get_tree().change_scene_to_file(SELECT_SCENE)
+	SceneManager.load_scene(SELECT_SCENE)
 
 
 func back_to_menu() -> void:
