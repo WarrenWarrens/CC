@@ -11,6 +11,7 @@ const DODGE_SPEED = 300.0
 const SPRINT_SPEED_MULT = 1.6
 const SPRINT_JUMP_MULT = 1.25
 const SPRINT_STAMINA_DRAIN = 2.0
+const DODGE_DEPTH_MULT = 1
 
 var is_sprinting = false
 var sprint_stamina_accumulator = 0.0 
@@ -219,7 +220,7 @@ func handle_actions():
 		current_state = State.DODGING
 		Audio.play(&"dodge")
 		# dodge the way you are pushing; with nothing held, dodge forward. Up and down are shorter.
-		var dodge_dir := move_intent if move_intent != Vector2.ZERO else facing_direction
+		var dodge_dir = move_intent if move_intent != Vector2.ZERO else facing_direction
 		velocity = ramp_adjust(Vector2(dodge_dir.x * DODGE_SPEED, dodge_dir.y * DODGE_SPEED * DODGE_DEPTH_MULT))
 		body_sprite.play("Dodge")
 		get_tree().create_timer(0.3).timeout.connect(func(): current_state = State.NORMAL)
