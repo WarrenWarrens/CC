@@ -15,6 +15,7 @@ extends Camera2D
 
 
 func _ready() -> void:
+	add_to_group("level_camera")
 	process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
 	position_smoothing_enabled = true
 	position_smoothing_speed = smoothing_speed
@@ -27,6 +28,17 @@ func _ready() -> void:
 	if t != null:
 		global_position = t
 		reset_smoothing()
+
+
+## Jump straight to where the camera should be (after a door), instead of gliding there.
+func snap() -> void:
+	var t = _target()
+	if t == null:
+		return
+	position_smoothing_enabled = false
+	global_position = t
+	reset_smoothing()
+	get_tree().create_timer(0.1).timeout.connect(func(): position_smoothing_enabled = true)
 
 
 func set_shared(on: bool) -> void:

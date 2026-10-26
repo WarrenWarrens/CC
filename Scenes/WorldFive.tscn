@@ -286,6 +286,7 @@ position = Vector2(2785, -88)
 scale = Vector2(3, 3)
 door_id = "002"
 door_floor_id = 2
+auto_elevation = true
 destination_door_id = "001"
 
 [node name="Enemy" type="Node2D" parent="." unique_id=1582444898]
