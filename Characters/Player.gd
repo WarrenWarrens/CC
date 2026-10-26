@@ -1,7 +1,7 @@
 extends Walker  
 enum FightingStyle { RED, BLUE, YELLOW, PURPLE }
 var current_style = FightingStyle.RED 
-enum State { NORMAL, JUMPING, ATTACKING, GUARDING, DODGING, STUNNED, AIMING }
+enum State { NORMAL, JUMPING, ATTACKING, GUARDING, DODGING, STUNNED, AIMING, SLIDING }
 var current_state = State.NORMAL
 
 const SPEED = 200.0
@@ -14,6 +14,17 @@ const SPRINT_STAMINA_DRAIN = 2.0
 const DODGE_DEPTH_MULT = 1
 
 var is_sprinting = false
+var sprint_locked := false         # after a sprint attack you can't sprint again until the sprint button is let go
+
+# Sliding: start one while sprinting. You keep your speed, slowly losing it; ramps going down add speed, going up take it away.
+const SLIDE_START_SPEED := SPEED * SPRINT_SPEED_MULT * 1.1
+const SLIDE_FRICTION := 110.0      # px/s lost every second on flat ground (about 3 seconds to stop)
+const SLIDE_RAMP_ACCEL := 450.0    # px/s gained every second going down a 45 degree ramp
+const SLIDE_MAX_SPEED := 650.0
+const SLIDE_MIN_SPEED := 60.0      # slower than this and the slide ends
+const SLIDE_STAMINA := 3.0
+var _slide_speed := 0.0
+var _slide_dir := Vector2.RIGHT
 var sprint_stamina_accumulator = 0.0 
 
 
@@ -24,6 +35,10 @@ var _hit_targets: Array = []
 const COMBO_WINDOW := 0.25        
 var light_start: AttackDef
 var heavy_start: AttackDef
+var sprint_light: AttackDef
+var sprint_heavy: AttackDef
+var jump_light: AttackDef
+var jump_heavy: AttackDef
 var current_attack: AttackDef
 var _buffer := ""                 
 var _combo_from: AttackDef        
@@ -96,6 +111,10 @@ func _ready():
 	def.apply_skin(body_sprite, slot["tint"])
 	light_start = def.light_attack if def.light_attack else AttackDef.new()
 	heavy_start = def.heavy_attack if def.heavy_attack else AttackDef.default_heavy()
+	sprint_light = def.sprint_light_attack
+	sprint_heavy = def.sprint_heavy_attack
+	jump_light = def.jump_light_attack
+	jump_heavy = def.jump_heavy_attack
 	GameSession.register_player(stats)
 	stats.died.connect(_on_died)
 	switch_style(def.starting_style)
@@ -120,6 +139,10 @@ func _physics_process(delta):
 			State.JUMPING:
 				handle_movement(delta) 
 				handle_jump(delta)
+				if current_state == State.JUMPING:
+					handle_air_actions()
+			State.SLIDING:
+				handle_slide(delta)
 			State.ATTACKING:
 				handle_attack()
 			State.GUARDING:
@@ -152,9 +175,11 @@ func handle_movement(delta):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	is_sprinting = false
 	var current_speed = SPEED
+	if sprint_locked and not Input.is_action_pressed("sprint"):
+		sprint_locked = false
 	
 	
-	if Input.is_action_pressed("sprint") and input_dir != Vector2.ZERO and is_grounded():
+	if Input.is_action_pressed("sprint") and not sprint_locked and input_dir != Vector2.ZERO and is_grounded():
 		sprint_stamina_accumulator += SPRINT_STAMINA_DRAIN * delta
 		
 		if sprint_stamina_accumulator >= 1.0:
@@ -204,15 +229,17 @@ func update_animations(idle_anim, walk_anim):
 		body_sprite.play(idle_anim)
 
 func handle_actions():
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and is_grounded():
 		current_state = State.JUMPING
 		z_velocity = JUMP_FORCE * (SPRINT_JUMP_MULT if is_sprinting else 1.0)
 		Audio.play(&"jump")
 		body_sprite.play("Jump")
 	elif Input.is_action_just_pressed("light"):
-		start_attack(_first_move("light"))
+		start_attack(_ground_move("light"))
 	elif Input.is_action_just_pressed("heavy"):
-		start_attack(_first_move("heavy"))
+		start_attack(_ground_move("heavy"))
+	elif Input.is_action_just_pressed("slide") and is_sprinting and stats.use_stamina(SLIDE_STAMINA):
+		_start_slide()
 	elif Input.is_action_pressed("guard"):
 		current_state = State.GUARDING
 		body_sprite.play("Guard")
@@ -290,6 +317,23 @@ func _on_body_frame_changed() -> void:
 
 
 
+## Which move a button press on the ground starts: the sprint move while sprinting (if the character has one), otherwise the combo.
+func _ground_move(kind: String) -> AttackDef:
+	if is_sprinting:
+		var special := sprint_light if kind == "light" else sprint_heavy
+		if special != null:
+			return special
+	return _first_move(kind)
+
+
+## Attacks in the air: the jump moves. A character with no jump move can't attack while jumping.
+func handle_air_actions() -> void:
+	if Input.is_action_just_pressed("light"):
+		start_attack(jump_light)
+	elif Input.is_action_just_pressed("heavy"):
+		start_attack(jump_heavy)
+
+
 ## The move a fresh press starts. Inside the combo window it continues the combo, otherwise it is the first move.
 func _first_move(kind: String) -> AttackDef:
 	var root := light_start if kind == "light" else heavy_start
@@ -308,6 +352,9 @@ func start_attack(a: AttackDef) -> void:
 	_combo_left = 0.0
 	_hit_targets.clear()
 	current_state = State.ATTACKING
+	if a == sprint_light or a == sprint_heavy:
+		is_sprinting = false       # a sprint attack ends the sprint
+		sprint_locked = true
 	hit_shape.shape.size = a.hitbox_size
 	hit_shape.position = a.hitbox_offset
 	var anim: StringName = a.animation if body_sprite.sprite_frames.has_animation(a.animation) else &"Attack"
@@ -327,7 +374,7 @@ func handle_attack() -> void:
 	elif Input.is_action_just_pressed("heavy"):
 		_buffer = "heavy"
 
-	var lunging: bool = not a.hit_frames.is_empty() and body_sprite.frame <= a.hit_frames[0]
+	var lunging: bool = a.lunge_whole_move or (not a.hit_frames.is_empty() and body_sprite.frame <= a.hit_frames[0])
 
 	velocity = ramp_adjust(Vector2(facing_direction.x * a.lunge, 0.0)) if lunging else Vector2.ZERO
 	move_and_slide()
@@ -344,7 +391,39 @@ func end_attack() -> void:
 	_combo_from = current_attack
 	_combo_left = COMBO_WINDOW
 	current_attack = null
-	current_state = State.NORMAL
+	current_state = State.JUMPING if altitude > 0.0 else State.NORMAL   # a jump attack ends back in the jump
+
+
+# --- sliding ----------------------------------------------------------------------
+
+func _start_slide() -> void:
+	current_state = State.SLIDING
+	is_sprinting = false
+	_slide_speed = SLIDE_START_SPEED
+	_slide_dir = Vector2(signf(move_intent.x) if move_intent.x != 0.0 else facing_direction.x, move_intent.y)
+	face(_slide_dir.x)
+	Audio.play(&"slide")
+	_play_once(&"Slide", &"Dodge")
+
+
+func handle_slide(delta: float) -> void:
+	_slide_dir.y = move_toward(_slide_dir.y, move_intent.y, 2.0 * delta)        # steer up and down a little
+	# get_slope() times the direction is positive going DOWN a ramp, negative going up
+	var downhill := signf(_slide_dir.x) * get_slope()
+	_slide_speed += (SLIDE_RAMP_ACCEL * downhill - SLIDE_FRICTION) * delta
+	_slide_speed = minf(_slide_speed, SLIDE_MAX_SPEED)
+	velocity = ramp_adjust(Vector2(_slide_dir.x * _slide_speed, _slide_dir.y * _slide_speed * DEPTH_SQUASH))
+	move_and_slide()
+	# out of speed, or ran into a wall
+	if _slide_speed < SLIDE_MIN_SPEED or get_real_velocity().length() < SLIDE_MIN_SPEED * 0.5:
+		current_state = State.NORMAL
+
+
+## Plays an animation once and holds its last frame. Uses `fallback` if the character has no `anim`.
+func _play_once(anim: StringName, fallback: StringName) -> void:
+	var a := anim if body_sprite.sprite_frames.has_animation(anim) else fallback
+	body_sprite.sprite_frames.set_animation_loop(a, false)
+	body_sprite.play(a)
 
 
 func handle_aiming(delta):
