@@ -6,6 +6,9 @@ extends StaticBody2D
 ## (This script sets the physics layer for you: floor 0 = layer 9, floor 1 = layer 10 ... floor 7 = layer 16.
 ##  Walker.gd gives every Player/Enemy the layer of the floor it is on, so nothing else needs setting up.)
 ##
+## Towers with more than 8 floors: floors repeat every 8, so for floor 9 tick "Floor 1", for floor 10 tick "Floor 2"...
+## (floor number minus 8, minus 8 again, and so on). Floors that share a bit must be far apart in the world.
+##
 ## Examples:  the cliff face under an upper floor -> tick the LOWER floor.
 ##            the edge of the upper floor         -> tick the UPPER floor (leave a gap where a drop Ledge goes).
 ##            a pillar that stands on every floor -> tick them all.

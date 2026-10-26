@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="CC"
+config/tags=PackedStringArray("cc")
 run/main_scene="uid://d1exggoon56x5"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"

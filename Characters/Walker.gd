@@ -6,7 +6,10 @@ const FLOOR_Z_CHARACTER := 5    # characters sit at floor * 10 + 5 (+1 while sta
 const GRAVITY := 900.0
 const JUMP_APEX := 88.0         # highest a normal jump reaches: JUMP_FORCE^2 / (2 * GRAVITY)
 const FLOOR_LAYER_FIRST := 9    # physics layer 9 = walls of floor 0, layer 10 = floor 1 ... up to floor 7 (layer 16)
-const MAX_FLOORS := 8
+## How many physics layers the floor walls use. A level can have MORE floors than this: floor 8 reuses floor 0's
+## layer, floor 9 reuses floor 1's, and so on (see floor_bit). That is safe as long as floors that share a layer
+## are far apart in the world, which they are in a tower where every floor sits above the last.
+const FLOOR_LAYERS := 8
 const FLOOR_LAYER_BITS := 0xFF << (FLOOR_LAYER_FIRST - 1)
 
 ## The floor this character stands on. Ramps, ledges and ladders change it as it moves,
@@ -35,16 +38,19 @@ var move_intent := Vector2.ZERO
 var ramps: Array[Ramp] = []
 var _tracked_ramp: Ramp = null
 var _tracked_progress := 0.0
+## Where this walker was placed when the level started. Doors can use it to frame the camera the same way (see Door.auto_elevation).
+var start_y := 0.0
 var _base_mask := 0     # the collision mask set in the scene, without the per-floor wall bits
 
 
-## The collision-mask bit for the walls of one floor.
+## The collision-mask bit for the walls of one floor. Floors repeat every FLOOR_LAYERS (floor 9 uses floor 1's bit).
 static func floor_bit(f: int) -> int:
-	return 1 << (FLOOR_LAYER_FIRST - 1 + clampi(f, 0, MAX_FLOORS - 1))
+	return 1 << (FLOOR_LAYER_FIRST - 1 + posmod(f, FLOOR_LAYERS))
 
 
 func _enter_tree() -> void:
 	add_to_group("walkers")
+	start_y = global_position.y
 	_base_mask = collision_mask & ~FLOOR_LAYER_BITS
 	refresh_collision()
 

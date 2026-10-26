@@ -6,6 +6,9 @@ class_name Door
 @export var door_floor_id: int = 0
 ## Camera rise of that floor (0 = ground floor, -102 = one 102px ledge up). Only needed if the camera sits wrong after the door.
 @export var door_elevation: float = 0.0
+## Easier than door_elevation: tick this and the camera is framed the same way as when the level starts
+## (the player's spawn height here, compared with where they started). Use it on doors to a higher or lower floor.
+@export var auto_elevation: bool = false
 
 @export_group("Destination")
 @export_file("*.tscn") var destination_scene_path: String = ""
@@ -94,7 +97,7 @@ func _arrive(player: Node2D) -> void:
 	if walker == null:
 		return
 	walker.floor_id = door_floor_id
-	walker.elevation = door_elevation
+	walker.elevation = (spawn_point.global_position.y - walker.start_y) if auto_elevation else door_elevation
 	walker.refresh_z()   # draw order and which walls we collide with follow the floor
 
 func _find_door_in_scene(target_id: String) -> Door:
@@ -117,13 +120,6 @@ func _snap_cameras(player: Node2D) -> void:
 				player_cam.position_smoothing_enabled = true
 		)
 
-	var level_cam = get_tree().get_first_node_in_group("level_camera")
-	if level_cam and level_cam is Camera2D:
-		level_cam.position_smoothing_enabled = false
-		level_cam.global_position = player.global_position
-		level_cam.reset_smoothing()
-		
-		get_tree().create_timer(0.1).timeout.connect(func(): 
-			if is_instance_valid(level_cam):
-				level_cam.position_smoothing_enabled = true
-		)
+	var level_cam := get_tree().get_first_node_in_group("level_camera") as LevelCamera
+	if level_cam:
+		level_cam.snap()

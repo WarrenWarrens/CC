@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://saxx8vy4npnh" path="res://Script/World.gd" id="1_wnph4"]
 [ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Characters/Player.tscn" id="2_56ktj"]
-[ext_resource type="AudioStream" uid="uid://yi4km2ijf7hf" path="res://Audio/music/mm.mp3" id="2_n0yck"]
+[ext_resource type="AudioStream" uid="uid://c8ovh2uvcq7eo" path="res://Audio/music/mm.mp3" id="2_n0yck"]
 [ext_resource type="Texture2D" uid="uid://cqk0p78nwjjd2" path="res://Assets/sky.png" id="3_8xwjy"]
 [ext_resource type="Texture2D" uid="uid://dmbrjltbpwy0r" path="res://Assets/grey2.png" id="4_3jlm2"]
 [ext_resource type="Texture2D" uid="uid://svsya7w1lvb2" path="res://Assets/red4.png" id="5_ya0eq"]
@@ -234,22 +234,15 @@ texture = ExtResource("16_fcpsy")
 [node name="Ledge" parent="Ledges" unique_id=976586405 instance=ExtResource("17_xckvv")]
 position = Vector2(2151, -64)
 scale = Vector2(7, 1)
+kind = 2
 lower_floor = 2
 upper_floor = 3
+height = 100.0
+landing_offset = 4.0
+max_auto_climb_height = 80.0
+mantle_reach = 15.0
 
 [node name="CollisionShape2D" parent="Ledges/Ledge" index="0" unique_id=1111040835]
-position = Vector2(-5.330353, 0)
-shape = SubResource("RectangleShape2D_avcxa")
-
-[node name="Ledge4" parent="Ledges" unique_id=1940589835 instance=ExtResource("17_xckvv")]
-position = Vector2(2151, -64)
-scale = Vector2(7, 1)
-kind = 1
-lower_floor = 2
-upper_floor = 3
-climb_needs_jump = false
-
-[node name="CollisionShape2D" parent="Ledges/Ledge4" index="0" unique_id=1111040835]
 position = Vector2(-5.330353, 0)
 shape = SubResource("RectangleShape2D_avcxa")
 
@@ -283,7 +276,7 @@ shape = SubResource("RectangleShape2D_7qjx6")
 
 [node name="Door" parent="Doors" unique_id=993242610 instance=ExtResource("18_rvry2")]
 position = Vector2(181, 159)
-scale = Vector2(3, 3)
+scale = Vector2(2, 2)
 door_id = "001"
 door_floor_id = 1
 destination_door_id = "002"
@@ -293,6 +286,7 @@ position = Vector2(2785, -88)
 scale = Vector2(3, 3)
 door_id = "002"
 door_floor_id = 2
+auto_elevation = true
 destination_door_id = "001"
 
 [node name="Enemy" type="Node2D" parent="." unique_id=1582444898]
@@ -314,6 +308,5 @@ floor_id = 2
 
 [editable path="Ladders/Ladder"]
 [editable path="Ledges/Ledge"]
-[editable path="Ledges/Ledge4"]
 [editable path="Ledges/Ledge2"]
 [editable path="Ledges/Ledge3"]
