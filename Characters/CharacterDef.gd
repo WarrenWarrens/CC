@@ -26,6 +26,14 @@ const SKIN_SHADER := preload("res://PaletteSwapSimple.gdshader")
 @export var light_attack: AttackDef
 @export var heavy_attack: AttackDef
 
+@export_group("Special Moves")
+## Used instead of the normal combo when the light / heavy button is pressed while SPRINTING.
+@export var sprint_light_attack: AttackDef
+@export var sprint_heavy_attack: AttackDef
+## Used when the light / heavy button is pressed while JUMPING. Empty = no attack in the air.
+@export var jump_light_attack: AttackDef
+@export var jump_heavy_attack: AttackDef
+
 @export_group("Colours")
 ## The colour of the sprite's red clothing. The default is the colour painted in the art, so it looks unchanged.
 @export var main_color := Color("881830")

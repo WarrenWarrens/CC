@@ -13,6 +13,7 @@ extends Resource
 @export var hit_frames: Array[int] = [1, 2]       # animation frames where the hitbox is live
 @export var hitbox_size := Vector2(47, 25)        # range
 @export var hitbox_offset := Vector2(23.5, -28.5)
+@export var lunge_whole_move := false             # true = keep moving forward for the whole animation (sprint and jump attacks)
 @export var lunge := 0.0                          # px/s the player steps forward until the first hit frame
 
 @export_group("Chaining")

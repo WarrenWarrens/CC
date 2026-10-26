@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="AttackDef" format=3]
+
+[ext_resource type="Script" path="res://Characters/AttackDef.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+animation = &"JumpHeavy"
+damage = 22
+knockback_scale = 5.5
+stamina_cost = 5.0
+speed_scale = 0.9
+hit_frames = Array[int]([2, 3])
+hitbox_size = Vector2(64, 46)
+hitbox_offset = Vector2(30, -26)
+lunge_whole_move = true
+lunge = 180.0
