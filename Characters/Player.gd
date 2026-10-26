@@ -4,13 +4,13 @@ var current_style = FightingStyle.RED
 enum State { NORMAL, JUMPING, ATTACKING, GUARDING, DODGING, STUNNED, AIMING }
 var current_state = State.NORMAL
 
-const SPEED = 300.0
+const SPEED = 200.0
 const DEPTH_SQUASH = 0.6
 const JUMP_FORCE = 400.0
-const DODGE_SPEED = 600.0
+const DODGE_SPEED = 300.0
 const SPRINT_SPEED_MULT = 1.6
 const SPRINT_JUMP_MULT = 1.25
-const SPRINT_STAMINA_DRAIN = 5.0
+const SPRINT_STAMINA_DRAIN = 2.0
 
 var is_sprinting = false
 var sprint_stamina_accumulator = 0.0 

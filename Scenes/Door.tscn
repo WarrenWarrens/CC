@@ -4,12 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://4bfjm5kmjgq2" path="res://Assets/doorone.png" id="2_mw28t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ttpud"]
+size = Vector2(32, 40)
 
 [node name="Door" type="Area2D" unique_id=993242610 groups=["doors"]]
 collision_layer = 0
 script = ExtResource("1_38ogf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=125700225]
+position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_ttpud")
 
 [node name="SpawnPoint" type="Marker2D" parent="." unique_id=2118248382]
