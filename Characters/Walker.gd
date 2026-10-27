@@ -32,6 +32,9 @@ var surface_camera := 0.0
 ## True while a mantle / ladder / ledge climb is moving us. Skip input, AI and physics while it is set.
 var traversing := false
 
+## True while hanging from a HangLedge (traversing is set too, so input and AI are skipped).
+var hanging := false
+
 ## What the player is pressing / what the AI wants, as a direction (set it every frame, even while traversing).
 var move_intent := Vector2.ZERO
 

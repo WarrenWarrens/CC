@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Script/HangLedge.gd" id="1_hang"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_range"]
+size = Vector2(240, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_climb"]
+size = Vector2(80, 16)
+
+[node name="HangLedge" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_hang")
+
+[node name="HangRange" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_range")
+debug_color = Color(0.2, 0.6, 1, 0.4)
+
+[node name="ClimbZone" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_climb")
+debug_color = Color(0.3, 1, 0.4, 0.5)
