@@ -193,6 +193,18 @@ func air_step(delta: float) -> bool:
 	return false
 
 
+# --- stamina hooks for ledges and ladders ----------------------------------------------
+# Players override these with their real stamina. A walker without stamina never tires.
+
+## Spends stamina; false = there wasn't enough left.
+func drain_stamina(_amount: float) -> bool:
+	return true
+
+
+func has_stamina() -> bool:
+	return true
+
+
 # --- traversal (mantle, ladder, ledge) ----------------------------------------
 
 func begin_traversal() -> void:

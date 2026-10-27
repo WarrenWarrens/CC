@@ -33,6 +33,9 @@ const SKIN_SHADER := preload("res://PaletteSwapSimple.gdshader")
 ## Used when the light / heavy button is pressed while JUMPING. Empty = no attack in the air.
 @export var jump_light_attack: AttackDef
 @export var jump_heavy_attack: AttackDef
+## Hold heavy while sprinting to ram: run forward carrying enemies, until you let go, hit a wall, fall or run out of stamina.
+## Empty = no ram (heavy while sprinting is just the sprint heavy).
+@export var ram_attack: AttackDef
 
 @export_group("Colours")
 ## The colour of the sprite's red clothing. The default is the colour painted in the art, so it looks unchanged.

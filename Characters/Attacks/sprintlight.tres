@@ -12,5 +12,5 @@ speed_scale = 1.0
 hit_frames = Array[int]([2, 3])
 hitbox_size = Vector2(60, 30)
 hitbox_offset = Vector2(30, -30)
-lunge_whole_move = true
-lunge = 280.0
+lunge = 320.0
+lunge_time = 1.0

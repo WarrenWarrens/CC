@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AttackDef" format=3]
+
+[ext_resource type="Script" path="res://Characters/AttackDef.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+animation = &"Ram"
+damage = 30
+knockback_scale = 5.0
+stamina_cost = 4.0
+stamina_per_second = 12.0
+hitbox_size = Vector2(46, 40)
+hitbox_offset = Vector2(26, -28)
+lunge = 380.0
