@@ -14,14 +14,13 @@ const SPRINT_STAMINA_DRAIN = 2.0
 const DODGE_DEPTH_MULT = 1
 
 var is_sprinting = false
-var sprint_locked := false         # after a sprint attack you can't sprint again until the sprint button is let go
+var sprint_locked := false        
 
-# Sliding: start one while sprinting. You keep your speed, slowly losing it; ramps going down add speed, going up take it away.
 const SLIDE_START_SPEED := SPEED * SPRINT_SPEED_MULT * 1.1
-const SLIDE_FRICTION := 110.0      # px/s lost every second on flat ground (about 3 seconds to stop)
-const SLIDE_RAMP_ACCEL := 450.0    # px/s gained every second going down a 45 degree ramp
+const SLIDE_FRICTION := 350.0     
+const SLIDE_RAMP_ACCEL := 450.0    
 const SLIDE_MAX_SPEED := 650.0
-const SLIDE_MIN_SPEED := 60.0      # slower than this and the slide ends
+const SLIDE_MIN_SPEED := 90.0    
 const SLIDE_STAMINA := 3.0
 var _slide_speed := 0.0
 var _slide_dir := Vector2.RIGHT
@@ -99,7 +98,6 @@ func _ready():
 	laser_glow.visible = false
 	hit_light.visible = false
 	
-	#switch_style(FightingStyle.RED)
 	var slots := GameSession.get_slots()
 	var slot: Dictionary = slots[mini(player_index, slots.size() - 1)]
 	var def: CharacterDef = slot["def"]
@@ -206,7 +204,6 @@ func handle_movement(delta):
 	
 
 
-## Turns the character to face left (-1) or right (1). 0 keeps the current direction.
 func face(dir: float) -> void:
 	if dir != 0.0:
 		facing_direction.x = dir
@@ -246,7 +243,6 @@ func handle_actions():
 	elif Input.is_action_just_pressed("dodge") and stats.use_stamina(5):
 		current_state = State.DODGING
 		Audio.play(&"dodge")
-		# dodge the way you are pushing; with nothing held, dodge forward. Up and down are shorter.
 		var dodge_dir = move_intent if move_intent != Vector2.ZERO else facing_direction
 		velocity = ramp_adjust(Vector2(dodge_dir.x * DODGE_SPEED, dodge_dir.y * DODGE_SPEED * DODGE_DEPTH_MULT))
 		body_sprite.play("Dodge")
