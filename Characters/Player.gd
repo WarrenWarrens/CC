@@ -1,7 +1,7 @@
 extends Walker  
 enum FightingStyle { RED, BLUE, YELLOW, PURPLE }
 var current_style = FightingStyle.RED 
-enum State { NORMAL, JUMPING, ATTACKING, GUARDING, DODGING, STUNNED, AIMING, SLIDING }
+enum State { NORMAL, JUMPING, ATTACKING, GUARDING, DODGING, STUNNED, AIMING, SLIDING, RAMMING }
 var current_state = State.NORMAL
 
 const SPEED = 200.0
@@ -15,6 +15,15 @@ const DODGE_DEPTH_MULT = 1
 
 var is_sprinting = false
 var sprint_locked := false        
+
+# Ram: sprint, then HOLD heavy. You run forward carrying enemies until you let go, hit a wall, fall or run out of stamina.
+const RAM_HOLD_TIME := 0.25       # a tap of heavy while sprinting is the sprint heavy; holding this long starts the ram
+const RAM_MAX_CARRIED := 3
+var ram: AttackDef
+var _ram_pending := false         # heavy was pressed while sprinting: tap or hold?
+var _ram_charge := 0.0
+var _ram_time := 0.0
+var _ram_victims: Array[Enemy] = []
 
 const SLIDE_START_SPEED := SPEED * SPRINT_SPEED_MULT * 1.1
 const SLIDE_FRICTION := 350.0     
@@ -38,6 +47,7 @@ var sprint_light: AttackDef
 var sprint_heavy: AttackDef
 var jump_light: AttackDef
 var jump_heavy: AttackDef
+var _attack_time := 0.0           # seconds since the current move started
 var current_attack: AttackDef
 var _buffer := ""                 
 var _combo_from: AttackDef        
@@ -113,6 +123,7 @@ func _ready():
 	sprint_heavy = def.sprint_heavy_attack
 	jump_light = def.jump_light_attack
 	jump_heavy = def.jump_heavy_attack
+	ram = def.ram_attack
 	GameSession.register_player(stats)
 	stats.died.connect(_on_died)
 	switch_style(def.starting_style)
@@ -141,6 +152,8 @@ func _physics_process(delta):
 					handle_air_actions()
 			State.SLIDING:
 				handle_slide(delta)
+			State.RAMMING:
+				handle_ram(delta)
 			State.ATTACKING:
 				handle_attack()
 			State.GUARDING:
@@ -226,6 +239,9 @@ func update_animations(idle_anim, walk_anim):
 		body_sprite.play(idle_anim)
 
 func handle_actions():
+	if _ram_pending:
+		_update_ram_press(get_physics_process_delta_time())
+		return
 	if Input.is_action_just_pressed("ui_accept") and is_grounded():
 		current_state = State.JUMPING
 		z_velocity = JUMP_FORCE * (SPRINT_JUMP_MULT if is_sprinting else 1.0)
@@ -234,7 +250,11 @@ func handle_actions():
 	elif Input.is_action_just_pressed("light"):
 		start_attack(_ground_move("light"))
 	elif Input.is_action_just_pressed("heavy"):
-		start_attack(_ground_move("heavy"))
+		if is_sprinting and ram != null:
+			_ram_pending = true          # tap = sprint heavy, hold = ram: decided in _update_ram_press
+			_ram_charge = 0.0
+		else:
+			start_attack(_ground_move("heavy"))
 	elif Input.is_action_just_pressed("slide") and is_sprinting and stats.use_stamina(SLIDE_STAMINA):
 		_start_slide()
 	elif Input.is_action_pressed("guard"):
@@ -249,6 +269,15 @@ func handle_actions():
 		get_tree().create_timer(0.3).timeout.connect(func(): current_state = State.NORMAL)
 	elif Input.is_action_just_pressed("aim"): 
 		current_state = State.AIMING
+
+
+## Ledges and ladders that tire you use these (see Walker).
+func drain_stamina(amount: float) -> bool:
+	return stats.use_stamina(amount)
+
+
+func has_stamina() -> bool:
+	return stats.stamina >= 1.0
 
 
 func is_grounded() -> bool:
@@ -269,6 +298,9 @@ func take_damage(amount, knockback_dir):
 	else:
 		if current_state == State.AIMING:
 			exit_aim() 
+		if current_state == State.RAMMING:
+			_end_ram()
+		_ram_pending = false
 		hitbox.set_deferred("monitoring", false)
 		current_attack = null           
 		_combo_left = 0.0
@@ -343,6 +375,7 @@ func start_attack(a: AttackDef) -> void:
 	if a == null or not stats.use_stamina(a.stamina_cost):
 		return
 	current_attack = a
+	_attack_time = 0.0
 	face(lock_on.facing_toward())   
 	_buffer = ""
 	_combo_left = 0.0
@@ -370,9 +403,16 @@ func handle_attack() -> void:
 	elif Input.is_action_just_pressed("heavy"):
 		_buffer = "heavy"
 
-	var lunging: bool = a.lunge_whole_move or (not a.hit_frames.is_empty() and body_sprite.frame <= a.hit_frames[0])
+	_attack_time += get_physics_process_delta_time()
 
-	velocity = ramp_adjust(Vector2(facing_direction.x * a.lunge, 0.0)) if lunging else Vector2.ZERO
+	# how fast the move carries us forward
+	var lunge_speed := 0.0
+	if a.lunge_time > 0.0:
+		lunge_speed = a.lunge * maxf(1.0 - _attack_time / a.lunge_time, 0.0)   # momentum that fades out over lunge_time
+	elif a.lunge_whole_move or (not a.hit_frames.is_empty() and body_sprite.frame <= a.hit_frames[0]):
+		lunge_speed = a.lunge
+
+	velocity = ramp_adjust(Vector2(facing_direction.x * lunge_speed, 0.0)) if lunge_speed > 0.0 else Vector2.ZERO
 	move_and_slide()
 
 	if _buffer != "" and body_sprite.frame >= a.cancel_frame:
@@ -388,6 +428,114 @@ func end_attack() -> void:
 	_combo_left = COMBO_WINDOW
 	current_attack = null
 	current_state = State.JUMPING if altitude > 0.0 else State.NORMAL   # a jump attack ends back in the jump
+
+
+# --- ramming ----------------------------------------------------------------------
+
+## Heavy was pressed while sprinting. Let go quickly = the sprint heavy. Held for RAM_HOLD_TIME = the ram.
+func _update_ram_press(delta: float) -> void:
+	_ram_charge += delta
+	if not Input.is_action_pressed("heavy"):
+		_ram_pending = false
+		start_attack(_ground_move("heavy"))
+	elif not is_sprinting:
+		_ram_pending = false              # stopped sprinting before the ram started
+	elif _ram_charge >= RAM_HOLD_TIME:
+		_ram_pending = false
+		_start_ram()
+
+
+func _start_ram() -> void:
+	if not stats.use_stamina(ram.stamina_cost):
+		return
+	current_state = State.RAMMING
+	_ram_time = 0.0
+	_hit_targets.clear()
+	face(lock_on.facing_toward())
+	hit_shape.shape.size = ram.hitbox_size
+	hit_shape.position = ram.hitbox_offset
+	hitbox.set_deferred("monitoring", true)
+	var anim: StringName = ram.animation if body_sprite.sprite_frames.has_animation(ram.animation) else &"Sprint"
+	body_sprite.sprite_frames.set_animation_loop(anim, true)
+	body_sprite.speed_scale = ram.speed_scale
+	body_sprite.play(anim)
+	Audio.play(&"ram")
+
+
+func handle_ram(delta: float) -> void:
+	_ram_time += delta
+	var still_holding := Input.is_action_pressed("sprint") and Input.is_action_pressed("heavy")
+	var has_energy := stats.use_stamina(ram.stamina_per_second * delta)
+
+	velocity = ramp_adjust(Vector2(facing_direction.x * ram.lunge, move_intent.y * ram.lunge * DEPTH_SQUASH * 0.5))
+	var before := global_position
+	move_and_slide()
+	_carry_victims(global_position - before)
+
+	var hit_wall := _ram_time > 0.15 and absf(get_real_velocity().x) < ram.lunge * 0.3
+	if not still_holding or not has_energy or hit_wall or altitude > 0.0:
+		_end_ram()
+
+
+## Picks up enemies the ram touches and moves everyone we are carrying along with us.
+func _carry_victims(moved: Vector2) -> void:
+	for area in hitbox.get_overlapping_areas():
+		var target = area.owner
+		if target == null or target == self or not target.has_method("take_damage"):
+			continue
+		if target is Walker and target.floor_id != floor_id:
+			continue
+		if target is Enemy:
+			if target.current_state != Enemy.State.DEAD and not _ram_victims.has(target) and _ram_victims.size() < RAM_MAX_CARRIED:
+				_grab(target)
+		elif not _hit_targets.has(target):
+			_hit_targets.append(target)          # a crate or wall in the way: smash it, don't carry it
+			target.take_damage(ram.damage, Vector2(facing_direction.x, 0.0))
+
+	for victim in _ram_victims:
+		if is_instance_valid(victim) and victim.current_state != Enemy.State.DEAD:
+			victim.move_and_collide(moved)
+
+
+func _grab(enemy: Enemy) -> void:
+	_ram_victims.append(enemy)
+	enemy.begin_traversal()                      # the enemy's AI stops while we carry it
+	enemy.hitbox.set_deferred("monitoring", false)
+	enemy.play_anim(&"Stun")
+	add_collision_exception_with(enemy)          # so we don't get stuck on the enemy we are pushing
+	enemy.add_collision_exception_with(self)
+
+
+## Ends the ram: everyone we carried is thrown forward with a lot of knockback.
+func _end_ram() -> void:
+	hitbox.set_deferred("monitoring", false)
+	body_sprite.speed_scale = 1.0
+	current_state = State.NORMAL
+	is_sprinting = false
+	sprint_locked = true             # let go of sprint before the next sprint or ram
+	var throw := Vector2(facing_direction.x, 0.0) * ram.knockback_scale
+	for victim in _ram_victims:
+		if not is_instance_valid(victim):
+			continue
+		_free_victim(victim)
+		if victim.current_state != Enemy.State.DEAD:
+			victim.take_damage(ram.damage, throw)
+			stats.add_psy(10)
+	_ram_victims.clear()
+
+
+## Lets enemies go without hurting them (the player died or was hit).
+func _release_victims() -> void:
+	for victim in _ram_victims:
+		if is_instance_valid(victim):
+			_free_victim(victim)
+	_ram_victims.clear()
+
+
+func _free_victim(victim: Enemy) -> void:
+	remove_collision_exception_with(victim)
+	victim.remove_collision_exception_with(self)
+	victim.end_traversal()
 
 
 # --- sliding ----------------------------------------------------------------------
@@ -516,6 +664,7 @@ func _input(event):
 		elif event.keycode == KEY_4:
 			switch_style(FightingStyle.PURPLE)
 func _on_died() -> void:
+	_release_victims()
 	set_physics_process(false)    
 	create_tween().tween_property(self, "modulate:a", 0.3, 0.5)
 	

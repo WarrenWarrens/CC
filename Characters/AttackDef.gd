@@ -15,6 +15,8 @@ extends Resource
 @export var hitbox_offset := Vector2(23.5, -28.5)
 @export var lunge_whole_move := false             # true = keep moving forward for the whole animation (sprint and jump attacks)
 @export var lunge := 0.0                          # px/s the player steps forward until the first hit frame
+@export var lunge_time := 0.0                     # > 0: instead keep moving forward for this many seconds, slowing to a stop (sprint attacks)
+@export var stamina_per_second := 0.0             # for moves held down, like the ram: stamina drained every second
 
 @export_group("Chaining")
 @export var cancel_frame := 2                     # earliest frame a buffered button press can start the next move

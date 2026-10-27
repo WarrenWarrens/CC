@@ -16,6 +16,9 @@ extends Node2D
 @export var climb_speed := 90.0    # screen px per second
 @export var grab_radius := 14.0
 @export var climb_animation := &"Climb"   # optional animation name on Visuals/Body
+## true = hanging on the ladder slowly drains stamina, and running out makes you fall to the bottom.
+@export var drains_stamina := false
+@export var stamina_drain := 3.0            # per second, when drains_stamina is on
 
 @onready var bottom: Marker2D = $Bottom
 @onready var top: Marker2D = $Top
@@ -28,6 +31,8 @@ func _physics_process(delta: float) -> void:
 		var w := node as Walker
 		if w == null or _climbers.has(w) or w.traversing or w.surface != null or w.altitude > 0.0:
 			continue
+		if drains_stamina and not w.has_stamina():
+			continue     # too tired to climb
 		if w.floor_id == bottom_floor and w.move_intent.y < -0.5 \
 				and w.global_position.distance_to(bottom.global_position) < grab_radius:
 			_start(w, 0.0)
@@ -50,6 +55,9 @@ func _start(w: Walker, progress: float) -> void:
 
 
 func _climb(w: Walker, delta: float) -> void:
+	if drains_stamina and not w.drain_stamina(stamina_drain * delta):
+		_fall_off(w)
+		return
 	var length := maxf(bottom.global_position.distance_to(top.global_position), 1.0)
 	var dir := -w.move_intent.y   # pushing up the screen = toward the top
 	var p: float = _climbers[w]
@@ -69,5 +77,15 @@ func _climb(w: Walker, delta: float) -> void:
 func _finish(w: Walker, floor_number: int) -> void:
 	_climbers.erase(w)
 	w.floor_id = floor_number
+	w.refresh_z()
+	w.end_traversal()
+
+
+## Out of stamina: let go and drop to the foot of the ladder. The sprite stays where it was and gravity does the rest.
+func _fall_off(w: Walker) -> void:
+	_climbers.erase(w)
+	var drop := bottom.global_position.y - w.global_position.y
+	w.shift_level(drop, drop)
+	w.floor_id = bottom_floor
 	w.refresh_z()
 	w.end_traversal()

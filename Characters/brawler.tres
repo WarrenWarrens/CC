@@ -8,6 +8,7 @@
 [ext_resource type="Resource" path="res://Characters/Attacks/jumplight.tres" id="9_jumplight"]
 [ext_resource type="Resource" path="res://Characters/Attacks/sprintheavy.tres" id="9_sprintheavy"]
 [ext_resource type="Resource" path="res://Characters/Attacks/sprintlight.tres" id="9_sprintlight"]
+[ext_resource type="Resource" path="res://Characters/Attacks/ram.tres" id="9_ram"]
 
 [resource]
 script = ExtResource("1_laj20")
@@ -20,4 +21,5 @@ sprint_light_attack = ExtResource("9_sprintlight")
 sprint_heavy_attack = ExtResource("9_sprintheavy")
 jump_light_attack = ExtResource("9_jumplight")
 jump_heavy_attack = ExtResource("9_jumpheavy")
+ram_attack = ExtResource("9_ram")
 metadata/_custom_type_script = "uid://cfx5mpm15mma8"

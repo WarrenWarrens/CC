@@ -31,6 +31,8 @@ extends Area2D
 @export var can_grab_from_below := true
 @export var can_hang_from_above := true
 @export var hang_speed := 70.0           # px/s shuffling sideways
+## Stamina lost every second while hanging. Run out and you fall. 0 = hang forever.
+@export var stamina_drain := 3.0
 @export var enter_hold_time := 0.2       # seconds of holding down at the lip before you lower yourself
 @export var landing_offset := 8.0        # climbing up: how far onto the upper floor you end up
 @export var mantle_time := 0.45
@@ -58,6 +60,9 @@ func _physics_process(delta: float) -> void:
 		if w == null or w.traversing or w.surface != null or int(w.get_meta(&"ledge_lock", 0)) > now:
 			_hold.erase(node)
 			continue
+		if stamina_drain > 0.0 and not w.has_stamina():
+			_hold.erase(w)
+			continue     # too tired to hold on
 		if w.floor_id == lower_floor and can_grab_from_below and _can_grab(w):
 			_start(w, false)
 		elif w.floor_id == upper_floor and can_hang_from_above and _wants_to_lower(w, delta):
@@ -108,6 +113,10 @@ func _hang(w: Walker, delta: float) -> void:
 	var state: Dictionary = _hanging[w]
 	if absf(intent.y) < 0.3:
 		state["armed"] = true
+
+	if stamina_drain > 0.0 and not w.drain_stamina(stamina_drain * delta):
+		_let_go(w)       # out of stamina: fall
+		return
 
 	# hold the sprite with its hands at the lip
 	w.altitude = move_toward(w.altitude, height - hands_height, 300.0 * delta)
