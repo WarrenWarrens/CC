@@ -2,6 +2,9 @@ extends Area2D
 class_name Door
 
 @export var door_id: String = ""
+## false = the door opens as soon as a player walks into it.
+## true  = the player has to stand next to it and press the "interact" button (G by default).
+@export var require_interact: bool = false
 ## The floor this door stands on. Whoever comes OUT of this door is put on this floor.
 @export var door_floor_id: int = 0
 ## Camera rise of that floor (0 = ground floor, -102 = one 102px ledge up). Only needed if the camera sits wrong after the door.
@@ -22,17 +25,64 @@ class_name Door
 @onready var spawn_point: Marker2D = $SpawnPoint
 
 var is_cooling_down: bool = false
+var _players_in_range: Array[Node2D] = []
+var _prompt: Label
 const COOLDOWN_TIME: float = 1.0 
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+	body_exited.connect(_on_body_exited)
+	if require_interact:
+		_build_prompt()
 	
 	if SceneManager.target_door_id == door_id:
 		_start_cooldown()
 		call_deferred("_spawn_player")
 
+func _physics_process(_delta: float) -> void:
+	if not require_interact or _players_in_range.is_empty():
+		return
+	if Input.is_action_just_pressed("interact"):
+		_try_open(_players_in_range[0])
+
+
 func _on_body_entered(body: Node2D) -> void:
-	if not body.is_in_group("players") or is_cooling_down:
+	if not body.is_in_group("players"):
+		return
+	_players_in_range.append(body)
+	if _prompt:
+		_prompt.visible = true
+	if not require_interact:
+		_try_open(body)
+
+
+func _on_body_exited(body: Node2D) -> void:
+	_players_in_range.erase(body)
+	if _prompt and _players_in_range.is_empty():
+		_prompt.visible = false
+
+
+## "Press G" above the door, only for doors that need a button.
+func _build_prompt() -> void:
+	_prompt = Label.new()
+	_prompt.text = "[%s]" % _interact_key_name()
+	_prompt.top_level = true        # not scaled or moved with the door's sprite
+	_prompt.z_index = 100
+	_prompt.visible = false
+	add_child(_prompt)
+	_prompt.global_position = global_position + Vector2(-12.0, -70.0)
+
+
+func _interact_key_name() -> String:
+	for event in InputMap.action_get_events("interact"):
+		if event is InputEventKey:
+			var code: Key = event.physical_keycode if event.physical_keycode != KEY_NONE else event.keycode
+			return OS.get_keycode_string(DisplayServer.keyboard_get_keycode_from_physical(code))
+	return "Interact"
+
+
+func _try_open(body: Node2D) -> void:
+	if is_cooling_down:
 		return
 		
 	if not _can_open(body):
