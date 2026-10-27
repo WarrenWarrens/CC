@@ -3,13 +3,17 @@
 [ext_resource type="Script" uid="uid://cfx5mpm15mma8" path="res://Characters/CharacterDef.gd" id="1_laj20"]
 [ext_resource type="Resource" path="res://Characters/Attacks/light1.tres" id="2_light1"]
 [ext_resource type="Resource" path="res://Characters/Attacks/heavy1.tres" id="3_heavy1"]
-[ext_resource type="Resource" path="res://Characters/Attacks/sprintlight.tres" id="9_sprintlight"]
-[ext_resource type="Resource" path="res://Characters/Attacks/sprintheavy.tres" id="9_sprintheavy"]
-[ext_resource type="Resource" path="res://Characters/Attacks/jumplight.tres" id="9_jumplight"]
+[ext_resource type="Texture2D" uid="uid://w3imcv8dxk1x" path="res://Assets/drink.png" id="5_eo03f"]
 [ext_resource type="Resource" path="res://Characters/Attacks/jumpheavy.tres" id="9_jumpheavy"]
+[ext_resource type="Resource" path="res://Characters/Attacks/jumplight.tres" id="9_jumplight"]
+[ext_resource type="Resource" path="res://Characters/Attacks/sprintheavy.tres" id="9_sprintheavy"]
+[ext_resource type="Resource" path="res://Characters/Attacks/sprintlight.tres" id="9_sprintlight"]
 
 [resource]
 script = ExtResource("1_laj20")
+portrait = ExtResource("5_eo03f")
+max_health = 300
+max_stamina = 100.0
 light_attack = ExtResource("2_light1")
 heavy_attack = ExtResource("3_heavy1")
 sprint_light_attack = ExtResource("9_sprintlight")
