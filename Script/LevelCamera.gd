@@ -30,6 +30,7 @@ extends Camera2D
 var _zoom_index := 0
 var _zoom := 1.0                     # the zoom right now (animates between levels)
 var _zoom_tween: Tween
+var _applied_shift := 0.0            # how much of this camera's offset is currently the zoom shift
 
 
 func _ready() -> void:
@@ -75,6 +76,16 @@ func set_zoom_level(index: int) -> void:
 	_zoom_tween.tween_property(self, "_zoom", zoom_levels[_zoom_index], zoom_time).set_trans(Tween.TRANS_SINE)
 
 
+## Zooms, and moves the view's centre up so its bottom edge stays put (the view grows upward).
+## This uses the camera's offset, which is not smoothed, so the bottom edge never lags behind while the zoom animates.
+## (It adds to the offset instead of replacing it, so the bottom stat bar's own offset is kept.)
+func _apply_zoom() -> void:
+	zoom = Vector2(_zoom, _zoom)
+	var shift := get_viewport_rect().size.y * 0.5 * (1.0 - 1.0 / _zoom)
+	offset.y += shift - _applied_shift
+	_applied_shift = shift
+
+
 func set_shared(on: bool) -> void:
 	enabled = on
 	if on:
@@ -90,7 +101,7 @@ func set_shared(on: bool) -> void:
 func _physics_process(_delta: float) -> void:
 	if not enabled:
 		return
-	zoom = Vector2(_zoom, _zoom)
+	_apply_zoom()
 	var t = _target()
 	if t != null:
 		global_position = t
@@ -135,7 +146,4 @@ func _target():
 			sum += p.elevation
 			n += 1
 
-	# zoomed out: move the centre up so the bottom edge of the view stays put (the view grows upward)
-	var view_height := get_viewport_rect().size.y
-	var zoom_shift := view_height * 0.5 * (1.0 - 1.0 / _zoom)
-	return Vector2((min_x + max_x) * 0.5, base_y + sum / n + zoom_shift)
+	return Vector2((min_x + max_x) * 0.5, base_y + sum / n)
