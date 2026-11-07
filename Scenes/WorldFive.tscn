@@ -278,6 +278,7 @@ shape = SubResource("RectangleShape2D_7qjx6")
 position = Vector2(181, 159)
 scale = Vector2(2, 2)
 door_id = "001"
+require_interact = true
 door_floor_id = 1
 destination_door_id = "002"
 
@@ -285,6 +286,7 @@ destination_door_id = "002"
 position = Vector2(2785, -88)
 scale = Vector2(3, 3)
 door_id = "002"
+require_interact = true
 door_floor_id = 2
 auto_elevation = true
 destination_door_id = "001"

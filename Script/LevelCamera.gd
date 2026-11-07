@@ -24,7 +24,7 @@ extends Camera2D
 @export var world_bottom := 10000
 
 ## 1.0 = normal. Smaller = zoomed out (0.5 shows twice as much). 0.5 and 0.75 stay sharp with pixel art at 640x480.
-@export var zoom_levels: Array[float] = [1.0, 0.75, 0.5]
+@export var zoom_levels: Array[float] = [1.5, 1.25, 1.0, 0.75, 0.5, 0.25]
 @export var zoom_time := 0.25
 
 var _zoom_index := 0
