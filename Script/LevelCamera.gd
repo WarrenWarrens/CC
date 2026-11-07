@@ -8,10 +8,28 @@ extends Camera2D
 ## X: centred between the left-most and right-most player.
 ## Y: follows the floor most players are on (ties go to the right-most player's floor),
 ##    using the average elevation of the players on that floor.
+##
+## Zoom: the zoom_out / zoom_in keys step through `zoom_levels`. Zooming out grows the view up and sideways
+## but keeps its BOTTOM edge where it was, so you never see further below the play area than at normal zoom.
+## Nothing here assumes the 640x480 window: the view size is read from the viewport.
 
 @export var base_y := 120.0          
 @export var smoothing_speed := 8.0
 @export var start_shared := true    
+
+## The edges of the whole level, in pixels. The camera never shows past them.
+@export var world_left := 0
+@export var world_right := 5000
+@export var world_top := -10000
+@export var world_bottom := 10000
+
+## 1.0 = normal. Smaller = zoomed out (0.5 shows twice as much). 0.5 and 0.75 stay sharp with pixel art at 640x480.
+@export var zoom_levels: Array[float] = [1.0, 0.75, 0.5]
+@export var zoom_time := 0.25
+
+var _zoom_index := 0
+var _zoom := 1.0                     # the zoom right now (animates between levels)
+var _zoom_tween: Tween
 
 
 func _ready() -> void:
@@ -19,10 +37,10 @@ func _ready() -> void:
 	process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
 	position_smoothing_enabled = true
 	position_smoothing_speed = smoothing_speed
-	limit_left = 0
-	limit_right = 5000
-	limit_top = -10000       
-	limit_bottom = 10000
+	limit_left = world_left
+	limit_right = world_right
+	limit_top = world_top
+	limit_bottom = world_bottom
 	set_shared(start_shared)
 	var t = _target()
 	if t != null:
@@ -41,6 +59,22 @@ func snap() -> void:
 	get_tree().create_timer(0.1).timeout.connect(func(): position_smoothing_enabled = true)
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("zoom_out"):
+		set_zoom_level(_zoom_index + 1)
+	elif event.is_action_pressed("zoom_in"):
+		set_zoom_level(_zoom_index - 1)
+
+
+## Goes to an entry of zoom_levels (0 = normal). Out-of-range numbers stop at the ends.
+func set_zoom_level(index: int) -> void:
+	_zoom_index = clampi(index, 0, zoom_levels.size() - 1)
+	if _zoom_tween:
+		_zoom_tween.kill()
+	_zoom_tween = create_tween()
+	_zoom_tween.tween_property(self, "_zoom", zoom_levels[_zoom_index], zoom_time).set_trans(Tween.TRANS_SINE)
+
+
 func set_shared(on: bool) -> void:
 	enabled = on
 	if on:
@@ -56,6 +90,7 @@ func set_shared(on: bool) -> void:
 func _physics_process(_delta: float) -> void:
 	if not enabled:
 		return
+	zoom = Vector2(_zoom, _zoom)
 	var t = _target()
 	if t != null:
 		global_position = t
@@ -100,4 +135,7 @@ func _target():
 			sum += p.elevation
 			n += 1
 
-	return Vector2((min_x + max_x) * 0.5, base_y + sum / n)
+	# zoomed out: move the centre up so the bottom edge of the view stays put (the view grows upward)
+	var view_height := get_viewport_rect().size.y
+	var zoom_shift := view_height * 0.5 * (1.0 - 1.0 / _zoom)
+	return Vector2((min_x + max_x) * 0.5, base_y + sum / n + zoom_shift)
