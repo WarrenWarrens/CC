@@ -4,7 +4,7 @@ extends Area2D
 ## enemies spawn, and everything opens again once they are all dead.
 ##
 ## Scene:  EncounterZone (this script)
-##           > CollisionShape2D   a RectangleShape2D covering the whole arena (make it at least as wide as the screen, 640)
+##           > CollisionShape2D   a RectangleShape2D covering the whole arena (make it at least as wide as the view, 640 px at normal zoom, more when zoomed out)
 ##           > Marker2D ...       optional spawn points (any number, any names). With none, enemies come in from the left/right edges.
 ## The player is checked by position, so the Area2D's own collision settings don't matter.
 
