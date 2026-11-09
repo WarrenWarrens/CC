@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://dlpb32m0gh64v" path="res://Assets/Player/m/MRunHeavy.png" id="15_fu83b"]
 [ext_resource type="Texture2D" uid="uid://denmssuvpo7p3" path="res://Assets/Player/m/MRunLight.png" id="16_g87uq"]
 [ext_resource type="Texture2D" uid="uid://cqaucci6mnqqw" path="res://Assets/Player/m/MWalk.png" id="18_5p30m"]
+[ext_resource type="Script" uid="uid://bbk0evtk7y67i" path="res://Characters/Inventory.gd" id="21_u0thl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ttpud"]
 radius = 3.0
@@ -826,6 +827,9 @@ editor_draw_drag_margin = true
 
 [node name="Stats" type="Node" parent="." unique_id=34316763]
 script = ExtResource("13_miouo")
+
+[node name="Inventory" type="Node" parent="." unique_id=1428054284]
+script = ExtResource("21_u0thl")
 
 [connection signal="animation_finished" from="Visuals/Body" to="." method="_on_body_animation_finished"]
 [connection signal="frame_changed" from="Visuals/Body" to="." method="_on_body_frame_changed"]
