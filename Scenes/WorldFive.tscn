@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="17_xckvv"]
 [ext_resource type="PackedScene" uid="uid://b2r3p8nte0wg" path="res://Scenes/Door.tscn" id="18_rvry2"]
 [ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="19_fcpsy"]
+[ext_resource type="PackedScene" uid="uid://cb68p1fps5l6q" path="res://Scenes/HangLedge.tscn" id="23_j48gu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
@@ -94,7 +95,7 @@ music = ExtResource("2_n0yck")
 light_mask = 3
 visibility_layer = 3
 z_index = 2
-position = Vector2(795, 167)
+position = Vector2(300, 167)
 collision_layer = 3
 collision_mask = 3
 camera_base_y = 0.0
@@ -120,6 +121,16 @@ z_index = -2
 position = Vector2(317, -120)
 texture = ExtResource("4_3jlm2")
 offset = Vector2(640, 240)
+
+[node name="Sprite2D" type="Sprite2D" parent="LevelOne" unique_id=914078943]
+position = Vector2(957, 69.5)
+scale = Vector2(1, 0.6645833)
+texture = ExtResource("5_ya0eq")
+
+[node name="Sprite2D2" type="Sprite2D" parent="LevelOne" unique_id=522741025]
+position = Vector2(958, -0.5000019)
+scale = Vector2(1, 0.29791668)
+texture = ExtResource("7_xckvv")
 
 [node name="LevelTwo" type="Node2D" parent="." unique_id=951279527]
 
@@ -156,9 +167,11 @@ shape = SubResource("RectangleShape2D_vyp0t")
 
 [node name="Top" type="CollisionPolygon2D" parent="Boundaries" unique_id=119865761]
 polygon = PackedVector2Array(0, 120, 1305, 120, 1509, -85, 1768, -85, 1870, -187, 2311, -187, 2311.7744, -107.988815, 2312, -85, 3031, -86, 3025, -867, 3, -864)
+metadata/_edit_lock_ = true
 
 [node name="Bottom" type="CollisionPolygon2D" parent="Boundaries" unique_id=546665044]
 polygon = PackedVector2Array(0, 360, 1550, 365, 1754, 160, 1755, 155, 3031, 154, 3027, 471, 2, 514)
+metadata/_edit_lock_ = true
 
 [node name="RampAssistUp" type="Area2D" parent="." unique_id=102323400]
 collision_layer = 16
@@ -271,6 +284,10 @@ upper_floor = 3
 position = Vector2(0.10000229, 0)
 scale = Vector2(0.10000001, 1.0000002)
 shape = SubResource("RectangleShape2D_7qjx6")
+
+[node name="HangLedge" parent="Ledges" unique_id=855490778 instance=ExtResource("23_j48gu")]
+position = Vector2(943, 127)
+height = 40.0
 
 [node name="Doors" type="Node2D" parent="." unique_id=1590519640]
 

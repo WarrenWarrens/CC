@@ -12,7 +12,6 @@ size = Vector2(25, 25)
 
 [node name="Breakable" type="StaticBody2D" unique_id=1572332876]
 scale = Vector2(2, 2)
-collision_layer = 0
 script = ExtResource("1_mppsq")
 
 [node name="Shadow" type="Node2D" parent="." unique_id=1526130923]

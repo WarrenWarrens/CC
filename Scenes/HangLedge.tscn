@@ -1,6 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cb68p1fps5l6q"]
 
-[ext_resource type="Script" path="res://Script/HangLedge.gd" id="1_hang"]
+[ext_resource type="Script" uid="uid://cxwiueo33hlxg" path="res://Script/HangLedge.gd" id="1_hang"]
+[ext_resource type="Texture2D" uid="uid://b4boc1ktg85cv" path="res://Assets/ledge.png" id="2_1ivbj"]
+[ext_resource type="Texture2D" uid="uid://cqk0p78nwjjd2" path="res://Assets/sky.png" id="3_avmx3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_range"]
 size = Vector2(240, 16)
@@ -8,15 +10,25 @@ size = Vector2(240, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_climb"]
 size = Vector2(80, 16)
 
-[node name="HangLedge" type="Area2D"]
+[node name="HangLedge" type="Area2D" unique_id=855490778]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_hang")
 
-[node name="HangRange" type="CollisionShape2D" parent="."]
+[node name="HangRange" type="CollisionShape2D" parent="." unique_id=1985488790]
 shape = SubResource("RectangleShape2D_range")
 debug_color = Color(0.2, 0.6, 1, 0.4)
 
-[node name="ClimbZone" type="CollisionShape2D" parent="."]
+[node name="ClimbZone" type="CollisionShape2D" parent="." unique_id=892302529]
 shape = SubResource("RectangleShape2D_climb")
 debug_color = Color(0.3, 1, 0.4, 0.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=650055669]
+position = Vector2(29.999998, 13)
+scale = Vector2(1.7041667, 0.54062504)
+texture = ExtResource("2_1ivbj")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=711258917]
+position = Vector2(-2.9802322e-08, -0.49999988)
+scale = Vector2(0.031054685, 0.047222223)
+texture = ExtResource("3_avmx3")
