@@ -4,8 +4,8 @@ var target_door_id: String = ""
 var fade_rect: ColorRect
 
 ## load_scene() shows the loading screen for at least this long (seconds), and longer if the scene needs it.
-const MIN_LOADING_TIME := 0.4
-const FADE_TIME := 0.2
+const MIN_LOADING_TIME := 0.1
+const FADE_TIME := 0.1
 
 var _loading_layer: CanvasLayer
 var _loading_bar: ProgressBar
