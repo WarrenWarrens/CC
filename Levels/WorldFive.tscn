@@ -1,35 +1,35 @@
 [gd_scene format=3 uid="uid://dtvws24dm3p4b"]
 
-[ext_resource type="Script" uid="uid://saxx8vy4npnh" path="res://Script/World.gd" id="1_wnph4"]
-[ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Characters/Player.tscn" id="2_56ktj"]
-[ext_resource type="Texture2D" uid="uid://cqk0p78nwjjd2" path="res://Assets/sky.png" id="3_8xwjy"]
-[ext_resource type="Texture2D" uid="uid://dmbrjltbpwy0r" path="res://Assets/grey2.png" id="4_3jlm2"]
-[ext_resource type="Texture2D" uid="uid://svsya7w1lvb2" path="res://Assets/red4.png" id="5_ya0eq"]
-[ext_resource type="Texture2D" uid="uid://nbi2am16bcxt" path="res://Assets/purple4.png" id="6_8xwjy"]
-[ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="7_asll7"]
-[ext_resource type="Texture2D" uid="uid://cco4kpgqu42ii" path="res://Assets/grey1.png" id="7_brxs3"]
-[ext_resource type="Texture2D" uid="uid://cndy3qbw2srtw" path="res://Assets/purple2.png" id="7_xckvv"]
-[ext_resource type="Texture2D" uid="uid://bk848pkqvtsg7" path="res://Assets/yellow2.png" id="8_rvry2"]
-[ext_resource type="Texture2D" uid="uid://djtwltfbb1m5j" path="res://Assets/yellow1.png" id="8_ya0eq"]
-[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Script/LevelCamera.gd" id="10_7qjx6"]
-[ext_resource type="PackedScene" uid="uid://d4q5okgf1yam" path="res://Scenes/Platform.tscn" id="11_2d8f3"]
-[ext_resource type="PackedScene" uid="uid://b4qdyttoij06r" path="res://Scenes/Ladder.tscn" id="12_n0yck"]
-[ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Breakable.tscn" id="13_fcpsy"]
-[ext_resource type="Script" uid="uid://dwipcnm6nscwa" path="res://Script/Lootentry.gd" id="14_fjoli"]
-[ext_resource type="Resource" uid="uid://b7fhamftyhthj" path="res://Resources/drink2.tres" id="15_2d8f3"]
-[ext_resource type="Resource" uid="uid://bsho5igm2tpei" path="res://Resources/drink.tres" id="15_7qjx6"]
-[ext_resource type="Script" uid="uid://cswnmbjmmd2fy" path="res://Script/Loottable.gd" id="15_avcxa"]
-[ext_resource type="Resource" uid="uid://dn6qo5jpr55md" path="res://Resources/drink3.tres" id="16_2d8f3"]
-[ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="16_fcpsy"]
-[ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="17_xckvv"]
-[ext_resource type="PackedScene" uid="uid://b2r3p8nte0wg" path="res://Scenes/Door.tscn" id="18_rvry2"]
-[ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="19_fcpsy"]
-[ext_resource type="PackedScene" uid="uid://cb68p1fps5l6q" path="res://Scenes/HangLedge.tscn" id="23_j48gu"]
-[ext_resource type="Script" uid="uid://b1woy2sdo7bhr" path="res://Script/LevelLighting.gd" id="26_ck73v"]
-[ext_resource type="Texture2D" uid="uid://dvrt8vsh0i2qg" path="res://Assets/Hit.png" id="27_dvkuq"]
-[ext_resource type="Script" uid="uid://ct8em0bcldyi1" path="res://Script/SoftLight.gd" id="28_bas3t"]
-[ext_resource type="Texture2D" uid="uid://d0jtqi7nlfb4a" path="res://Assets/Brick.png" id="29_y3p3n"]
-[ext_resource type="Script" uid="uid://3ff6rys34bua" path="res://Script/TrafficLight.gd" id="30_jujcf"]
+[ext_resource type="Script" uid="uid://saxx8vy4npnh" path="res://Script/World.gd" id="1_x2p3a"]
+[ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Characters/Player.tscn" id="2_qbusv"]
+[ext_resource type="Texture2D" uid="uid://cqk0p78nwjjd2" path="res://Assets/sky.png" id="3_lmffy"]
+[ext_resource type="Texture2D" uid="uid://dmbrjltbpwy0r" path="res://Assets/grey2.png" id="4_rjfju"]
+[ext_resource type="Texture2D" uid="uid://svsya7w1lvb2" path="res://Assets/red4.png" id="5_q6lg4"]
+[ext_resource type="Texture2D" uid="uid://cndy3qbw2srtw" path="res://Assets/purple2.png" id="6_1hw7c"]
+[ext_resource type="Texture2D" uid="uid://nbi2am16bcxt" path="res://Assets/purple4.png" id="7_r0p5s"]
+[ext_resource type="Texture2D" uid="uid://bk848pkqvtsg7" path="res://Assets/yellow2.png" id="8_yfgb5"]
+[ext_resource type="Script" uid="uid://yk6whv2wyufn" path="res://Script/Ramp.gd" id="9_t68pd"]
+[ext_resource type="Texture2D" uid="uid://cco4kpgqu42ii" path="res://Assets/grey1.png" id="10_7h7xa"]
+[ext_resource type="Texture2D" uid="uid://djtwltfbb1m5j" path="res://Assets/yellow1.png" id="11_jth4t"]
+[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Script/LevelCamera.gd" id="12_gfmw8"]
+[ext_resource type="PackedScene" uid="uid://c3px2n6voxhp8" path="res://Scenes/Breakable.tscn" id="13_axnai"]
+[ext_resource type="Script" uid="uid://dwipcnm6nscwa" path="res://Script/Lootentry.gd" id="14_xn4m8"]
+[ext_resource type="Resource" uid="uid://b7fhamftyhthj" path="res://Resources/drink2.tres" id="15_fcy27"]
+[ext_resource type="Resource" uid="uid://dn6qo5jpr55md" path="res://Resources/drink3.tres" id="16_u4bll"]
+[ext_resource type="Script" uid="uid://cswnmbjmmd2fy" path="res://Script/Loottable.gd" id="17_yudfj"]
+[ext_resource type="PackedScene" uid="uid://d4q5okgf1yam" path="res://Scenes/Platform.tscn" id="18_qmthw"]
+[ext_resource type="PackedScene" uid="uid://b4qdyttoij06r" path="res://Scenes/Ladder.tscn" id="19_sxnxj"]
+[ext_resource type="Texture2D" uid="uid://cr4y5tbjn2rak" path="res://Assets/floor1.png" id="20_872ws"]
+[ext_resource type="PackedScene" uid="uid://bej6fn52m43lo" path="res://Scenes/Ledge.tscn" id="21_6h0h7"]
+[ext_resource type="PackedScene" uid="uid://cb68p1fps5l6q" path="res://Scenes/HangLedge.tscn" id="22_jrsp6"]
+[ext_resource type="PackedScene" uid="uid://b2r3p8nte0wg" path="res://Scenes/Door.tscn" id="23_3gyca"]
+[ext_resource type="PackedScene" uid="uid://br3w7rdj8epg3" path="res://Scenes/Enemy.tscn" id="24_7p6jr"]
+[ext_resource type="Resource" uid="uid://bsho5igm2tpei" path="res://Resources/drink.tres" id="25_nlqrs"]
+[ext_resource type="Script" uid="uid://b1woy2sdo7bhr" path="res://Script/LevelLighting.gd" id="26_k0q5i"]
+[ext_resource type="Texture2D" uid="uid://dvrt8vsh0i2qg" path="res://Assets/Hit.png" id="27_dbirm"]
+[ext_resource type="Script" uid="uid://ct8em0bcldyi1" path="res://Script/SoftLight.gd" id="28_0eclm"]
+[ext_resource type="Texture2D" uid="uid://d0jtqi7nlfb4a" path="res://Assets/Brick.png" id="29_k8ni6"]
+[ext_resource type="Script" uid="uid://3ff6rys34bua" path="res://Script/TrafficLight.gd" id="30_ltvud"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ttpud"]
 
@@ -37,20 +37,20 @@
 size = Vector2(20, 239)
 
 [sub_resource type="Resource" id="Resource_fjoli"]
-script = ExtResource("14_fjoli")
-item = ExtResource("15_2d8f3")
+script = ExtResource("14_xn4m8")
+item = ExtResource("15_fcy27")
 max_count = 5
 metadata/_custom_type_script = "uid://dwipcnm6nscwa"
 
 [sub_resource type="Resource" id="Resource_jshfx"]
-script = ExtResource("14_fjoli")
-item = ExtResource("16_2d8f3")
+script = ExtResource("14_xn4m8")
+item = ExtResource("16_u4bll")
 max_count = 3
 metadata/_custom_type_script = "uid://dwipcnm6nscwa"
 
 [sub_resource type="Resource" id="Resource_mppsq"]
-script = ExtResource("15_avcxa")
-entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_fjoli"), SubResource("Resource_jshfx")])
+script = ExtResource("17_yudfj")
+entries = Array[ExtResource("14_xn4m8")]([SubResource("Resource_fjoli"), SubResource("Resource_jshfx")])
 rolls = 4
 metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
 
@@ -61,40 +61,40 @@ size = Vector2(25, 35.05356)
 size = Vector2(20, 24.199997)
 
 [sub_resource type="Resource" id="Resource_l6opw"]
-script = ExtResource("14_fjoli")
-item = ExtResource("15_7qjx6")
+script = ExtResource("14_xn4m8")
+item = ExtResource("25_nlqrs")
 metadata/_custom_type_script = "uid://dwipcnm6nscwa"
 
 [sub_resource type="Resource" id="Resource_57qra"]
-script = ExtResource("15_avcxa")
-entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_l6opw")])
+script = ExtResource("17_yudfj")
+entries = Array[ExtResource("14_xn4m8")]([SubResource("Resource_l6opw")])
 metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
 
 [sub_resource type="Resource" id="Resource_74v00"]
-script = ExtResource("14_fjoli")
-item = ExtResource("15_7qjx6")
+script = ExtResource("14_xn4m8")
+item = ExtResource("25_nlqrs")
 metadata/_custom_type_script = "uid://dwipcnm6nscwa"
 
 [sub_resource type="Resource" id="Resource_pbrct"]
-script = ExtResource("15_avcxa")
-entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_74v00")])
+script = ExtResource("17_yudfj")
+entries = Array[ExtResource("14_xn4m8")]([SubResource("Resource_74v00")])
 metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
 
 [sub_resource type="Resource" id="Resource_tg1wv"]
-script = ExtResource("14_fjoli")
-item = ExtResource("15_7qjx6")
+script = ExtResource("14_xn4m8")
+item = ExtResource("25_nlqrs")
 metadata/_custom_type_script = "uid://dwipcnm6nscwa"
 
 [sub_resource type="Resource" id="Resource_fvm8j"]
-script = ExtResource("15_avcxa")
-entries = Array[ExtResource("14_fjoli")]([SubResource("Resource_tg1wv")])
+script = ExtResource("17_yudfj")
+entries = Array[ExtResource("14_xn4m8")]([SubResource("Resource_tg1wv")])
 metadata/_custom_type_script = "uid://cswnmbjmmd2fy"
 
 [node name="WorldOne" type="Node2D" unique_id=686236493]
 y_sort_enabled = true
-script = ExtResource("1_wnph4")
+script = ExtResource("1_x2p3a")
 
-[node name="Player" parent="." unique_id=1446667991 groups=["player"] instance=ExtResource("2_56ktj")]
+[node name="Player" parent="." unique_id=1446667991 groups=["player"] instance=ExtResource("2_qbusv")]
 light_mask = 3
 visibility_layer = 3
 z_index = 2
@@ -110,55 +110,55 @@ floor_id = 1
 z_index = -10
 position = Vector2(0, -863)
 scale = Vector2(1.9023438, 3.3972223)
-texture = ExtResource("3_8xwjy")
+texture = ExtResource("3_lmffy")
 centered = false
 
 [node name="Ground" type="Sprite2D" parent="LevelOne" unique_id=1400151372]
 z_index = -2
 position = Vector2(-320, -120)
-texture = ExtResource("4_3jlm2")
+texture = ExtResource("4_rjfju")
 offset = Vector2(640, 240)
 
 [node name="Ground2" type="Sprite2D" parent="LevelOne" unique_id=1101213966]
 z_index = -2
 position = Vector2(317, -120)
-texture = ExtResource("4_3jlm2")
+texture = ExtResource("4_rjfju")
 offset = Vector2(640, 240)
 
 [node name="Sprite2D" type="Sprite2D" parent="LevelOne" unique_id=914078943]
 position = Vector2(957, 69.5)
 scale = Vector2(1, 0.6645833)
-texture = ExtResource("5_ya0eq")
+texture = ExtResource("5_q6lg4")
 
 [node name="Sprite2D2" type="Sprite2D" parent="LevelOne" unique_id=522741025]
 position = Vector2(958, -0.5000019)
 scale = Vector2(1, 0.29791668)
-texture = ExtResource("7_xckvv")
+texture = ExtResource("6_1hw7c")
 
 [node name="LevelTwo" type="Node2D" parent="." unique_id=951279527]
 
 [node name="Sprite2D" type="Sprite2D" parent="LevelTwo" unique_id=1805194730]
 position = Vector2(2074, -85)
-texture = ExtResource("5_ya0eq")
+texture = ExtResource("5_q6lg4")
 
 [node name="Sprite2D2" type="Sprite2D" parent="LevelTwo" unique_id=1841536801]
 position = Vector2(2711, -85)
-texture = ExtResource("5_ya0eq")
+texture = ExtResource("5_q6lg4")
 
 [node name="Sprite2D4" type="Sprite2D" parent="LevelTwo" unique_id=599975232]
 position = Vector2(2032, -70.00001)
 scale = Vector2(0.45, 0.45)
-texture = ExtResource("6_8xwjy")
+texture = ExtResource("7_r0p5s")
 
 [node name="Sprite2D3" type="Sprite2D" parent="LevelTwo" unique_id=729739106]
 position = Vector2(2152, -66)
 scale = Vector2(0.5, 0.43)
-texture = ExtResource("7_xckvv")
+texture = ExtResource("6_1hw7c")
 
 [node name="Sprite2D5" type="Sprite2D" parent="LevelTwo" unique_id=2099634977]
 position = Vector2(2152, -187)
 scale = Vector2(0.5, 0.51)
-texture = ExtResource("8_rvry2")
+texture = ExtResource("8_yfgb5")
 
 [node name="Boundaries" type="StaticBody2D" parent="." unique_id=117728836]
 physics_material_override = SubResource("PhysicsMaterial_ttpud")
@@ -178,14 +178,14 @@ metadata/_edit_lock_ = true
 
 [node name="RampAssistUp" type="Area2D" parent="." unique_id=102323400]
 collision_layer = 16
-script = ExtResource("7_asll7")
+script = ExtResource("9_t68pd")
 low_floor = 1
 high_floor = 2
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="RampAssistUp" unique_id=215380247]
 position = Vector2(1515, 125)
-texture = ExtResource("7_brxs3")
+texture = ExtResource("10_7h7xa")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistUp" unique_id=1142761759]
 polygon = PackedVector2Array(1305, 120, 1549, 363, 1756, 157, 1511, -85)
@@ -193,7 +193,7 @@ metadata/_edit_lock_ = true
 
 [node name="RampAssistUp2" type="Area2D" parent="." unique_id=1793061313]
 collision_layer = 16
-script = ExtResource("7_asll7")
+script = ExtResource("9_t68pd")
 low_floor = 2
 high_floor = 3
 metadata/_edit_lock_ = true
@@ -201,36 +201,36 @@ metadata/_edit_lock_ = true
 [node name="Sprite2D" type="Sprite2D" parent="RampAssistUp2" unique_id=2103188788]
 position = Vector2(1873, -82)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("8_ya0eq")
+texture = ExtResource("11_jth4t")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RampAssistUp2" unique_id=1906431017]
 polygon = PackedVector2Array(1768, -85, 1891, 38, 1992, -64, 1870, -186)
 metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1719420128]
-script = ExtResource("10_7qjx6")
+script = ExtResource("12_gfmw8")
 
 [node name="Breakable" type="Node2D" parent="." unique_id=970952348]
 
-[node name="Breakable" parent="Breakable" unique_id=1572332876 instance=ExtResource("13_fcpsy")]
+[node name="Breakable" parent="Breakable" unique_id=1572332876 instance=ExtResource("13_axnai")]
 position = Vector2(427, 189)
 floor_id = 1
 loot = SubResource("Resource_mppsq")
 
-[node name="Breakable2" parent="Breakable" unique_id=1067359481 instance=ExtResource("13_fcpsy")]
+[node name="Breakable2" parent="Breakable" unique_id=1067359481 instance=ExtResource("13_axnai")]
 position = Vector2(596, 304)
 floor_id = 1
 loot = SubResource("Resource_mppsq")
 
 [node name="Platform" type="Node2D" parent="." unique_id=624010535]
 
-[node name="Platform" parent="Platform" unique_id=452983872 instance=ExtResource("11_2d8f3")]
+[node name="Platform" parent="Platform" unique_id=452983872 instance=ExtResource("18_qmthw")]
 position = Vector2(2024, 6)
 floor_id = 2
 
 [node name="Ladders" type="Node2D" parent="." unique_id=1809568372]
 
-[node name="Ladder" parent="Ladders" unique_id=323733151 instance=ExtResource("12_n0yck")]
+[node name="Ladder" parent="Ladders" unique_id=323733151 instance=ExtResource("19_sxnxj")]
 bottom_floor = 2
 top_floor = 3
 
@@ -243,11 +243,11 @@ position = Vector2(2275, 37)
 [node name="Sprite2D" parent="Ladders/Ladder" index="2" unique_id=1556379992]
 position = Vector2(2239, -14.000001)
 scale = Vector2(0.16, 0.3)
-texture = ExtResource("16_fcpsy")
+texture = ExtResource("20_872ws")
 
 [node name="Ledges" type="Node2D" parent="." unique_id=989063067]
 
-[node name="Ledge" parent="Ledges" unique_id=976586405 instance=ExtResource("17_xckvv")]
+[node name="Ledge" parent="Ledges" unique_id=976586405 instance=ExtResource("21_6h0h7")]
 position = Vector2(2151, -64)
 scale = Vector2(7, 1)
 kind = 2
@@ -262,7 +262,7 @@ mantle_reach = 15.0
 position = Vector2(-5.330353, 0)
 shape = SubResource("RectangleShape2D_avcxa")
 
-[node name="Ledge2" parent="Ledges" unique_id=907579289 instance=ExtResource("17_xckvv")]
+[node name="Ledge2" parent="Ledges" unique_id=907579289 instance=ExtResource("21_6h0h7")]
 position = Vector2(2312, -126.00001)
 rotation = 1.5707964
 scale = Vector2(5, 3)
@@ -276,7 +276,7 @@ position = Vector2(0.10000229, 0)
 scale = Vector2(0.10000001, 1.0000002)
 shape = SubResource("RectangleShape2D_7qjx6")
 
-[node name="Ledge3" parent="Ledges" unique_id=1176425976 instance=ExtResource("17_xckvv")]
+[node name="Ledge3" parent="Ledges" unique_id=1176425976 instance=ExtResource("21_6h0h7")]
 position = Vector2(2312, -126.00001)
 rotation = 1.5707964
 scale = Vector2(5, 3)
@@ -288,13 +288,13 @@ position = Vector2(0.10000229, 0)
 scale = Vector2(0.10000001, 1.0000002)
 shape = SubResource("RectangleShape2D_7qjx6")
 
-[node name="HangLedge" parent="Ledges" unique_id=855490778 instance=ExtResource("23_j48gu")]
+[node name="HangLedge" parent="Ledges" unique_id=855490778 instance=ExtResource("22_jrsp6")]
 position = Vector2(943, 127)
 height = 40.0
 
 [node name="Doors" type="Node2D" parent="." unique_id=1590519640]
 
-[node name="Door" parent="Doors" unique_id=993242610 instance=ExtResource("18_rvry2")]
+[node name="Door" parent="Doors" unique_id=993242610 instance=ExtResource("23_3gyca")]
 position = Vector2(181, 159)
 scale = Vector2(2, 2)
 door_id = "001"
@@ -302,7 +302,7 @@ require_interact = true
 door_floor_id = 1
 destination_door_id = "002"
 
-[node name="Door2" parent="Doors" unique_id=2067703749 instance=ExtResource("18_rvry2")]
+[node name="Door2" parent="Doors" unique_id=2067703749 instance=ExtResource("23_3gyca")]
 position = Vector2(2785, -88)
 scale = Vector2(3, 3)
 door_id = "002"
@@ -313,23 +313,23 @@ destination_door_id = "001"
 
 [node name="Enemy" type="Node2D" parent="." unique_id=1582444898]
 
-[node name="Enemy" parent="Enemy" unique_id=864659468 instance=ExtResource("19_fcpsy")]
+[node name="Enemy" parent="Enemy" unique_id=864659468 instance=ExtResource("24_7p6jr")]
 position = Vector2(2942, -39)
 loot = SubResource("Resource_57qra")
 floor_id = 2
 
-[node name="Enemy2" parent="Enemy" unique_id=194145769 instance=ExtResource("19_fcpsy")]
+[node name="Enemy2" parent="Enemy" unique_id=194145769 instance=ExtResource("24_7p6jr")]
 position = Vector2(2961, 120)
 loot = SubResource("Resource_pbrct")
 floor_id = 2
 
-[node name="Enemy3" parent="Enemy" unique_id=139526224 instance=ExtResource("19_fcpsy")]
+[node name="Enemy3" parent="Enemy" unique_id=139526224 instance=ExtResource("24_7p6jr")]
 position = Vector2(2889, 50)
 loot = SubResource("Resource_fvm8j")
 floor_id = 2
 
 [node name="LevelLighting" type="Node" parent="." unique_id=1777849450]
-script = ExtResource("26_ck73v")
+script = ExtResource("26_k0q5i")
 sun_shadows = true
 metadata/_custom_type_script = "uid://b1woy2sdo7bhr"
 
@@ -337,15 +337,15 @@ metadata/_custom_type_script = "uid://b1woy2sdo7bhr"
 position = Vector2(685, 291)
 energy = 7.71
 shadow_enabled = true
-texture = ExtResource("27_dvkuq")
-script = ExtResource("28_bas3t")
+texture = ExtResource("27_dbirm")
+script = ExtResource("28_0eclm")
 metadata/_custom_type_script = "uid://ct8em0bcldyi1"
 
 [node name="SoftLight2" type="PointLight2D" parent="." unique_id=1753101935]
 position = Vector2(612, 156)
 shadow_enabled = true
-texture = ExtResource("29_y3p3n")
-script = ExtResource("30_jujcf")
+texture = ExtResource("29_k8ni6")
+script = ExtResource("30_ltvud")
 metadata/_custom_type_script = "uid://ct8em0bcldyi1"
 
 [editable path="Ladders/Ladder"]

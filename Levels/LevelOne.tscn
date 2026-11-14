@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://bgxsa3wbw6my3"]
+
+[ext_resource type="Script" uid="uid://saxx8vy4npnh" path="res://Script/World.gd" id="1_pkd3b"]
+[ext_resource type="PackedScene" uid="uid://bsxr34u030uxg" path="res://Characters/Player.tscn" id="2_idpgo"]
+[ext_resource type="Texture2D" uid="uid://cyafn5ssacjb0" path="res://Assets/FLOORTWO.png" id="3_vs3qe"]
+[ext_resource type="Script" uid="uid://lebd0vwq68h" path="res://Script/LevelCamera.gd" id="3_yi1ei"]
+[ext_resource type="Texture2D" uid="uid://m4k7uwncbxjp" path="res://Assets/FLOORTHREE.png" id="4_ugo6b"]
+[ext_resource type="Script" uid="uid://b1woy2sdo7bhr" path="res://Script/LevelLighting.gd" id="5_13c74"]
+[ext_resource type="Texture2D" uid="uid://dvrt8vsh0i2qg" path="res://Assets/Hit.png" id="6_2yqxq"]
+[ext_resource type="Script" uid="uid://ct8em0bcldyi1" path="res://Script/SoftLight.gd" id="7_vs3qe"]
+[ext_resource type="Texture2D" uid="uid://d0jtqi7nlfb4a" path="res://Assets/Brick.png" id="8_ugo6b"]
+[ext_resource type="Script" uid="uid://3ff6rys34bua" path="res://Script/TrafficLight.gd" id="9_avsmw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_obhin"]
+size = Vector2(924, 143.5)
+
+[node name="StageOne" type="Node2D" unique_id=1492983022]
+y_sort_enabled = true
+script = ExtResource("1_pkd3b")
+
+[node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_idpgo")]
+
+[node name="Boundaries" type="StaticBody2D" parent="." unique_id=1404183506]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=258147700]
+position = Vector2(1229, 71.75)
+shape = SubResource("RectangleShape2D_obhin")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundaries" unique_id=1246847910]
+polygon = PackedVector2Array(704, 143, 767, 143, 767, 79, 514, 78)
+
+[node name="Floors" type="Node2D" parent="." unique_id=619387224]
+
+[node name="FloorTwo" type="Node2D" parent="Floors" unique_id=285555613]
+
+[node name="Sprite2D" type="Sprite2D" parent="Floors/FloorTwo" unique_id=1844612075]
+position = Vector2(392, 31)
+texture = ExtResource("3_vs3qe")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Floors/FloorTwo" unique_id=1793333853]
+position = Vector2(1103, 191)
+texture = ExtResource("4_ugo6b")
+
+[node name="FloorOne" type="Node2D" parent="Floors" unique_id=1664354120]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=820369868]
+script = ExtResource("3_yi1ei")
+
+[node name="Lighting" type="Node" parent="." unique_id=1843023701]
+
+[node name="LevelLighting" type="Node" parent="Lighting" unique_id=302597568]
+script = ExtResource("5_13c74")
+sun_shadows = true
+metadata/_custom_type_script = "uid://b1woy2sdo7bhr"
+
+[node name="SoftLight" type="PointLight2D" parent="Lighting" unique_id=891939877]
+position = Vector2(685, 291)
+energy = 7.71
+shadow_enabled = true
+texture = ExtResource("6_2yqxq")
+script = ExtResource("7_vs3qe")
+metadata/_custom_type_script = "uid://ct8em0bcldyi1"
+
+[node name="SoftLight2" type="PointLight2D" parent="Lighting" unique_id=501822281]
+position = Vector2(612, 156)
+shadow_enabled = true
+texture = ExtResource("8_ugo6b")
+script = ExtResource("9_avsmw")
+metadata/_custom_type_script = "uid://ct8em0bcldyi1"

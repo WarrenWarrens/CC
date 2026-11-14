@@ -50,11 +50,15 @@ func _on_fullscreen_toggled(toggled_on: bool) -> void:
 
 func _on_test_level_button_pressed() -> void:
 	#get_tree().change_scene_to_file("res://Scenes/WorldFive.tscn")
-	GameSession.open_select("res://Scenes/WorldFive.tscn")
-
+	GameSession.open_select("res://Levels/WorldFive.tscn")
+	
 
 func _on_back_button_pressed() -> void:
 	$CenterContainer/MenuButtons.visible = true
 	$CenterContainer/SettingsMenu.visible = false
 	$CenterContainer/CreditsMenu.visible = false
 	$CenterContainer/LevelsMenu.visible = false
+
+
+func _on_test_level_button_2_pressed() -> void:
+	GameSession.open_select("res://Levels/LevelOne.tscn")

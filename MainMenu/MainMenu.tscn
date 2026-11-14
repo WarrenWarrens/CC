@@ -146,6 +146,12 @@ theme = SubResource("Theme_b76km")
 theme_override_font_sizes/font_size = 10
 text = "Test Level Two"
 
+[node name="TestLevelButton2" type="Button" parent="CenterContainer/LevelsMenu" unique_id=1520886854]
+layout_mode = 2
+theme = SubResource("Theme_b76km")
+theme_override_font_sizes/font_size = 10
+text = "Test Level Two"
+
 [node name="BackButton" type="Button" parent="CenterContainer/LevelsMenu" unique_id=1097326960]
 layout_mode = 2
 theme = SubResource("Theme_3clmd")
@@ -183,4 +189,5 @@ color = Color(0.330078, 0.99999994, 0.9244244, 1)
 [connection signal="pressed" from="CenterContainer/SettingsMenu/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CenterContainer/CreditsMenu/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CenterContainer/LevelsMenu/TestLevelButton" to="." method="_on_test_level_button_pressed"]
+[connection signal="pressed" from="CenterContainer/LevelsMenu/TestLevelButton2" to="." method="_on_test_level_button_2_pressed"]
 [connection signal="pressed" from="CenterContainer/LevelsMenu/BackButton" to="." method="_on_back_button_pressed"]
