@@ -10,24 +10,31 @@
 [ext_resource type="Script" uid="uid://ct8em0bcldyi1" path="res://Script/SoftLight.gd" id="7_vs3qe"]
 [ext_resource type="Texture2D" uid="uid://d0jtqi7nlfb4a" path="res://Assets/Brick.png" id="8_ugo6b"]
 [ext_resource type="Script" uid="uid://3ff6rys34bua" path="res://Script/TrafficLight.gd" id="9_avsmw"]
+[ext_resource type="PackedScene" uid="uid://bj5hwyv0p8jwk" path="res://Scenes/Fog.tscn" id="11_vs3qe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obhin"]
-size = Vector2(924, 143.5)
+size = Vector2(1135, 143.5)
 
 [node name="StageOne" type="Node2D" unique_id=1492983022]
 y_sort_enabled = true
 script = ExtResource("1_pkd3b")
 
 [node name="Player" parent="." unique_id=1446667991 instance=ExtResource("2_idpgo")]
+position = Vector2(242, 60)
 
 [node name="Boundaries" type="StaticBody2D" parent="." unique_id=1404183506]
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=258147700]
-position = Vector2(1229, 71.75)
+position = Vector2(1334.5, 71.75)
 shape = SubResource("RectangleShape2D_obhin")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundaries" unique_id=1246847910]
-polygon = PackedVector2Array(704, 143, 767, 143, 767, 79, 514, 78)
+polygon = PackedVector2Array(704, 143, 767, 143, 767, 79, 512, 79)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Boundaries" unique_id=1938140117]
+position = Vector2(0, 1)
+polygon = PackedVector2Array(767, 78, 672, 47, 416, 46, 271, -1, 16, 0, 160, 47, 32, 47, 126, 79, 192, 79, 382, 142, 287, 239, -1, 238, -101, -51, 36, -224, 764, -221)
 
 [node name="Floors" type="Node2D" parent="." unique_id=619387224]
 
@@ -45,6 +52,7 @@ texture = ExtResource("4_ugo6b")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=820369868]
 script = ExtResource("3_yi1ei")
+world_bottom = 1000
 
 [node name="Lighting" type="Node" parent="." unique_id=1843023701]
 
@@ -54,16 +62,20 @@ sun_shadows = true
 metadata/_custom_type_script = "uid://b1woy2sdo7bhr"
 
 [node name="SoftLight" type="PointLight2D" parent="Lighting" unique_id=891939877]
-position = Vector2(685, 291)
+position = Vector2(651, 191)
 energy = 7.71
 shadow_enabled = true
 texture = ExtResource("6_2yqxq")
 script = ExtResource("7_vs3qe")
+flicker = 0.349
 metadata/_custom_type_script = "uid://ct8em0bcldyi1"
 
 [node name="SoftLight2" type="PointLight2D" parent="Lighting" unique_id=501822281]
-position = Vector2(612, 156)
+position = Vector2(975, 192)
+scale = Vector2(5.03125, 2.90625)
 shadow_enabled = true
 texture = ExtResource("8_ugo6b")
 script = ExtResource("9_avsmw")
 metadata/_custom_type_script = "uid://ct8em0bcldyi1"
+
+[node name="Parallax2D" parent="." unique_id=1398840891 instance=ExtResource("11_vs3qe")]
